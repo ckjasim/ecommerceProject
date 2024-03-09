@@ -3,7 +3,8 @@ const path=require('path')
 const app= express()
 const mongoose = require('mongoose')
 const session = require("express-session");
-
+const flash = require('express-flash')
+app.use(flash())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine','ejs')

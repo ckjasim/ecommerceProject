@@ -15,7 +15,11 @@ const loadLogin=(req,res)=>{
 }
 
 const loadRegister =(req,res)=>{
-    res.render('register')
+    const message = req.flash('message').toString()
+    if(message){
+        console.log( message)
+    }
+    res.render('register',{message})
 }
 
 const userHome=(req,res)=>{
@@ -39,21 +43,52 @@ const submit = async (req,res)=>{
        
     const checkEmail=  await userSchema.findOne({email:req.body.email})
     console.log(req.body)
-
-    if(checkEmail){
-        console.log("sfsdfsdfsd")
-        res.render('register',{message:"Email already exists"})
+    if (checkEmail) {
+        console.log('123');
+        // res.render('register', { message: "Email already exists" });
+        req.flash('message','Email already exists')
+            return res.redirect('/register')
         
     }else{
-        
         const sPassword = await securePassword(req.body.password)
+        console.log(req.body.fName)
+        const name = req.body.fName.trim();
+        
+        if(!name||!/^[a-zA-Z][a-zA-Z\s]*$/.test(name)){
+            // return res.render('register',{message:"invalid name provided"})
+            req.flash('message','Invalid name provided')
+            return res.redirect('/register')
+        }
+
+        const email=req.body.email
+        const emailRegex=/^[A-Za-z0-9.%+-]+@gmail\.com$/;
+
+        if(!emailRegex.test(email)){
+            req.flash('message','Invalid email provided')
+            return res.redirect('/register')
+        }
+
+        const mobile = req.body.mobile
+        const mobileRegex=/^\d{10}$/;
+
+        if(!mobileRegex.test(mobile)){
+            // return res.render('register',{message:'Invalid mobile number'})
+            req.flash('message','Invalid mobile number')
+            return res.redirect('/register')
+        }
+
+        if (req.body.password !== req.body.confirmPassword) {
+            // return res.render('register', { message: 'Please check your password' });
+            req.flash('message','Please check your password')
+            return res.redirect('/register')
+        }
+        
         const newUser=await userSchema.create({
             fName:req.body.fName,
             lName:req.body.lName,
             email:req.body.email,
             mobile:req.body.mobile,
             password:sPassword,
-            confirmPassword:req.body.confirmPassword,
             isAdmin:0
         })
         req.session.email=newUser.email
@@ -62,10 +97,15 @@ const submit = async (req,res)=>{
         if(newUser){
             console.log("2");
             otpController.sendVerifyMail(req.body.name,req.session.email)
-            res.render('otpVerification')
+
+            res.render('otpVerification',{messsage:'Please check your email and Verify your OTP'})
+            
         }
         else{
-            res.render('register',"Login has failed")
+            // res.render('register',{message:"Login has failed"})
+            req.flash('message','Login has failed')
+            return res.redirect('/register')
+            
         }
     }
 
