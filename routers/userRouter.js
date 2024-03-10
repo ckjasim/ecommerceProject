@@ -8,13 +8,17 @@ userRoute.set('views','./views/users')
 userRoute.get('/',userController.loadHome)
 userRoute.get('/login',userController.loadLogin)
 
+userRoute.post('/login',userController.loginSubmit)
+
+
+
 userRoute.get('/register',userController.loadRegister)
 userRoute.post('/register',userController.submit)
 
 userRoute.post('/otp',otpController.otp)
 userRoute.post('/homePage',otpController.verifyMail)
 userRoute.get('/resend',otpController.resendOtp)
-userRoute.post('/userHome',userController.userHome)
+userRoute.get('/userHome',userController.userHome)
 userRoute.get('/logout',userController.logout)
 
 

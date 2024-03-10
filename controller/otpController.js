@@ -97,7 +97,7 @@ const verifyMail=async(req,res)=>{
         console.log(parseInt(otpNumber)=== otpSend,parseInt(otpNumber), otpSend)
         if(parseInt(otpNumber)=== otpSend){
            const userEmail=req.session.email
-           req.session.email=null
+        //    req.session.email=null
             // req.session.destroy((err) => {
             //     if (err) {
             //         console.error('Error destroying session:', err);
@@ -106,11 +106,15 @@ const verifyMail=async(req,res)=>{
             //         res.redirect('/register');
             //     }
             // });
-            const userDetails=await userSchema.findOne({email:userEmail})
             
-
+            const userDataSave=req.session.userData
+            
+            // const result = await userDataSave.save()
+            await userSchema.create(userDataSave)
+            const userDetails=await userSchema.findOne({email:userEmail})
             req.session.user_id=userDetails._id
             console.log(req.session)
+            console.log('123455')
             res.redirect('/userHome')
         }else{
             return res.render('otpVerification',{message:"invalid Otp"})

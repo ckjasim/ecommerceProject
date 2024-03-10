@@ -11,7 +11,11 @@ const loadHome=(req,res)=>{
 }
 
 const loadLogin=(req,res)=>{
-    res.render('login')
+    const message=req.flash('message').toString()
+    if(message){
+        console.log(message);
+    }
+    res.render('login',{message})
 }
 
 const loadRegister =(req,res)=>{
@@ -25,6 +29,40 @@ const loadRegister =(req,res)=>{
 const userHome=(req,res)=>{
     res.render('index')
 }
+
+//Login verification
+
+const loginSubmit = async (req,res)=>{
+    try {
+        const email=req.body.email
+        const emailRegex=/^[A-Za-z0-9.%+-]+@gmail\.com$/;
+
+        if(!emailRegex.test(email)){
+            req.flash('message','Invalid email provided')
+            return res.redirect('/login')
+        }
+        const checkEmail=  await userSchema.findOne({email:req.body.email})
+        
+        if(checkEmail){
+            const checkPassword=req.body.password
+            const correctPassword = await bcrypt.compare(checkPassword,checkEmail.password)
+            if(correctPassword){
+                return res.redirect('/userHome')
+            }else{
+                req.flash('message','Incorrect password')
+                return res.redirect('/login')
+            }
+        }else{
+            req.flash('message','Please check your email')
+            return res.redirect('/login')
+        }
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
+
 
 //register save
 
@@ -83,7 +121,7 @@ const submit = async (req,res)=>{
             return res.redirect('/register')
         }
         
-        const newUser=await userSchema.create({
+        const newUser=await userSchema({
             fName:req.body.fName,
             lName:req.body.lName,
             email:req.body.email,
@@ -91,6 +129,7 @@ const submit = async (req,res)=>{
             password:sPassword,
             isAdmin:0
         })
+        req.session.userData=newUser
         req.session.email=newUser.email
         console.log("1")
         console.log(req.session.email)
@@ -127,6 +166,7 @@ module.exports={
     
     loadHome,
     loadLogin,
+    loginSubmit,
     loadRegister,
     submit,
     userHome,
