@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema({
     email:{type:String,required:true},
     mobile:{type:String,required:true},
     password:{type:String,required:true},
+    createDate:{type:Date,required:true},
+    // updated:{type:date,required:true},
+    // is_block:{type:boolean,required:true},
     isAdmin:{type:Number,required:true}
 })
 

@@ -127,6 +127,7 @@ const submit = async (req,res)=>{
             email:req.body.email,
             mobile:req.body.mobile,
             password:sPassword,
+            createDate:new Date(),
             isAdmin:0
         })
         req.session.userData=newUser

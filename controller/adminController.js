@@ -1,4 +1,4 @@
-
+const userSchema =require('../model/userData')
 
 
 const adminLogin=(req,res)=>{
@@ -13,8 +13,10 @@ const adminHome=(req,res)=>{
     res.render('index')
 }
 
-const loadUsers=(req,res)=>{
-    res.render('users')
+const loadUsers=async (req,res)=>{
+    const userData=await userSchema.find({})
+
+    res.render('users',{userData})
 }
 
 const adminloginSubmit = async (req,res)=>{
