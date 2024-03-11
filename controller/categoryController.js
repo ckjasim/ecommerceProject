@@ -42,9 +42,10 @@ const blockCategory=async (req,res)=>{
     }
 }
 
-const editCategory=async (req,res)=>{
+const loadEditCategory=async (req,res)=>{
     try {
-        
+        const categoryData=await categorySchema.findOne({_id:req.query._id})
+        return res.render('editCategory',{categoryData})
     } catch (error) {
         console.log(error.message);
     }
@@ -57,5 +58,6 @@ const editCategory=async (req,res)=>{
 module.exports={
     loadCategory,
     newCategory,
-    blockCategory
+    blockCategory,
+    loadEditCategory,
 }

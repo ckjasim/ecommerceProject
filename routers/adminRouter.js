@@ -16,5 +16,6 @@ adminRoute.get('/block',adminController.blockUser)
 adminRoute.get('/category',categoryController.loadCategory)
 adminRoute.post('/category',categoryController.newCategory)
 adminRoute.get('/categoryBlock',categoryController.blockCategory)
+adminRoute.get('/editCategory',categoryController.loadEditCategory)
 
 module.exports=adminRoute
