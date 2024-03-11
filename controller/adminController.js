@@ -19,6 +19,22 @@ const loadUsers=async (req,res)=>{
     res.render('users',{userData})
 }
 
+const blockUser=async (req,res)=>{
+    const userDetails=await userSchema.findOne({email:req.query.email})
+    console.log(userDetails.is_block)
+    if(userDetails.is_block===false){
+        await userSchema.updateOne({email:req.query.email},{is_block:true})
+        
+        
+        res.redirect('/users')
+    }else{
+        await userSchema.updateOne({email:req.query.email},{is_block:false})
+        console.log("req.query.email")
+        
+        res.redirect('/users')
+    }
+}
+
 const adminloginSubmit = async (req,res)=>{
     try {
         const email=req.body.email
@@ -59,5 +75,6 @@ module.exports={
     adminHome,
     adminLogin,
     adminloginSubmit,
-    loadUsers
+    loadUsers,
+    blockUser
 }

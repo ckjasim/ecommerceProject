@@ -269,10 +269,18 @@
                                         </td>
                                         <td><%= userData[i].email %></td>
                                         <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                        <td><%= userData[i].createDate %></td>
+                                        <!-- <td><%= userData[i].createDate %></td> -->
+                                        <td><%= userData[i].createDate.toISOString().slice(0,10) %></td>
+
                                         
                                         <td class="text-end">
-                                            <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15">View details</a>
+                                           <% if(userData[i].is_block==false){ %>
+                                            
+                                            <a href="block?email=<%= userData[i].email %>" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
+                                            <% }else{ %>
+                                                <a href="block?email=<%= userData[i].email %>" class="btn btn-sm btn-brand rounded font-sm mt-15">Unblock</a>
+
+                                                <% } %>
                                         </td>
                                         
                                     </tr>

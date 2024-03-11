@@ -10,6 +10,6 @@ adminRoute.get('/admin',adminController.adminLogin)
 adminRoute.post('/admin',adminController.adminloginSubmit)
 adminRoute.get('/adminHome',adminController.adminHome)
 adminRoute.get('/users',adminController.loadUsers)
-
+adminRoute.get('/block',adminController.blockUser)
 
 module.exports=adminRoute

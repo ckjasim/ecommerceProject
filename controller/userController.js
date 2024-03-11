@@ -42,6 +42,11 @@ const loginSubmit = async (req,res)=>{
             return res.redirect('/login')
         }
         const checkEmail=  await userSchema.findOne({email:req.body.email})
+
+        if(checkEmail.is_block===true){
+            req.flash('message','Entry restricted')
+            return res.redirect('/login')
+        }
         
         if(checkEmail){
             const checkPassword=req.body.password
@@ -128,6 +133,7 @@ const submit = async (req,res)=>{
             mobile:req.body.mobile,
             password:sPassword,
             createDate:new Date(),
+            is_block:false,
             isAdmin:0
         })
         req.session.userData=newUser

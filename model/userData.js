@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     password:{type:String,required:true},
     createDate:{type:Date,required:true},
     // updated:{type:date,required:true},
-    // is_block:{type:boolean,required:true},
+    is_block:{type:Boolean,required:true},
     isAdmin:{type:Number,required:true}
 })
 
