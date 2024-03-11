@@ -35,7 +35,7 @@
                             <span class="text">Dashboard</span>
                         </a>
                     </li>
-                    <li class="menu-item has-submenu">
+                    <li class="menu-item has-submenu active">
                         <a class="menu-link" href="page-products-list.html">
                             <i class="icon material-icons md-shopping_bag"></i>
                             <span class="text">Products</span>
@@ -44,7 +44,7 @@
                             <a href="page-products-list.html">Product List</a>
                             <a href="page-products-grid.html">Product grid</a>
                             <a href="page-products-grid-2.html">Product grid 2</a>
-                            <a href="page-categories.html">Categories</a>
+                            <a href="page-categories.html" class="active">Categories</a>
                         </div>
                     </li>
                     <li class="menu-item has-submenu">
@@ -58,16 +58,16 @@
                             <a href="page-orders-detail.html">Order detail</a>
                         </div>
                     </li>
-                    <li class="menu-item  active">
+                    <li class="menu-item has-submenu">
                         <a class="menu-link" href="page-sellers-cards.html">
-                            <i class="icon material-icons md-person"></i>
-                            <span class="text">Users</span>
+                            <i class="icon material-icons md-store"></i>
+                            <span class="text">Sellers</span>
                         </a>
-                        <!-- <div class="submenu">
+                        <div class="submenu">
                             <a href="page-sellers-cards.html">Sellers cards</a>
-                            <a href="page-sellers-list.html" class="active">Sellers list</a>
+                            <a href="page-sellers-list.html">Sellers list</a>
                             <a href="page-seller-detail.html">Seller profile</a>
-                        </div> -->
+                        </div>
                     </li>
                     <li class="menu-item has-submenu">
                         <a class="menu-link" href="page-form-product-1.html">
@@ -198,116 +198,112 @@
             </header>
             <section class="content-main">
                 <div class="content-header">
-                    <h2 class="content-title">Users list</h2>
                     <div>
-                        <a href="#" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
+                        <h2 class="content-title card-title">Categories</h2>
+                        <p>Add, edit or delete a category</p>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Search Categories" class="form-control bg-white" />
                     </div>
                 </div>
-                <div class="card mb-4">
-                    <header class="card-header">
-                        <div class="row gx-3">
-                            <div class="col-lg-4 col-md-6 me-auto">
-                                <input type="text" placeholder="Search..." class="form-control" />
-                            </div>
-                            <div class="col-lg-2 col-md-3 col-6">
-                                <select class="form-select">
-                                    <option>Status</option>
-                                    <option>Active</option>
-                                    <option>Disabled</option>
-                                    <option>Show all</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-2 col-md-3 col-6">
-                                <select class="form-select">
-                                    <option>Show 20</option>
-                                    <option>Show 30</option>
-                                    <option>Show 40</option>
-                                </select>
-                            </div>
-                        </div>
-                    </header>
-                    <!-- card-header end// -->
+                <div class="card">
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Seller</th>
-                                        <th>Email</th>
-                                        <th>Status</th>
-                                        <th>Registered</th>
-                                        <th class="text-end">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <!-- <% for(let i = 0; i < userData.length; i++) { %>
-                                            <h6 class="mb-0 title">Jonatan Ive</h6>
-                                            <small class="text-muted">Seller ID: #400</small>
-                                            <td width="40%"> <%= userData[i].fName %></td>
-                                            <td width="40%"> <%= userData[i].email %></td>
-                                            <td width="40%"> <%= userData[i].mobile %></td>
-                                            <td><a href="">block</a></td>
-
-                                        <% } %> -->
-                                        
-                                    </tr>
-                                    <% for(i=0;i < userData.length;i++) { %>
-                                    <tr>
-                                        
-                                        <td width="40%">
-                                            <a href="#" class="itemside">
-                                                <div class="left">
-                                                    <img src="assets/imgs/people/avatar-2.png" class="img-sm img-avatar" alt="Userpic" />
-                                                </div>
-                                                <div class="info pl-3">
-                                                    
-                                                    <h6 class="mb-0 title"><%=userData[i].fName%></h6>
-                                                    <small class="text-muted">User ID: <%= userData[i]._id %></small>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td><%= userData[i].email %></td>
-                                        <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                        <!-- <td><%= userData[i].createDate %></td> -->
-                                        <td><%= userData[i].createDate.toISOString().slice(0,10) %></td>
-
-                                        
-                                        <td class="text-end">
-                                           <% if(userData[i].is_block==false){ %>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <form action="" method="post">
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">Name</label>
+                                        <input type="text" placeholder="Type here" name="name" class="form-control" id="product_name" />
+                                    </div>
+                                    <!-- <div class="mb-4">
+                                        <label for="product_slug" class="form-label">Slug</label>
+                                        <input type="text" placeholder="Type here" class="form-control" id="product_slug" />
+                                    </div> -->
+                                    <!-- <div class="mb-4">
+                                        <label class="form-label">Parent</label>
+                                        <select class="form-select">
+                                            <option>Fruit</option>
+                                            <option>Snack</option>
+                                        </select>
+                                    </div> -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Description</label>
+                                        <textarea placeholder="Type here" name="description" class="form-control"></textarea>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button class="btn btn-primary">Update category</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- <div class="col-md-9">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" />
+                                                    </div>
+                                                </th>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <!-- <th>Slug</th> -->
+                                                <th>     </th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             
-                                            <a href="block?email=<%= userData[i].email %>" class="btn btn-sm btn-danger rounded font-sm mt-15">Block</a>
-                                            <% }else{ %>
-                                                <a href="block?email=<%= userData[i].email %>" class="btn btn-sm btn-brand rounded font-sm mt-15">Unblock</a>
-
-                                                <% } %>
-                                        </td>
-                                        
-                                    </tr>
-                                    <% } %>
+                                            <% if(categoryData.length>0){ %>
+                                                <% categoryData.forEach(ele=>{ %>
+                                            <tr>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" />
+                                                    </div>
+                                                </td>
+                                                <td><%= ele._id  %></td>
+                                                <td><b><%= ele.name  %></b></td>
+                                                <td><%= ele.description  %></td>
+                                                <!-- <td>/cake</td> -->
+                                                <!-- <td>1</td> -->
+                                                <td class="text-end">
+                                                    <div class="">
+                                                        <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15">Edit info</a>
+                                                        <!-- <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a> -->
+                                                        <td class="text-end">
+                                                            <% if(ele.is_block==false){ %>
+                                            
+                                                                <a href="categoryBlock?name=<%= ele.name %>" class="btn btn-sm btn-danger rounded font-sm mt-15">Block</a>
+                                                                <% }else{ %>
+                                                                    <a href="categoryBlock?name=<%= ele.name %>" class="btn btn-sm btn-brand rounded font-sm mt-15">Unblock</a>
+                    
+                                                                    <% } %>
+                                                        </td>
+                                                        
+                                                        <!-- <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="#">View detail</a>
+                                                            <a class="dropdown-item" href="#">Edit info</a>
+                                                            <a class="dropdown-item text-danger" href="#">Delete</a>
+                                                        </div> -->
+                                                    </div>
+                                                    <!-- dropdown //end -->
+                                                </td>
+                                            </tr>
+                                            <% })} %> 
                                     
-                                </tbody>
-                            </table>
-                            <!-- table-responsive.// -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> -->
+                            <!-- .col// -->
                         </div>
+                        <!-- .row // -->
                     </div>
-                    <!-- card-body end// -->
+                    <!-- card body .// -->
                 </div>
-                <!-- card end// -->
-                <div class="pagination-area mt-15 mb-50">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-start">
-                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                            <li class="page-item"><a class="page-link" href="#">02</a></li>
-                            <li class="page-item"><a class="page-link" href="#">03</a></li>
-                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">16</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                <!-- card .// -->
             </section>
             <!-- content-main end// -->
             <footer class="main-footer font-xs">
