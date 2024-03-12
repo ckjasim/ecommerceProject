@@ -45,11 +45,25 @@ const blockCategory=async (req,res)=>{
 const loadEditCategory=async (req,res)=>{
     try {
         const categoryData=await categorySchema.findOne({_id:req.query._id})
+        
         return res.render('editCategory',{categoryData})
+      
     } catch (error) {
         console.log(error.message);
     }
 }
+
+const editCategory=async (req,res)=>{
+    try {
+        console.log(req.body.id)
+        await categorySchema.findByIdAndUpdate({_id:req.body.id},{$set:{name:req.body.name,description:req.body.description}})
+        res.redirect('/category')
+        
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 
 
 
@@ -60,4 +74,5 @@ module.exports={
     newCategory,
     blockCategory,
     loadEditCategory,
+    editCategory
 }
