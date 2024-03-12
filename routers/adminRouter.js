@@ -2,6 +2,7 @@ const express=require('express')
 
 const adminController=require('../controller/adminController')
 const categoryController=require('../controller/categoryController')
+const productController=require('../controller/productController')
 
 const adminRoute = express()
 
@@ -18,5 +19,9 @@ adminRoute.post('/category',categoryController.newCategory)
 adminRoute.get('/categoryBlock',categoryController.blockCategory)
 adminRoute.get('/editCategory',categoryController.loadEditCategory)
 adminRoute.post('/editCategory',categoryController.editCategory)
+
+adminRoute.get('/products',productController.loadProducts)
+adminRoute.get('/newProduct',productController.loadNewProducts)
+adminRoute.post('/newProduct',productController.addProducts)
 
 module.exports=adminRoute
