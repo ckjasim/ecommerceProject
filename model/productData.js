@@ -9,6 +9,7 @@ const productSchema = new mongoose.Schema({
     size:{type:String,required:true},
     material:{type:String,required:true},
     productStatus:{type:String,required:true},
+    description:{type:String,required:true},
     createdAt:{type:Date,required:true}, 
     is_listed:{type:Boolean,default:true},
     categoryId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'category'}

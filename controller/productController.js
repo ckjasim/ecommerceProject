@@ -3,7 +3,8 @@ const categorySchema = require('../model/categoryData')
 
 const loadProducts =async (req,res)=>{
     try {
-        res.render('products')
+        const productData= await productSchema.find().populate('categoryId')
+        res.render('products',{productData})
     } catch (error) {
         console.log(error.message)
     }
@@ -20,7 +21,7 @@ const loadNewProducts=async (req,res)=>{
 const addProducts=async (req,res)=>{
     try {
         
-        console.log(req.file)
+        console.log(req.files)
         const productData=await productSchema({
             name:req.body.name,
             price:req.body.price,
@@ -31,7 +32,7 @@ const addProducts=async (req,res)=>{
             categoryId:req.body.category,
             createdAt:new Date(),
             productStatus:true,
-            img:req.file.filename,
+            img:req.files.map(file=>file.filename)
 
         })
 
@@ -44,8 +45,47 @@ const addProducts=async (req,res)=>{
     }
 }
 
+const unlistProduct =async (req,res)=>{
+    try {
+        const productData=await productSchema.findOne({name:req.query.name})
+        console.log(req.query.name)
+        console.log(productData.is_listed)
+    
+        if(productData.is_listed===true){
+            await productSchema.updateOne({name:req.query.name},{is_listed:false})
+            
+            
+            res.redirect('/products')
+        }else{
+            await productSchema.updateOne({name:req.query.name},{is_listed:true})
+            
+            
+            res.redirect('/products')
+        }
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const loadEditProduct=async (req,res)=>{
+    try {
+        const categoryData = await categorySchema.find()
+        
+        const productData = await productSchema.findOne({_id:req.query._id})
+        console.log(productData)
+       
+       return res.render('editProduct',{productData,categoryData})
+       
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 module.exports={
     loadProducts,
     loadNewProducts,
-    addProducts
+    addProducts,
+    unlistProduct,
+    loadEditProduct
+
 }
