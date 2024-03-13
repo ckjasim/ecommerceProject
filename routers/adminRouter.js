@@ -4,9 +4,15 @@ const adminController=require('../controller/adminController')
 const categoryController=require('../controller/categoryController')
 const productController=require('../controller/productController')
 
+
+const upload=require('../middleware/multer')
+
+
 const adminRoute = express()
 
 adminRoute.set('views','./views/admin')
+
+
 
 adminRoute.get('/admin',adminController.adminLogin)
 adminRoute.post('/admin',adminController.adminloginSubmit)
@@ -22,6 +28,6 @@ adminRoute.post('/editCategory',categoryController.editCategory)
 
 adminRoute.get('/products',productController.loadProducts)
 adminRoute.get('/newProduct',productController.loadNewProducts)
-adminRoute.post('/newProduct',productController.addProducts)
+adminRoute.post('/newProduct',upload.array('image'), productController.addProducts)
 
 module.exports=adminRoute

@@ -20,7 +20,7 @@ const loadNewProducts=async (req,res)=>{
 const addProducts=async (req,res)=>{
     try {
         
-
+        console.log(req.file)
         const productData=await productSchema({
             name:req.body.name,
             price:req.body.price,
@@ -31,6 +31,7 @@ const addProducts=async (req,res)=>{
             categoryId:req.body.category,
             createdAt:new Date(),
             productStatus:true,
+            img:req.file.filename,
 
         })
 

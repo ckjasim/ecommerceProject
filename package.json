@@ -19,6 +19,7 @@
     "flash": "^1.1.0",
     "mongoose": "^8.2.1",
     "mongosh": "^2.1.5",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.11",
     "nodemon": "^3.1.0"
   }
