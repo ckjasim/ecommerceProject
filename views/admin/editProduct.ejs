@@ -222,6 +222,9 @@
                                     <label for="product_title" class="form-label">Product title</label>
                                     <input type="text" value="<%= productData.name %>" placeholder="Type here" name="name" class="form-control" id="product_name" />
                                 </div>
+                                <div class="mb-4">
+                                    <input type="hidden" name="id" value="<%= productData._id %>">
+                                </div>
                                 <div class="row gx-3">
                                     <div class="col-md-4 mb-3">
                                         <label for="product_sku" class="form-label">Quantity</label>
@@ -297,6 +300,22 @@
                                 <div class="card-body">
                                     <div>
                                         <label class="form-label">Images</label>
+                                        <div class="left">
+                                            <img src="/productImage/<%= productData.img[0]%>" class="img-sm img-thumbnail" alt="Item" />
+                                            <a href=""  class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
+                                        </div>
+                                        <div class="left">
+                                            <img src="/productImage/<%= productData.img[1]%>" class="img-sm img-thumbnail" alt="Item" />
+                                            <a href="deleteImage?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
+                                            
+                                        </div>
+                                        <div class="left">
+                                            <img src="/productImage/<%= productData.img[2]%>" class="img-sm img-thumbnail" alt="Item" />
+                                            <a href="editProduct?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
+                                        </div><div class="left">
+                                            <img src="/productImage/<%= productData.img[3]%>" class="img-sm img-thumbnail" alt="Item" />
+                                            <a href="editProduct?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
+                                        </div>
                                         <input multiple class="form-control" type="file" name="image" />
                                     </div>
                                 </div>
@@ -323,6 +342,25 @@
                 </div>
             </footer>
         </main>
+
+        <script >
+            const deleteLinks = document.querySelectorAll('.delete-link');
+
+// Add event listener to each delete link
+deleteLinks.forEach(link => {
+    link.addEventListener('click', function(event) {
+        // Prevent the default action of the anchor tag
+        event.preventDefault();
+        
+        // Get the parent element of the delete link (the photo container)
+        const photoContainer = link.parentElement;
+        
+        // Remove the photo container from the DOM
+        photoContainer.remove();
+    });
+});
+        </script>
+
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="assets/js/vendors/select2.min.js"></script>
