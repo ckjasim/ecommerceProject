@@ -7,10 +7,7 @@ userRoute.set('views','./views/users')
 
 userRoute.get('/',userController.loadHome)
 userRoute.get('/login',userController.loadLogin)
-
 userRoute.post('/login',userController.loginSubmit)
-
-
 
 userRoute.get('/register',userController.loadRegister)
 userRoute.post('/register',userController.submit)
@@ -21,6 +18,9 @@ userRoute.get('/resend',otpController.resendOtp)
 userRoute.get('/userHome',userController.userHome)
 userRoute.get('/logout',userController.logout)
 
+
+//shop
+userRoute.get('/loadShop',userController.loadShop)
 
 // userRoute.get('/verify',userController.verifyMail)
 

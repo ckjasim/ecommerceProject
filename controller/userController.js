@@ -162,12 +162,19 @@ const submit = async (req,res)=>{
     }
 }
 
+//shop
+
+const loadShop=(req,res)=>{
+    res.render('shop')
+}
+
 const logout = (req,res)=>{
     req.session.destroy()
     
     res.redirect("/")
 
 }
+
 
 module.exports={
     
@@ -177,6 +184,7 @@ module.exports={
     loadRegister,
     submit,
     userHome,
-    logout
+    logout,
+    loadShop
 
 }
