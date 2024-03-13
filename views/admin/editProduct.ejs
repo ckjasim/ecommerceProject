@@ -298,21 +298,22 @@
                             </div>
                             <div class="card mb-4">
                                 <div class="card-body">
-                                    <div>
+                                    <div >
                                         <label class="form-label">Images</label>
-                                        <div class="left">
+                                        <div class="left photo">
                                             <img src="/productImage/<%= productData.img[0]%>" class="img-sm img-thumbnail" alt="Item" />
                                             <a href=""  class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
                                         </div>
-                                        <div class="left">
+                                        <div class="left photo">
                                             <img src="/productImage/<%= productData.img[1]%>" class="img-sm img-thumbnail" alt="Item" />
                                             <a href="deleteImage?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
                                             
                                         </div>
-                                        <div class="left">
+                                        <div class="left photo">
                                             <img src="/productImage/<%= productData.img[2]%>" class="img-sm img-thumbnail" alt="Item" />
                                             <a href="editProduct?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
-                                        </div><div class="left">
+                                        </div>
+                                        <div class="left photo">
                                             <img src="/productImage/<%= productData.img[3]%>" class="img-sm img-thumbnail" alt="Item" />
                                             <a href="editProduct?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
                                         </div>
@@ -343,23 +344,37 @@
             </footer>
         </main>
 
-        <script >
+        <!-- <script >
             const deleteLinks = document.querySelectorAll('.delete-link');
-
-// Add event listener to each delete link
-deleteLinks.forEach(link => {
-    link.addEventListener('click', function(event) {
-        // Prevent the default action of the anchor tag
-        event.preventDefault();
+            
+        deleteLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const photoContainer = link.parentElement;
+            photoContainer.remove();
+            });
+        }); 
+        </script> -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Get all delete links
+                const deleteLinks = document.querySelectorAll('.delete-link');
         
-        // Get the parent element of the delete link (the photo container)
-        const photoContainer = link.parentElement;
+                // Add event listener to each delete link
+                deleteLinks.forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
         
-        // Remove the photo container from the DOM
-        photoContainer.remove();
-    });
-});
+                        // Get the parent element of the delete link (the photo container)
+                        const photoContainer = link.closest('.photo');
+        
+                        // Remove the photo container from the DOM
+                        photoContainer.remove();
+                    });
+                });
+            });
         </script>
+        
 
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>

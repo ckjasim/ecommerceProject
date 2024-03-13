@@ -28,7 +28,7 @@ adminRoute.post('/editCategory',categoryController.editCategory)
 
 adminRoute.get('/products',productController.loadProducts)
 adminRoute.get('/newProduct',productController.loadNewProducts)
-adminRoute.post('/newProduct',upload.array('image'),productController.cropImage, productController.addProducts)
+adminRoute.post('/newProduct',upload.array('image'), productController.addProducts)
 adminRoute.get('/unList', productController.unlistProduct)
 adminRoute.get('/editProduct',productController.loadEditProduct)
 adminRoute.post('/editProduct',upload.array('image'),productController.editProduct)

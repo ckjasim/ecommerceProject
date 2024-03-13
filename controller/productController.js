@@ -115,7 +115,9 @@ const editProduct =async (req,res)=>{
     try {
         console.log('dffsd');
         console.log(req.body.id)
-        await productSchema.findByIdAndUpdate({_id:req.body.id},{$set:{name:req.body.name,
+
+        const updateProduct={
+            name:req.body.name,
             price:req.body.price,
             quantity:req.body.quantity,
             color:req.body.color,
@@ -123,55 +125,19 @@ const editProduct =async (req,res)=>{
             material:req.body.material,
             categoryId:req.body.category,
             description:req.body.description,
-            img:req.files.map(file=>file.filename)}})
+        }
+        
+        if(req.files && req.files.length >0){
+            
+            updateProduct.img=req.files.map(file=>file.filename)
+        }
+        await productSchema.findByIdAndUpdate({_id:req.body.id},{$set:updateProduct})
         res.redirect('/products')
         
     } catch (error) {
         console.log(error.message)
     }
 }
-
-// // const deleteImage =async (req,res)=>{
-// //     try {
-       
-
-// //         const deleteLinks = document.querySelectorAll('.delete-link');
-// //         deleteLinks.forEach(link => {
-// //         link.addEventListener('click', function(event) {
-       
-// //         event.preventDefault();
-
-// //         const photoContainer = link.parentElement;
-        
-       
-// //         photoContainer.remove();
-// //     });
-// // });
-
-
-
-   
-
-//         const productData=await productSchema.findOne({name:req.query._id})
-        
-//         // console.log(productData.is_listed)
-    
-//         if(productData.img[0]){
-//             await productSchema.updateOne({name:req.query.name},{is_listed:false})
-            
-            
-//             res.redirect('/products')
-//         }else{
-//             await productSchema.updateOne({name:req.query.name},{is_listed:true})
-            
-            
-//             res.redirect('/products')
-//         }
-//     } catch (error) {
-//         console.log(error.message)
-//     }
-// }
-
 module.exports={
     loadProducts,
     loadNewProducts,
