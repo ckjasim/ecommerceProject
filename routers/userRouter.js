@@ -21,6 +21,7 @@ userRoute.get('/logout',userController.logout)
 
 //shop
 userRoute.get('/loadShop',userController.loadShop)
+userRoute.get('/loadProductDetail',userController.loadProductDetail)
 
 // userRoute.get('/verify',userController.verifyMail)
 

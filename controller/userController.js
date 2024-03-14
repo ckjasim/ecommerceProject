@@ -1,4 +1,5 @@
 const userSchema = require('../model/userData')
+const productSchema = require('../model/productData')
 // const otpSchema = require('../model/otpData')
 const bcrypt=require('bcrypt')
 
@@ -164,8 +165,24 @@ const submit = async (req,res)=>{
 
 //shop
 
-const loadShop=(req,res)=>{
-    res.render('shop')
+const loadShop=async (req,res)=>{
+    try {
+        const productData= await productSchema.find().populate('categoryId')
+        res.render('shop',{productData})
+    } catch (error) {
+        console.log(error.message)
+    }
+ 
+}
+
+const loadProductDetail=async (req,res)=>{
+    try {
+        const productData= await productSchema.find().populate('categoryId')
+        res.render('productDetail',{productData})
+    } catch (error) {
+        console.log(error.message)
+    }
+ 
 }
 
 const logout = (req,res)=>{
@@ -185,6 +202,7 @@ module.exports={
     submit,
     userHome,
     logout,
-    loadShop
+    loadShop,
+    loadProductDetail
 
 }

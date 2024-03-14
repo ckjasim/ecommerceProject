@@ -608,29 +608,33 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <!-- Product Details Images Start -->
+                        <% productData.forEach(element => {%>
                         <div class="product-details-images">
                             <!-- Details Gallery Images Start -->
                             <div class="details-gallery-images" id="img-container">
                                 <div class="swiper-container">
                                     <div class="swiper-wrapper">
+                                        
+                                            
+
+                                            
+                                            
                                         <div class="swiper-slide single-img zoom">
-                                            <img src="assets/images/product-details/product-details-1.jpg" width="570" height="604" alt="Product Image" />
+                                            <img src="/productImage/<%= element.img[0] %>" width="570" height="604" alt="Product Image" />
+                                        </div>
+                                        
+                                       
+                                        <div class="swiper-slide single-img zoom">
+                                            <img src="/productImage/<%= element.img[1] %>" width="570" height="604" alt="Product Image" />
                                         </div>
                                         <div class="swiper-slide single-img zoom">
-                                            <img src="assets/images/product-details/product-details-2.jpg" width="570" height="604" alt="Product Image" />
+                                            <img src="/productImage/<%= element.img[2] %>" width="570" height="604" alt="Product Image" />
                                         </div>
                                         <div class="swiper-slide single-img zoom">
-                                            <img src="assets/images/product-details/product-details-3.jpg" width="570" height="604" alt="Product Image" />
+                                            <img src="/productImage/<%= element.img[3] %>" width="570" height="604" alt="Product Image" />
                                         </div>
-                                        <div class="swiper-slide single-img zoom">
-                                            <img src="assets/images/product-details/product-details-3.jpg" width="570" height="604" alt="Product Image" />
-                                        </div>
-                                        <div class="swiper-slide single-img zoom">
-                                            <img src="assets/images/product-details/product-details-4.jpg" width="570" height="604" alt="Product Image" />
-                                        </div>
-                                        <div class="swiper-slide single-img zoom">
-                                            <img src="assets/images/product-details/product-details-5.jpg" width="570" height="604" alt="Product Image" />
-                                        </div>
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -641,20 +645,18 @@
                                 <div class="swiper-container">
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
-                                            <img src="assets/images/product-details/product-details-1.jpg" width="88" height="93" alt="Product Thumbnail" />
+                                            <img src="/productImage/<%= element.img[0] %>" width="88" height="93" alt="Product Thumbnail" />
                                         </div>
                                         <div class="swiper-slide">
-                                            <img src="assets/images/product-details/product-details-2.jpg" width="88" height="93" alt="Product Thumbnail" />
+                                            <img src="/productImage/<%= element.img[1] %>" width="88" height="93" alt="Product Thumbnail" />
                                         </div>
                                         <div class="swiper-slide">
-                                            <img src="assets/images/product-details/product-details-3.jpg" width="88" height="93" alt="Product Thumbnail" />
+                                            <img src="/productImage/<%= element.img[2] %>" width="88" height="93" alt="Product Thumbnail" />
                                         </div>
                                         <div class="swiper-slide">
-                                            <img src="assets/images/product-details/product-details-4.jpg" width="88" height="93" alt="Product Thumbnail" />
+                                            <img src="/productImage/<%= element.img[3] %>" width="88" height="93" alt="Product Thumbnail" />
                                         </div>
-                                        <div class="swiper-slide">
-                                            <img src="assets/images/product-details/product-details-5.jpg" width="88" height="93" alt="Product Thumbnail" />
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <!-- Add Arrows -->
@@ -667,6 +669,7 @@
                             </div>
                             <!-- Details Gallery Thumbs End -->
                         </div>
+                        <%}); %>
                         <!-- Product Details Images End -->
                     </div>
                     <div class="col-lg-6">
