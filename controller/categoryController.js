@@ -2,22 +2,48 @@ const categorySchema =require('../model/categoryData')
 
 const loadCategory =async (req,res)=>{
     console.log("edleridfjrjk")
+    const message = req.flash('message').toString()
     const categoryData = await categorySchema.find()
-   
-  res.render('category',{categoryData})
+    if(message){
+        console.log( message)
+    }
+  res.render('category',{categoryData,message})
 }
+
 
 const newCategory =async (req,res)=>{
     try {
-    
-        const categoryData =await categorySchema({
-            name:req.body.name,
-            description:req.body.description,
-            is_block:false
-        })
-        await categoryData.save()
-    
-        return res.redirect('/category')
+        
+        if(!req.body.name||!/^[a-zA-Z][a-zA-Z\s]*$/.test(req.body.name)){
+            req.flash('message','Invalid name provided')
+            return res.redirect('/category')
+        }
+        if(!req.body.description||!/^[a-zA-Z][a-zA-Z\s]*$/.test(req.body.description)){
+            req.flash('message','Invalid description provided')
+            return res.redirect('/category')
+        }
+
+        
+
+        const regex = new RegExp("^" + req.body.name + "$", "i");
+    const result = await categorySchema.find({ name: regex });
+
+        if(result){
+            req.flash('message','category already exists')
+            return res.redirect('/category')
+        }else{
+            const categoryData =await categorySchema({
+                name:req.body.name,
+                description:req.body.description,
+                is_block:false
+            })
+            await categoryData.save()
+        
+            return res.redirect('/category')
+        }
+  
+
+       
         
     } catch (error) {
         console.log(error.message);
@@ -55,6 +81,7 @@ const loadEditCategory=async (req,res)=>{
 
 const editCategory=async (req,res)=>{
     try {
+        
         console.log(req.body.id)
         await categorySchema.findByIdAndUpdate({_id:req.body.id},{$set:{name:req.body.name,description:req.body.description}})
         res.redirect('/category')

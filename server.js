@@ -9,8 +9,6 @@ const {PORT} = process.env
 
 
 
-
-
 app.use(flash())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))

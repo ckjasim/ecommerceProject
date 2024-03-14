@@ -669,17 +669,17 @@
                             </div>
                             <!-- Details Gallery Thumbs End -->
                         </div>
-                        <%}); %>
+                        
                         <!-- Product Details Images End -->
                     </div>
                     <div class="col-lg-6">
                         <!-- Product Details Description Start -->
                         <div class="product-details-description">
                             <h4 class="product-name">
-                                High quality vase bottle.
+                                <%=element.name%>
                             </h4>
                             <div class="price">
-                                <span class="sale-price">$240.00</span>
+                                <span class="sale-price">$<%=element.price%></span>
                                 <span class="old-price">$290.00</span>
                             </div>
                             <div class="review-wrapper">
@@ -696,9 +696,9 @@
                                 <ul>
                                     <li>
                                         <input type="radio" name="colors" id="color1" />
-                                        <label for="color1"><span class="color-blue"></span></label>
+                                        <label for="color1"><span class="color-<%= element.color %>"></span></label>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <input type="radio" name="colors" id="color2" />
                                         <label for="color2"><span class="color-gray"></span></label>
                                     </li>
@@ -713,19 +713,26 @@
                                         <label for="color4"><span
                                                     class="color-gray-dark"
                                                 ></span></label>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
 
                             <p>
-                                Lorem ipsum dolor sit amet, consectet
-                                adipisicing elit, sed do eiusmod temporf
-                                incididunt ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam, quis tyu nostrud
-                                exercitation ullamco laboris nisi ut aliquip
-                                ex ea commodo consequat. Duis aute irure
-                                dolor in reprehenderit in voluptate.
+                                <%=element.description%>
                             </p>
+                            <% if(element.productStatus==true){%>
+                                <div class="">
+                                    <span class="text-danger">Out of Stock</span>
+                                </div>
+                            <% }else{%>
+                                <div class="">
+                                    <span class="text-success">In Stock</span>
+
+                                </div>
+                            <% } %>
+                                
+
+                                
 
                             <div class="product-meta">
                                 <div class="product-quantity d-inline-flex">
@@ -745,26 +752,26 @@
                                 <div class="meta-action">
                                     <a class="action" href="#"><i class="pe-7s-like"></i></a>
                                 </div>
-                                <div class="meta-action">
+                                <!-- <div class="meta-action">
                                     <a class="action" href="#"><i class="pe-7s-shuffle"></i></a>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="product-info">
                                 <div class="single-info">
-                                    <span class="lable">SKU:</span>
-                                    <span class="value">Ch-256xl</span>
+                                    <span class="lable">Material:</span>
+                                    <span class="value"><%=element.material%></span>
                                 </div>
                                 <div class="single-info">
                                     <span class="lable">Categories:</span>
                                     <span class="value"
-                                            ><a href="#">Office,</a>
-                                            <a href="#">Home</a></span>
+                                            ><a href="#"><%=element.categoryId.name%></a>
+                                            <!-- <a href="#">Home</a></span> -->
                                 </div>
                                 <div class="single-info">
-                                    <span class="lable">tag:</span>
+                                    <span class="lable">size:</span>
                                     <span class="value"
-                                            ><a href="#">Furniture</a></span>
+                                            ><a href="#"><%=element.size%></a></span>
                                 </div>
                                 <div class="single-info">
                                     <span class="lable">Share:</span>
@@ -776,7 +783,7 @@
                                         </li>
                                         <li>
                                             <a href="#"><i
-                                                        class="fa fa-dribbble"
+                                                        class="fa fa-whatsapp"
                                                     ></i></a>
                                         </li>
                                         <li>
@@ -800,6 +807,7 @@
                         </div>
                         <!-- Product Details Description End -->
                     </div>
+                    <%}); %>
                 </div>
             </div>
             <!-- Product Section Wrapper End -->

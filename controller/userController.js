@@ -53,6 +53,7 @@ const loginSubmit = async (req,res)=>{
             const checkPassword=req.body.password
             const correctPassword = await bcrypt.compare(checkPassword,checkEmail.password)
             if(correctPassword){
+                req.session.user_id=checkEmail._id
                 return res.redirect('/userHome')
             }else{
                 req.flash('message','Incorrect password')
@@ -186,9 +187,14 @@ const loadProductDetail=async (req,res)=>{
 }
 
 const logout = (req,res)=>{
-    req.session.destroy()
+    try {
+        req.session.destroy()
+        res.redirect("/")
+        
+    } catch (error) {
+        console.log(error.message);
+    }
     
-    res.redirect("/")
 
 }
 

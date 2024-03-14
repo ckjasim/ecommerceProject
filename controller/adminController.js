@@ -6,7 +6,8 @@ const adminLogin=(req,res)=>{
     if(message){
         console.log(message);
     }
-    res.render('login')
+    res.render('login',{message})
+    
 }
 
 const adminHome=(req,res)=>{
@@ -41,28 +42,44 @@ const adminloginSubmit = async (req,res)=>{
         const emailRegex=/^[A-Za-z0-9.%+-]+@gmail\.com$/;
 
         if(!emailRegex.test(email)){
+            
             req.flash('message','Invalid email provided')
-            return res.redirect('/login')
+            return res.redirect('/admin')
         }
         const {EMAIL}= process.env
         
-        if(EMAIL){
+        if(EMAIL===email){
             const {PASSWORD}=process.env
             const checkPassword=req.body.password
             // const correctPassword = await bcrypt.compare(checkPassword,checkEmail.password)
             if(PASSWORD===checkPassword){
+
+                req.session.admin_id=EMAIL
                 return res.redirect('/adminHome')
+
             }else{
                 req.flash('message','Incorrect password')
-                return res.redirect('/login')
+                return res.redirect('/admin')
             }
         }else{
             req.flash('message','Please check your email')
-            return res.redirect('/login')
+            return res.redirect('/admin')
         }
     } catch (error) {
         console.log(error.message)
     }
+}
+
+const logout = (req,res)=>{
+    try {
+        req.session.destroy()
+        res.redirect("/admin")
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+    
+
 }
 
 
@@ -76,5 +93,6 @@ module.exports={
     adminLogin,
     adminloginSubmit,
     loadUsers,
-    blockUser
+    blockUser,
+    logout
 }

@@ -313,12 +313,12 @@
                                 <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
                                     <a href="editProduct?_id=<%= element._id %>" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
 
-                                    <%if(element.is_listed==true){%>
+                                    <%if(element.is_listed===true){%>
                                         
-                                        <a href="unList?name=<%= element.name %>" class="btn btn-sm font-sm btn-danger rounded"> <i class="material-icons md-block"></i>Unlist </a>
-                                    <%}else{%>
-
-                                        <a href="unList?name=<%= element.name %>" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons "></i> List</a>
+                                        <button class="btn btn-sm font-sm rounded text-white btn-success " onclick="listProduct(this,'<%= element._id%>') "> Unlist </button>                    
+                                        <%}else{%>
+                                            
+                                            <button class="btn btn-sm font-sm rounded text-white btn-danger" onclick="listProduct(this,'<%= element._id%>') "> List </button>                    
                                     <%} %>
 
                                 </div>
@@ -363,6 +363,23 @@
                 </div>
             </footer>
         </main>
+
+        <script>
+        function listProduct(tag,productId){
+            if(tag.innerText=='List'){
+                    tag.innerText="Unlist"
+                    tag.style.background='green'
+                    tag.style.color='white'
+                }else if(tag.innerText=='Unlist'){
+                    tag.innerText="List"
+                    tag.style.background='red'
+                    tag.style.color='white'
+                }
+            console.log(productId)
+            fetch(`/unList?productId=${productId}`)
+        }</script>
+
+
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="assets/js/vendors/select2.min.js"></script>
