@@ -641,16 +641,19 @@
                     <div class="tab-pane fade show active" id="grid">
                         <!-- Shop Product Wrapper Start -->
                         <div class="shop-product-wrapper">
-                            <% productData.forEach(element => {%>
+                            
                             <div class="row">
                                
                                     
-                                   
+                                <% productData.forEach(element => {%>
+                                    <% if(element.is_listed===true){%>
+
+                                    
                                 <div class="col-lg-3 col-sm-6">
                                     <!-- Single Product Start -->
                                     <div class="single-product">
                                         
-                                        <a href="/loadProductDetail"><img src="/productImage/<%= element.img[0] %>" width="270" height="303" alt="product" /></a>
+                                        <a href="/loadProductDetail/<%= element._id %>"><img src="/productImage/<%= element.img[0] %>" width="270" height="303" alt="product" /></a>
                                 
                                         <div class="product-content">
                                             <h4 class="title">
@@ -684,10 +687,10 @@
                                     </div>
                                     <!-- Single Product End -->
                                 </div>
-                               
-                                
+                                <% }%>
+                                <%  }); %>
                             </div>
-                            <%  }); %>
+                            
                         </div>
                         <!-- Shop Product Wrapper End -->
                     </div>

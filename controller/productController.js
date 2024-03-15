@@ -5,6 +5,7 @@ const path=require('path')
 const loadProducts =async (req,res)=>{
     try {
         const productData= await productSchema.find().populate('categoryId')
+        
         res.render('products',{productData})
     } catch (error) {
         console.log(error.message)
@@ -52,10 +53,10 @@ const addProducts=async (req,res)=>{
             req.flash('message','Invalid material provided')
             return res.redirect('/newProduct')
         }
-        if(!req.body.description||!/^[a-zA-Z][a-zA-Z\s]*$/.test(req.body.description)){
-            req.flash('message','Invalid description provided')
-            return res.redirect('/newProduct')
-        }
+        // if(!req.body.description||!/^[a-zA-Z][a-zA-Z\s]*$/.test(req.body.description)){
+        //     req.flash('message','Invalid description provided')
+        //     return res.redirect('/newProduct')
+        // }
         console.log(req.files)
 
         //image validation

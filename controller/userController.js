@@ -178,7 +178,9 @@ const loadShop=async (req,res)=>{
 
 const loadProductDetail=async (req,res)=>{
     try {
-        const productData= await productSchema.find().populate('categoryId')
+        const productId=req.params.productId
+        const productData= await productSchema.findOne({_id:productId}).populate('categoryId')
+        console.log(productData)
         res.render('productDetail',{productData})
     } catch (error) {
         console.log(error.message)

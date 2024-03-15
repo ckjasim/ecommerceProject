@@ -8,6 +8,7 @@ const userRoute=express()
 userRoute.set('views','./views/users')
 
 const userConfig=require('../middleware/userAuthentification')
+// const acessConfig=require('../middleware/accessAuthentification')
 userRoute.use(session({
     secret:process.env.SESSION_SECRET,
     resave: false,
@@ -34,8 +35,8 @@ userRoute.get('/logout',userConfig.isLogin,userController.logout)
 
 
 //shop
-userRoute.get('/loadShop',userConfig.isLogin,userController.loadShop)
-userRoute.get('/loadProductDetail',userConfig.isLogin,userController.loadProductDetail)
+userRoute.get('/loadShop',userController.loadShop)
+userRoute.get('/loadProductDetail/:productId',userController.loadProductDetail)
 
 
 // userRoute.get('/verify',userController.verifyMail)
