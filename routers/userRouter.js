@@ -1,14 +1,16 @@
 const express=require('express')
-
-const session=require('express-session')
-const userController=require('../controller/userController')
-const otpController=require('../controller/otpController')
-
 const userRoute=express()
+const session=require('express-session')
+
 userRoute.set('views','./views/users')
 
 const userConfig=require('../middleware/userAuthentification')
 // const acessConfig=require('../middleware/accessAuthentification')
+
+const userController=require('../controller/userController')
+const otpController=require('../controller/otpController')
+const cartController=require('../controller/cartController')
+
 userRoute.use(session({
     secret:process.env.SESSION_SECRET,
     resave: false,
@@ -33,10 +35,18 @@ userRoute.get('/logout',userConfig.isLogin,userController.logout)
 // user_route.get('/auth/google', googleLogin.googleAuth);
 // user_route.get("/auth/google/callback", googleLogin.googleCallback, googleLogin.setupSession);
 
+//product
+
+userRoute.get('/loadProduct',userController.loadProduct)
+userRoute.get('/loadProductDetail/:productId',userController.loadProductDetail)
+
 
 //shop
 userRoute.get('/loadShop',userController.loadShop)
-userRoute.get('/loadProductDetail/:productId',userController.loadProductDetail)
+
+//cart
+
+userRoute.get('/loadCart',cartController.loadCart)
 
 
 // userRoute.get('/verify',userController.verifyMail)

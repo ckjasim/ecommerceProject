@@ -166,10 +166,10 @@ const submit = async (req,res)=>{
 
 //shop
 
-const loadShop=async (req,res)=>{
+const loadProduct=async (req,res)=>{
     try {
         const productData= await productSchema.find().populate('categoryId')
-        res.render('shop',{productData})
+        res.render('products',{productData})
     } catch (error) {
         console.log(error.message)
     }
@@ -182,6 +182,16 @@ const loadProductDetail=async (req,res)=>{
         const productData= await productSchema.findOne({_id:productId}).populate('categoryId')
         console.log(productData)
         res.render('productDetail',{productData})
+    } catch (error) {
+        console.log(error.message)
+    }
+    
+
+}
+const loadShop=async (req,res)=>{
+    try {
+        const productData= await productSchema.find().populate('categoryId')
+        res.render('shop',{productData})
     } catch (error) {
         console.log(error.message)
     }
@@ -210,7 +220,8 @@ module.exports={
     submit,
     userHome,
     logout,
-    loadShop,
-    loadProductDetail
+    loadProduct,
+    loadProductDetail,
+    loadShop
 
 }

@@ -57,6 +57,11 @@
     font-weight: bold;
     color: #333;
   }
+  .disabled-link {
+    pointer-events: none;
+    opacity: 0.5; 
+}
+
  
 
 </style>
@@ -84,18 +89,25 @@
             <span class="mobile-text">Enter the code we just sent to your Email <b class="text-danger"> <%= locals.email %> </b></span>
             
             <div class="d-flex flex-row mt-5">
-                <input type="text" class="form-control" id="digit1" name="digit1" autofocus required>
-                <input type="text" class="form-control" id="digit2" name="digit2" required>
-                <input type="text" class="form-control" id="digit3" name="digit3" required>
-                <input type="text" class="form-control" id="digit4" name="digit4" required>
-            </div>
+              <input type="text" class="form-control" id="digit1" name="digit1" pattern="[0-9]" maxlength="1" autofocus required oninput="moveToNextInput(this, 'digit2')">
+              <input type="text" class="form-control" id="digit2" name="digit2" pattern="[0-9]" maxlength="1" required oninput="moveToNextInput(this, 'digit3')">
+              <input type="text" class="form-control" id="digit3" name="digit3" pattern="[0-9]" maxlength="1" required oninput="moveToNextInput(this, 'digit4')">
+              <input type="text" class="form-control" id="digit4" name="digit4" pattern="[0-9]" maxlength="1" required>
+          </div>
+          
+          
             <button type="submit" class="btn btn-dark d-block w-100 my-4">Submit</button>
             <p id="otpTimer">02:00</p>
         </form>
         <span class="time text-center"></span>
         <div class="text-center ">
             <span class="d-block mobile-text">Don't receive the code?</span>
-            <span class="font-weight-bold text-danger cursor"    ><a id="resend"  href="/resend"  >Resend</a></span>
+
+            <!-- <span id="resendLink" class="font-weight-bold text-danger cursor" style="display: none;"> -->
+              <span id="resendLink" class="font-weight-bold text-danger cursor disabled-link">
+
+              <a id="resend"  href="/resend"  >Resend</a>
+            </span>
          
         </div>
     </div>
@@ -128,4 +140,27 @@
   }
   startOTPTimer(60);
 </script>
+
+<script>
+function enableResendLink() {
+    document.getElementById('resendLink').classList.remove('disabled-link');
+}
+setTimeout(enableResendLink, 60000); 
+</script>
+
+<script>
+  function moveToNextInput(currentInput, nextInputId) {
+    const maxLength = parseInt(currentInput.getAttribute('maxlength'));
+    const currentLength = currentInput.value.length;
+    
+    if (currentLength >= maxLength) {
+        const nextInput = document.getElementById(nextInputId);
+        if (nextInput) {
+            nextInput.focus();
+        }
+    }
+}
+
+</script>
+
 <script src="/static/js/admin/form-validation-and-fetch.js"></script>

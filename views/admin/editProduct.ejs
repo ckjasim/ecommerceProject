@@ -301,6 +301,12 @@
                                         <option value="<%= element._id %>"><%= element.name %></option>
 
                                     <% }); %>
+                                    <!-- <select class="form-select" name="category">
+                                        <% categoryData.forEach(element => {  %>
+                                            <option value="<%= element._id %>" <%= element._id === defaultCategoryId ? 'selected' : '' %>><%= element.name %></option>
+                                        <% }); %>
+                                    </select>
+                                     -->
                                         
                                     </select>
                                 </div>

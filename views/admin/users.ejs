@@ -275,12 +275,24 @@
                                                 <div class="info pl-3">
                                                     
                                                     <h6 class="mb-0 title"><%=userData[i].fName%></h6>
-                                                    <small class="text-muted">User ID: <%= userData[i]._id %></small>
+                                                    <small class="text-muted"><%=userData[i].lName%></small>
                                                 </div>
                                             </a>
                                         </td>
                                         <td><%= userData[i].email %></td>
-                                        <td><span class="badge rounded-pill alert-success">Active</span></td>
+
+                                        <td>
+                                            <% if(userData[i].is_block==false){ %>
+                                            
+                                                <span class="badge rounded-pill alert-success">Active</span>
+                                                
+                                                <% }else{ %>
+                                                    <span class="badge rounded-pill alert-danger">Inactive</span>
+    
+                                                    <% } %>
+                                            
+                                        </td>
+
                                         <!-- <td><%= userData[i].createDate %></td> -->
                                         <td><%= userData[i].createDate.toISOString().slice(0,10) %></td>
 

@@ -204,7 +204,35 @@
             <!-- Product Section Wrapper Start -->
             <div class="product-section-wrapper">
                 <!-- Shop top Bar Start -->
-                
+                <div class="shop-top-bar">
+                    <div class="shop-text">
+                        <p>
+                            <span>12</span> Product Found of <span>30</span>
+                        </p>
+                    </div>
+                    <div class="shop-tabs">
+                        <ul class="nav">
+                            <li>
+                                <button class="active" data-bs-toggle="tab" data-bs-target="#grid">
+                                    <i class="fa fa-th"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button data-bs-toggle="tab" data-bs-target="#list">
+                                    <i class="fa fa-list"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="shop-sort">
+                        <span class="title">Sort By :</span>
+                        <select class="select2-2">
+                            <option value="featured">Featured</option>
+                            <option value="rating">Rating</option>
+                            <option value="price">Price</option>
+                        </select>
+                    </div>
+                </div>
                 <!-- Shop top Bar End -->
 
                 <div class="tab-content">
@@ -214,86 +242,51 @@
                             
                             <div class="row">
                                
-                                <div class="section">
-                                    <div class="products-banner products-banner-active">
-                                        <div class="swiper-container">
-                                            <div class="swiper-wrapper">
-                                                <div class="swiper-slide">
-                                                    <!-- Single Products Banner Start -->
-                                                    <div class="single-products-banner">
-                                                        <img src="assets/images/products-banner/products-01.jpg" width="480" height="600" alt="Products" />
-                            
-                                                        <div class="products-banner-content">
-                                                            <div class="banner-content-wrapper">
-                                                                <h4 class="title">
-                                                                    <a href="product-details.html">Drawing Furniture</a>
-                                                                </h4>
-                                                                <span class="products-count"
-                                                                        >15 Products</span>
-                                                                <a href="product-details.html" class="arrow"><i class="pe-7s-angle-right"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Single Products Banner End -->
-                                                </div>
-                                                <div class="swiper-slide">
-                                                    <!-- Single Products Banner Start -->
-                                                    <div class="single-products-banner">
-                                                        <img src="assets/images/products-banner/products-02.jpg" width="480" height="600" alt="Products" />
-                            
-                                                        <div class="products-banner-content">
-                                                            <div class="banner-content-wrapper">
-                                                                <h4 class="title">
-                                                                    <a href="product-details.html">Drawing Furniture</a>
-                                                                </h4>
-                                                                <span class="products-count"
-                                                                        >15 Products</span>
-                                                                <a href="product-details.html" class="arrow"><i class="pe-7s-angle-right"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Single Products Banner End -->
-                                                </div>
-                                                <div class="swiper-slide">
-                                                    <!-- Single Products Banner Start -->
-                                                    <div class="single-products-banner">
-                                                        <img src="assets/images/products-banner/products-03.jpg" width="480" height="600" alt="Products" />
-                            
-                                                        <div class="products-banner-content">
-                                                            <div class="banner-content-wrapper">
-                                                                <h4 class="title">
-                                                                    <a href="product-details.html">Drawing Furniture</a>
-                                                                </h4>
-                                                                <span class="products-count"
-                                                                        >15 Products</span>
-                                                                <a href="product-details.html" class="arrow"><i class="pe-7s-angle-right"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Single Products Banner End -->
-                                                </div>
-                                                <div class="swiper-slide">
-                                                    <!-- Single Products Banner Start -->
-                                                    <div class="single-products-banner">
-                                                        <img src="assets/images/products-banner/products-04.jpg" width="480" height="600" alt="Products" />
-                            
-                                                        <div class="products-banner-content">
-                                                            <div class="banner-content-wrapper">
-                                                                <h4 class="title">
-                                                                    <a href="product-details.html">Drawing Furniture</a>
-                                                                </h4>
-                                                                <span class="products-count"
-                                                                        >15 Products</span>
-                                                                <a href="product-details.html" class="arrow"><i class="pe-7s-angle-right"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Single Products Banner End -->
-                                                </div>
+                                    
+                                <% productData.forEach(element => {%>
+                                    <% if(element.is_listed===true){%>
+
+                                    
+                                <div class="col-lg-3 col-sm-6">
+                                    <!-- Single Product Start -->
+                                    <div class="single-product">
+                                        
+                                        <a href="/loadProductDetail/<%= element._id %>"><img src="/productImage/<%= element.img[0] %>" width="270" height="303" alt="product" /></a>
+                                
+                                        <div class="product-content">
+                                            <h4 class="title">
+                                                <a href="product-details.html"><%= element.name %></a>
+                                            </h4>
+                                            
+                                            <p><%= element.description %></p>
+                                            
+                                            <div class="price">
+                                                <span class="sale-price"
+                                                        >$<%= element.price %></span>
                                             </div>
                                         </div>
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i
+                                                            class="pe-7s-search"
+                                                        ></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i
+                                                            class="pe-7s-shopbag"
+                                                        ></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i
+                                                            class="pe-7s-like"
+                                                        ></i></a>
+                                            </li>
+                                        </ul>
                                     </div>
+                                    <!-- Single Product End -->
                                 </div>
+                                <% }%>
+                                <%  }); %>
                             </div>
                             
                         </div>
