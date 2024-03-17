@@ -219,13 +219,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% cartData.productId.forEach(element => {%>
+                                
+                            
                             <tr>
                                 <td class="product-thumb">
                                     <img src="assets/images/product/product-03.jpg" alt="" />
                                 </td>
                                 <td class="product-info">
                                     <h6 class="name">
-                                        <a href="product-details.html">Pendant Chandelier Light</a>
+                                        <a href="product-details.html"><%= element.name %></a>
                                     </h6>
                                     <div class="product-prices">
                                         <span class="old-price"
@@ -258,80 +261,8 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="product-thumb">
-                                    <img src="assets/images/product/product-04.jpg" alt="" />
-                                </td>
-                                <td class="product-info">
-                                    <h6 class="name">
-                                        <a href="product-details.html">High quality vase bottle</a>
-                                    </h6>
-                                    <div class="product-prices">
-                                        <span class="sale-price"
-                                                >$35.72</span>
-                                    </div>
-                                    <div class="product-size-color">
-                                        <p>Size <span>S</span></p>
-                                        <p>Color <span>White</span></p>
-                                    </div>
-                                </td>
-                                <td class="quantity">
-                                    <div class="product-quantity d-inline-flex">
-                                        <button type="button" class="sub">
-                                            -
-                                        </button>
-                                        <input type="text" value="1" />
-                                        <button type="button" class="add">
-                                            +
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="product-total-price">
-                                    <span class="price">$28.72</span>
-                                </td>
-                                <td class="product-action">
-                                    <button class="remove">
-                                        <i class="pe-7s-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="product-thumb">
-                                    <img src="assets/images/product/product-08.jpg" alt="" />
-                                </td>
-                                <td class="product-info">
-                                    <h6 class="name">
-                                        <a href="product-details.html">Reece Seater Sofa</a>
-                                    </h6>
-                                    <div class="product-prices">
-                                        <span class="sale-price"
-                                                >$28.72</span>
-                                    </div>
-                                    <div class="product-size-color">
-                                        <p>Size <span>S</span></p>
-                                        <p>Color <span>White</span></p>
-                                    </div>
-                                </td>
-                                <td class="quantity">
-                                    <div class="product-quantity d-inline-flex">
-                                        <button type="button" class="sub">
-                                            -
-                                        </button>
-                                        <input type="text" value="1" />
-                                        <button type="button" class="add">
-                                            +
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="product-total-price">
-                                    <span class="price">$28.72</span>
-                                </td>
-                                <td class="product-action">
-                                    <button class="remove">
-                                        <i class="pe-7s-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            <%}); %>
+                            
                         </tbody>
                     </table>
                 </div>

@@ -10,6 +10,7 @@ const userConfig=require('../middleware/userAuthentification')
 const userController=require('../controller/userController')
 const otpController=require('../controller/otpController')
 const cartController=require('../controller/cartController')
+const profileController=require('../controller/profileController')
 
 userRoute.use(session({
     secret:process.env.SESSION_SECRET,
@@ -35,6 +36,8 @@ userRoute.get('/logout',userConfig.isLogin,userController.logout)
 // user_route.get('/auth/google', googleLogin.googleAuth);
 // user_route.get("/auth/google/callback", googleLogin.googleCallback, googleLogin.setupSession);
 
+// userRoute.get('/verify',userController.verifyMail)
+
 //product
 
 userRoute.get('/loadProduct',userController.loadProduct)
@@ -48,8 +51,9 @@ userRoute.get('/loadShop',userController.loadShop)
 
 userRoute.get('/loadCart',cartController.loadCart)
 
+//profile
 
-// userRoute.get('/verify',userController.verifyMail)
+userRoute.get('/loadProfile',userConfig.isLogin,profileController.loadProfile)
 
 
 module.exports=userRoute

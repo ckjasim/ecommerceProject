@@ -2,7 +2,7 @@
 const isLogin =async (req,res,next)=>{
  try {
     if (!req.session.user_id) {
-        res.redirect('/')
+        res.render('notLogin')
     }else{
             next();
     }
