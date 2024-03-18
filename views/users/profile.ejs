@@ -823,26 +823,29 @@
                                 </h4>
 
                                 <div class="account-details">
+                                    
                                     <div class="row">
+                                        
                                         <div class="col-md-6">
+                                            <form action="" method="post">
                                             <div class="single-form">
                                                 <!-- <p>First name</p> -->
-                                                <input type="text" value="<%= userData.fName %>" />
+                                                <input type="text" value="<%= userData.fName %>" name="fName"/>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="single-form">
-                                                <input type="text" value="<%= userData.lName %>" />
+                                                <input type="text" value="<%= userData.lName %>" name="lName" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="single-form">
-                                                <input type="text" value="<%= userData.email %>" />
+                                                <input type="text" value="<%= userData.email %>" name="email"/>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="single-form">
-                                                <input type="text" value="<%= userData.mobile %>" />
+                                                <input type="text" value="<%= userData.mobile %>" name="mobile"/>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -870,11 +873,13 @@
                                         <div class="col-md-6">
                                             <div class="single-form">
                                                 <button class="btn btn-primary btn-hover-dark">
-                                                    Save Change
+                                                    Save Changes
                                                 </button>
                                             </div>
                                         </div>
+                                    </form>
                                     </div>
+                                
                                 </div>
                             </div>
                         </div>

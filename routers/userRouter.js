@@ -49,11 +49,14 @@ userRoute.get('/loadShop',userController.loadShop)
 
 //cart
 
-userRoute.get('/loadCart',cartController.loadCart)
+// userRoute.get('/loadCart',cartController.loadCart)
+userRoute.post('/loadCart',cartController.loadCart)
+userRoute.get('/viewCart',cartController.viewCart)
 
 //profile
 
 userRoute.get('/loadProfile',userConfig.isLogin,profileController.loadProfile)
+userRoute.post('/loadProfile',userConfig.isLogin,profileController.editProfile)
 
 
 module.exports=userRoute

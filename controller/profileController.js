@@ -11,6 +11,26 @@ const loadProfile = async (req,res)=>{
     }
 }
 
+
+const editProfile=async (req,res)=>{
+    try {
+        const updateUser={
+            fName:req.body.fName,
+            lName:req.body.lName,
+            email:req.body.email,
+            mobile:req.body.mobile,
+        }
+        
+        const userData = await userSchema.findByIdAndUpdate({_id:req.session.user_id},{$set:updateUser})
+        
+        
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports={
-    loadProfile
+    loadProfile,
+    editProfile
 }

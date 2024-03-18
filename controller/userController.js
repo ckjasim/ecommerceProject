@@ -1,5 +1,6 @@
 const userSchema = require('../model/userData')
 const productSchema = require('../model/productData')
+const cartSchema = require('../model/cartData')
 // const otpSchema = require('../model/otpData')
 const bcrypt=require('bcrypt')
 
@@ -180,7 +181,10 @@ const loadProductDetail=async (req,res)=>{
     try {
         const productId=req.params.productId
         const productData= await productSchema.findOne({_id:productId}).populate('categoryId')
-        console.log(productData)
+        // const cartData=await cartSchema.find({userId:req.session.user_id}).populate('products')
+        // console.log(cartData)
+        // const cartProduct=await cartData.products[0].productId.map(value=>value)
+        // console.log(cartProduct)
         res.render('productDetail',{productData})
     } catch (error) {
         console.log(error.message)

@@ -736,22 +736,30 @@
 
                                 </div>
                             <% } %>
+                            <!-- <form action="/loadCart" method="POST"> -->
 
                             <div class="product-meta">
+
+                                
+
+                                    <div class="meta-action">
+                                        <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">GO To Cart</button>
+                                    </div>
+
+                                    
+
                                 <div class="product-quantity d-inline-flex">
-                                    <button type="button" class="sub">
-                                        -
-                                    </button>
-                                    <input type="text" value="1" />
-                                    <button type="button" class="add">
-                                        +
-                                    </button>
+                                    <button type="button" class="sub">-</button>
+                                    <input type="text" id="quantityInput" value="1" />
+                                    <button type="button" class="add">+</button>
                                 </div>
                                 <div class="meta-action">
-                                        <a href="/loadCart" class="btn btn-dark btn-hover-primary">
-                                            Add To Cart
-                                        </a>
-                                    </div>
+                                    <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">Add To Cart</button>
+                                </div>
+                                
+                                
+                                
+                                
                                 <div class="meta-action">
                                     <a class="action" href="#"><i class="pe-7s-like"></i></a>
                                 </div>
@@ -759,6 +767,7 @@
                                     <a class="action" href="#"><i class="pe-7s-shuffle"></i></a>
                                 </div>
                             </div>
+                        <!-- </form> -->
 
                             <div class="product-info">
                                 <div class="single-info">
@@ -1825,6 +1834,7 @@
                                 </p>
 
                                 <div class="product-meta">
+                                
                                     <div class="product-quantity d-inline-flex">
                                         <button type="button" class="sub">-</button>
                                         <input type="text" value="1" />
@@ -1893,6 +1903,29 @@
     <!-- Quick View End -->
     <!-- JS
     ============================================ -->
+
+    <!-- axios -->
+
+    <!-- <script src="../../node_modules/axios/dist/axios.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function addToCart(productId) {
+        const quantity = document.getElementById('quantityInput').value;
+        
+        console.log(productId)
+        axios.post('/loadCart', { quantity,productId })
+            .then(function(response) {
+                // Handle response if needed
+                console.log(response.data);
+                if(response.data){
+                    window.location='/viewCart'
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+    };
+</script>
 
     <!-- Modernizer & jQuery JS -->
     <script src="/user/assets/js/vendor/modernizr-3.11.2.min.js"></script>
