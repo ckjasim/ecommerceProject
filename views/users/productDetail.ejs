@@ -1917,8 +1917,16 @@
             .then(function(response) {
                 // Handle response if needed
                 console.log(response.data);
+             
                 if(response.data){
-                    window.location='/viewCart'
+                    if (response.data.session==false) {
+                        console.log('1111');
+                        window.location='/notLogin'
+
+                    } else {
+                        window.location='/viewCart'
+                    }
+                   
                 }
             })
             .catch(function(error) {

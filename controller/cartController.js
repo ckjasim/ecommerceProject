@@ -33,6 +33,14 @@ const viewCart =async(req,res)=>{
 
 const loadCart = async (req, res) => {
     try {
+
+        if (!req.session.user_id) {
+           console.log('++++')
+           res.send({ status: 'success', message: 'please login first',session:false });
+            
+        } else {
+            console.log('+++sdssd+')
+        
         const cartDetails = await cartSchema.findOne({ userId: req.session.user_id })
         const productId = req.body.productId;
         const quantity = req.body.quantity;
@@ -79,7 +87,9 @@ const loadCart = async (req, res) => {
         console.log('--------')
         // const totalAmount=cartDetails.productId.price*quantity
         
-        res.send({ status: 'success', message: 'Added to cart successfully' });
+        res.send({ status: 'success', message: 'Added to cart successfully', session:true});
+      
+    }
     } catch (error) {
         console.log(error.message);
         res.status(500).send({ status: 'error', message: 'Internal server error' });

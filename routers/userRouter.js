@@ -30,6 +30,7 @@ userRoute.post('/homePage',otpController.verifyMail)
 userRoute.get('/resend',otpController.resendOtp)
 userRoute.get('/userHome',userConfig.isLogin,userController.userHome)
 userRoute.get('/logout',userConfig.isLogin,userController.logout)
+userRoute.get('/notLogin',userController.notLogin)
 
 //GOOGLE
 

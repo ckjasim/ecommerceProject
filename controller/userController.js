@@ -202,6 +202,18 @@ const loadShop=async (req,res)=>{
  
 }
 
+
+
+const notLogin = (req,res)=>{
+    try {
+        res.render('notLogin')
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+    
+
+}
 const logout = (req,res)=>{
     try {
         req.session.destroy()
@@ -226,6 +238,7 @@ module.exports={
     logout,
     loadProduct,
     loadProductDetail,
-    loadShop
+    loadShop,
+    notLogin
 
 }
