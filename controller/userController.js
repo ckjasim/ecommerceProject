@@ -181,11 +181,9 @@ const loadProductDetail=async (req,res)=>{
     try {
         const productId=req.params.productId
         const productData= await productSchema.findOne({_id:productId}).populate('categoryId')
-        // const cartData=await cartSchema.find({userId:req.session.user_id}).populate('products')
-        // console.log(cartData)
-        // const cartProduct=await cartData.products[0].productId.map(value=>value)
-        // console.log(cartProduct)
-        res.render('productDetail',{productData})
+        const userId=req.session.user_id
+        const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:userId});
+        res.render('productDetail',{productData,alreadyCart})
     } catch (error) {
         console.log(error.message)
     }

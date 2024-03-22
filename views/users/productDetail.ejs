@@ -740,25 +740,29 @@
 
                             <div class="product-meta">
 
-                                
-
-                                    <div class="meta-action">
-                                        <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">GO To Cart</button>
-                                    </div>
+                                <% if(alreadyCart){%>
 
                                     
+                                    
+                                    <div class="meta-action">
+                                        <a href="/viewCart" id="addToCartButton" class="btn btn-dark btn-hover-primary">Go To Cart</a>
+                                    </div>
+                                    
+                                    <%}else{%>
+                                        
+                                        <div class="product-quantity d-inline-flex">
+                                            <button type="button" class="sub">-</button>
+                                            <input type="text" id="quantityInput" value="1" />
+                                            <button type="button" class="add">+</button>
+                                        </div>
+                                        <div class="meta-action">
+                                            <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">Add To Cart</button>
+                                        </div>
 
-                                <div class="product-quantity d-inline-flex">
-                                    <button type="button" class="sub">-</button>
-                                    <input type="text" id="quantityInput" value="1" />
-                                    <button type="button" class="add">+</button>
-                                </div>
-                                <div class="meta-action">
-                                    <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">Add To Cart</button>
-                                </div>
                                 
                                 
                                 
+                                <%} %>
                                 
                                 <div class="meta-action">
                                     <a class="action" href="#"><i class="pe-7s-like"></i></a>

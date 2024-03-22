@@ -2,32 +2,43 @@ const cartSchema = require('../model/cartData')
 const productSchema = require('../model/productData')
 // const productSchema = require('../model/productData')
 
-// const loadCart=async (req,res)=>{
-//     try {
-//         console.log('dssddsdd');
-//         console.log(req.body.quantity);
-
-       
-
-//         // const cartDetails=await cartSchema.findOne({userId:req.session.user_id}).populate('productId').populate('userId')
-
-//         res.render('cart')
-        
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
-const viewCart =async(req,res)=>{
+const updateQuantity = async (req, res) => {
     try {
+        console.log('00000')
+        const { cartQuantity, productId } = req.body;
 
-        quantity=req.flash('quantity').toString()
-        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products').populate('userId')
-        console.log(cartDetails)
-        
-
-        res.render('cart',{quantity,cartDetails})
+        const cartData = await cartSchema.findOne({userId: req.session.user_id }).populate('products.productId').populate('userId')
+        const productData=cartData.products.find((product)=>{
+            return product.productId.equals(productId)
+        })
+        productData.quantity=cartQuantity
+        productData.totalAmount= productData.productId.price * cartQuantity
+        const priceTotal =productData.totalAmount
+        await cartData.save()
+        const cartTotal = cartData.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+        console.log(cartTotal)
+        res.status(200).json({ status: 'success', message: 'Quantity updated successfully',cartTotal,priceTotal });
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
+}
+
+
+
+
+const viewCart =async(req,res)=>{
+    try {
+        
+        quantity=req.flash('quantity').toString()
+        
+        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
+        const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+        res.render('cart',{cartDetails,cartTotal})
+       
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ status: 'error', message: 'Internal server error' });
     }
 }
 
@@ -53,7 +64,9 @@ const loadCart = async (req, res) => {
 
         const productToAdd = [{
             productId: productId,
-            quantity: productData.quantity,
+            quantity:quantity,
+            totalAmount:total,
+            inStock: productData.quantity,
             name: productData.name,
             size: productData.size,
             color: productData.color,
@@ -63,11 +76,9 @@ const loadCart = async (req, res) => {
 
         if (!cartDetails) {
             const cartData=new cartSchema({
-                quantity:quantity,
-                totalAmount:total,
                 userId:req.session.user_id,
                 products:productToAdd,
-                createdAt:new Date(),
+                
             })
             await cartData.save()
 
@@ -101,5 +112,6 @@ const loadCart = async (req, res) => {
 
 module.exports={
     viewCart,
-    loadCart
+    loadCart,
+    updateQuantity
 }

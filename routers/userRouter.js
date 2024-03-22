@@ -53,6 +53,7 @@ userRoute.get('/loadShop',userController.loadShop)
 // userRoute.get('/loadCart',cartController.loadCart)
 userRoute.post('/loadCart',cartController.loadCart)
 userRoute.get('/viewCart',cartController.viewCart)
+userRoute.post('/updateQuantity',cartController.updateQuantity)
 
 //profile
 
