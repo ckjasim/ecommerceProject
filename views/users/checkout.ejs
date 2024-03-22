@@ -31,6 +31,62 @@
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/style.min.css" />
+    <style>
+         /* Style for the "Edit Address" button */
+    .edit-btn {
+        display: inline-block;
+        background-color: #aab6ab;
+        color: white;
+        padding: 8px 20px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .edit-btn:hover {
+        background-color: #4c554d;
+    }
+
+    /* Adjust the icon size */
+    .edit-btn i {
+        margin-right: 5px;
+    }
+    /* Style for the radio button container */
+    .address-option {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    /* Style for the radio button */
+    .address-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    /* Style for the radio button label */
+    .address-option label {
+        cursor: pointer;
+        padding-left: 30px;
+    }
+
+    /* Style for the selected radio button label */
+    .address-option input[type="radio"]:checked + label {
+        font-weight: bold;
+    }
+
+    /* Style for the edit button */
+    .address-option .edit-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+</style>
 </head>
 
 
@@ -603,58 +659,6 @@
     <!-- Checkout Section Start -->
     <div class="section section-padding">
         <div class="container">
-            <div class="checkout-info">
-                <p class="info-header error">
-                    <i class="fa fa-exclamation-circle"></i>
-                    <strong>Error:</strong> Username is required.
-                </p>
-            </div>
-
-            <div class="checkout-info">
-                <p class="info-header">
-                    <i class="fa fa-exclamation-circle"></i> Returning
-                    customer?
-                    <a data-bs-toggle="collapse" href="#login">Click here to login</a>
-                </p>
-
-                <div class="collapse" id="login">
-                    <div class="card-body">
-                        <p>
-                            If you have shopped with us before, please enter
-                            your details in the boxes below. If you are a
-                            new customer, please proceed to the Billing &
-                            Shipping section.
-                        </p>
-                        <form action="#">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="single-form">
-                                        <input type="email" placeholder="Username or email *" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="single-form">
-                                        <input type="password" placeholder="Password" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="single-form d-flex align-items-center">
-                                <button class="btn btn-primary btn-hover-dark">
-                                    Login
-                                </button>
-                                <div class="form-checkbox">
-                                    <input type="checkbox" id="remember" />
-                                    <label for="remember"><span></span> Remember Me</label>
-                                </div>
-                            </div>
-                            <div class="forget">
-                                <a href="#">Lost Your Password</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
 
             <div class="checkout-info">
                 <p class="info-header">
@@ -690,593 +694,72 @@
                         <!-- Checkout Form Start -->
                         <div class="checkout-form">
                             <div class="checkout-title">
-                                <h4 class="title">Billing details</h4>
+                                <h4 class="title">Shipping details</h4>
                             </div>
 
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="single-form">
-                                        <input type="text" placeholder="First name *" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="single-form">
-                                        <input type="text" placeholder="Last name *" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="single-form">
-                                        <input type="text" placeholder="Company name" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="single-select2">
-                                        <div class="form-select2">
-                                            <select class="select2">
-                                                <option value="0">
-                                                    Select a country *
-                                                </option>
-                                                <option value="1">
-                                                    Bangladesh
-                                                </option>
-                                                <option value="2">
-                                                    Canada
-                                                </option>
-                                                <option value="3">
-                                                    Colombia
-                                                </option>
-                                                <option value="4">
-                                                    Indonesia
-                                                </option>
-                                                <option value="5">
-                                                    Italy
-                                                </option>
-                                                <option value="6">
-                                                    Pakistan
-                                                </option>
-                                                <option value="7">
-                                                    Turkey
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="single-form">
-                                        <label class="form-label">Street address *</label>
-                                        <input type="text" placeholder="House number and street name" />
-                                        <input type="text" placeholder="Apartment, suite, unit etc. (optional)" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="single-form">
-                                        <input type="text" placeholder="Town / City *" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="single-select2">
-                                        <div class="form-select2">
-                                            <select class="select2">
-                                                <option value="">
-                                                    Select an District *
-                                                </option>
-                                                <option value="BAG">
-                                                    Bagerhat
-                                                </option>
-                                                <option value="BAN">
-                                                    Bandarban
-                                                </option>
-                                                <option value="BAR">
-                                                    Barguna
-                                                </option>
-                                                <option value="BARI">
-                                                    Barisal
-                                                </option>
-                                                <option value="BHO">
-                                                    Bhola
-                                                </option>
-                                                <option value="BOG">
-                                                    Bogra
-                                                </option>
-                                                <option value="BRA">
-                                                    Brahmanbaria
-                                                </option>
-                                                <option value="CHA">
-                                                    Chandpur
-                                                </option>
-                                                <option value="CHI">
-                                                    Chittagong
-                                                </option>
-                                                <option value="CHU">
-                                                    Chuadanga
-                                                </option>
-                                                <option value="COM">
-                                                    Comilla
-                                                </option>
-                                                <option value="COX">
-                                                    Cox's Bazar
-                                                </option>
-                                                <option value="DHA">
-                                                    Dhaka
-                                                </option>
-                                                <option value="DIN">
-                                                    Dinajpur
-                                                </option>
-                                                <option value="FAR">
-                                                    Faridpur
-                                                </option>
-                                                <option value="FEN">
-                                                    Feni
-                                                </option>
-                                                <option value="GAI">
-                                                    Gaibandha
-                                                </option>
-                                                <option value="GAZI">
-                                                    Gazipur
-                                                </option>
-                                                <option value="GOP">
-                                                    Gopalganj
-                                                </option>
-                                                <option value="HAB">
-                                                    Habiganj
-                                                </option>
-                                                <option value="JAM">
-                                                    Jamalpur
-                                                </option>
-                                                <option value="JES">
-                                                    Jessore
-                                                </option>
-                                                <option value="JHA">
-                                                    Jhalokati
-                                                </option>
-                                                <option value="JHE">
-                                                    Jhenaidah
-                                                </option>
-                                                <option value="JOY">
-                                                    Joypurhat
-                                                </option>
-                                                <option value="KHA">
-                                                    Khagrachhari
-                                                </option>
-                                                <option value="KHU">
-                                                    Khulna
-                                                </option>
-                                                <option value="KIS">
-                                                    Kishoreganj
-                                                </option>
-                                                <option value="KUR">
-                                                    Kurigram
-                                                </option>
-                                                <option value="KUS">
-                                                    Kushtia
-                                                </option>
-                                                <option value="LAK">
-                                                    Lakshmipur
-                                                </option>
-                                                <option value="LAL">
-                                                    Lalmonirhat
-                                                </option>
-                                                <option value="MAD">
-                                                    Madaripur
-                                                </option>
-                                                <option value="MAG">
-                                                    Magura
-                                                </option>
-                                                <option value="MAN">
-                                                    Manikganj
-                                                </option>
-                                                <option value="MEH">
-                                                    Meherpur
-                                                </option>
-                                                <option value="MOU">
-                                                    Moulvibazar
-                                                </option>
-                                                <option value="MUN">
-                                                    Munshiganj
-                                                </option>
-                                                <option value="MYM">
-                                                    Mymensingh
-                                                </option>
-                                                <option value="NAO">
-                                                    Naogaon
-                                                </option>
-                                                <option value="NAR">
-                                                    Narail
-                                                </option>
-                                                <option value="NARG">
-                                                    Narayanganj
-                                                </option>
-                                                <option value="NARD">
-                                                    Narsingdi
-                                                </option>
-                                                <option value="NAT">
-                                                    Natore
-                                                </option>
-                                                <option value="NAW">
-                                                    Nawabganj
-                                                </option>
-                                                <option value="NET">
-                                                    Netrakona
-                                                </option>
-                                                <option value="NIL">
-                                                    Nilphamari
-                                                </option>
-                                                <option value="NOA">
-                                                    Noakhali
-                                                </option>
-                                                <option value="PAB">
-                                                    Pabna
-                                                </option>
-                                                <option value="PAN">
-                                                    Panchagarh
-                                                </option>
-                                                <option value="PAT">
-                                                    Patuakhali
-                                                </option>
-                                                <option value="PIR">
-                                                    Pirojpur
-                                                </option>
-                                                <option value="RAJB">
-                                                    Rajbari
-                                                </option>
-                                                <option value="RAJ">
-                                                    Rajshahi
-                                                </option>
-                                                <option value="RAN">
-                                                    Rangamati
-                                                </option>
-                                                <option value="RANP">
-                                                    Rangpur
-                                                </option>
-                                                <option value="SAT">
-                                                    Satkhira
-                                                </option>
-                                                <option value="SHA">
-                                                    Shariatpur
-                                                </option>
-                                                <option value="SHE">
-                                                    Sherpur
-                                                </option>
-                                                <option value="SIR">
-                                                    Sirajganj
-                                                </option>
-                                                <option value="SUN">
-                                                    Sunamganj
-                                                </option>
-                                                <option value="SYL">
-                                                    Sylhet
-                                                </option>
-                                                <option value="TAN">
-                                                    Tangail
-                                                </option>
-                                                <option value="THA">
-                                                    Thakurgaon
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="single-form">
-                                        <input type="text" placeholder="Postcode / ZIP" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="single-form">
-                                        <input type="text" placeholder="Phone *" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="single-form">
-                                        <input type="text" placeholder="Email address *" />
-                                    </div>
-                                </div>
-                            </div>
+<br>                            <div class="row">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="address-option">
+                <input type="radio" name="billing-address" id="billing-address1">
+                <label for="billing-address1">
+                    <h4 class="account-title">Billing address</h4>
+                    <h6 class="name">Alex Tuntuni</h6>
+                    <p>
+                        1355 Market St, Suite 900<br />
+                        San Francisco, CA 94103
+                    </p>
+                    <p>Mobile: (123) 456-7890</p>
+                </label>
+                <a class="edit-btn" href="#"><i class="fa fa-edit"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
 
-                            <div class="single-form checkbox-checkbox">
-                                <input type="checkbox" id="account" />
-                                <label for="account">
-                                    <span></span> Create an account?</label>
-                            </div>
-
-                            <div class="checkout-account">
-                                <div class="single-form">
-                                    <input type="password" placeholder="Create account Password *" class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="single-form checkbox-checkbox">
-                                <input type="checkbox" id="shipping" />
-                                <label for="shipping">
-                                    <span></span> Ship to a different
-                                    address?</label>
-                            </div>
-
-                            <div class="checkout-shipping">
+                        </div>
+                         <div class="tab-pane fade" id="pills-address">
+                            <div class="my-account-address account-wrapper">
                                 <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="single-form">
-                                            <input type="text" placeholder="First name *" />
+                                    <div class="col-md-6">
+                                        <div class="account-address">
+                                            <h4 class="account-title">
+                                                Billing address
+                                            </h4>
+                                            <h6 class="name">
+                                                Alex Tuntuni
+                                            </h6>
+                                            <p>
+                                                1355 Market St, Suite 900
+                                                <br />
+                                                    San Francisco, CA 94103
+                                            </p>
+                                            <p>Mobile: (123) 456-7890</p>
+                                            <a class="btn btn-primary btn-hover-dark" href="#"><i class="fa fa-edit"></i>
+                                                Edit Address</a>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="single-form">
-                                            <input type="text" placeholder="Last name *" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="single-form">
-                                            <input type="text" placeholder="Company name" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="single-select2">
-                                            <div class="form-select2">
-                                                <select class="select2">
-                                                    <option value="0">
-                                                        Select a Country *
-                                                    </option>
-                                                    <option value="1">
-                                                        Bangladesh
-                                                    </option>
-                                                    <option value="2">
-                                                        Canada
-                                                    </option>
-                                                    <option value="3">
-                                                        Colombia
-                                                    </option>
-                                                    <option value="4">
-                                                        Indonesia
-                                                    </option>
-                                                    <option value="5">
-                                                        Italy
-                                                    </option>
-                                                    <option value="6">
-                                                        Pakistan
-                                                    </option>
-                                                    <option value="7">
-                                                        Turkey
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="single-form">
-                                            <label class="form-label">Street address *</label>
-                                            <input type="text" placeholder="House number and street name" />
-                                            <input type="text" placeholder="Apartment, suite, unit etc. (optional)" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="single-form">
-                                            <input type="text" placeholder="Town / City *" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="single-select2">
-                                            <div class="form-select2">
-                                                <select class="select2">
-                                                    <option value="">
-                                                        Select an District *
-                                                    </option>
-                                                    <option value="BAG">
-                                                        Bagerhat
-                                                    </option>
-                                                    <option value="BAN">
-                                                        Bandarban
-                                                    </option>
-                                                    <option value="BAR">
-                                                        Barguna
-                                                    </option>
-                                                    <option value="BARI">
-                                                        Barisal
-                                                    </option>
-                                                    <option value="BHO">
-                                                        Bhola
-                                                    </option>
-                                                    <option value="BOG">
-                                                        Bogra
-                                                    </option>
-                                                    <option value="BRA">
-                                                        Brahmanbaria
-                                                    </option>
-                                                    <option value="CHA">
-                                                        Chandpur
-                                                    </option>
-                                                    <option value="CHI">
-                                                        Chittagong
-                                                    </option>
-                                                    <option value="CHU">
-                                                        Chuadanga
-                                                    </option>
-                                                    <option value="COM">
-                                                        Comilla
-                                                    </option>
-                                                    <option value="COX">
-                                                        Cox's Bazar
-                                                    </option>
-                                                    <option value="DHA">
-                                                        Dhaka
-                                                    </option>
-                                                    <option value="DIN">
-                                                        Dinajpur
-                                                    </option>
-                                                    <option value="FAR">
-                                                        Faridpur
-                                                    </option>
-                                                    <option value="FEN">
-                                                        Feni
-                                                    </option>
-                                                    <option value="GAI">
-                                                        Gaibandha
-                                                    </option>
-                                                    <option value="GAZI">
-                                                        Gazipur
-                                                    </option>
-                                                    <option value="GOP">
-                                                        Gopalganj
-                                                    </option>
-                                                    <option value="HAB">
-                                                        Habiganj
-                                                    </option>
-                                                    <option value="JAM">
-                                                        Jamalpur
-                                                    </option>
-                                                    <option value="JES">
-                                                        Jessore
-                                                    </option>
-                                                    <option value="JHA">
-                                                        Jhalokati
-                                                    </option>
-                                                    <option value="JHE">
-                                                        Jhenaidah
-                                                    </option>
-                                                    <option value="JOY">
-                                                        Joypurhat
-                                                    </option>
-                                                    <option value="KHA">
-                                                        Khagrachhari
-                                                    </option>
-                                                    <option value="KHU">
-                                                        Khulna
-                                                    </option>
-                                                    <option value="KIS">
-                                                        Kishoreganj
-                                                    </option>
-                                                    <option value="KUR">
-                                                        Kurigram
-                                                    </option>
-                                                    <option value="KUS">
-                                                        Kushtia
-                                                    </option>
-                                                    <option value="LAK">
-                                                        Lakshmipur
-                                                    </option>
-                                                    <option value="LAL">
-                                                        Lalmonirhat
-                                                    </option>
-                                                    <option value="MAD">
-                                                        Madaripur
-                                                    </option>
-                                                    <option value="MAG">
-                                                        Magura
-                                                    </option>
-                                                    <option value="MAN">
-                                                        Manikganj
-                                                    </option>
-                                                    <option value="MEH">
-                                                        Meherpur
-                                                    </option>
-                                                    <option value="MOU">
-                                                        Moulvibazar
-                                                    </option>
-                                                    <option value="MUN">
-                                                        Munshiganj
-                                                    </option>
-                                                    <option value="MYM">
-                                                        Mymensingh
-                                                    </option>
-                                                    <option value="NAO">
-                                                        Naogaon
-                                                    </option>
-                                                    <option value="NAR">
-                                                        Narail
-                                                    </option>
-                                                    <option value="NARG">
-                                                        Narayanganj
-                                                    </option>
-                                                    <option value="NARD">
-                                                        Narsingdi
-                                                    </option>
-                                                    <option value="NAT">
-                                                        Natore
-                                                    </option>
-                                                    <option value="NAW">
-                                                        Nawabganj
-                                                    </option>
-                                                    <option value="NET">
-                                                        Netrakona
-                                                    </option>
-                                                    <option value="NIL">
-                                                        Nilphamari
-                                                    </option>
-                                                    <option value="NOA">
-                                                        Noakhali
-                                                    </option>
-                                                    <option value="PAB">
-                                                        Pabna
-                                                    </option>
-                                                    <option value="PAN">
-                                                        Panchagarh
-                                                    </option>
-                                                    <option value="PAT">
-                                                        Patuakhali
-                                                    </option>
-                                                    <option value="PIR">
-                                                        Pirojpur
-                                                    </option>
-                                                    <option value="RAJB">
-                                                        Rajbari
-                                                    </option>
-                                                    <option value="RAJ">
-                                                        Rajshahi
-                                                    </option>
-                                                    <option value="RAN">
-                                                        Rangamati
-                                                    </option>
-                                                    <option value="RANP">
-                                                        Rangpur
-                                                    </option>
-                                                    <option value="SAT">
-                                                        Satkhira
-                                                    </option>
-                                                    <option value="SHA">
-                                                        Shariatpur
-                                                    </option>
-                                                    <option value="SHE">
-                                                        Sherpur
-                                                    </option>
-                                                    <option value="SIR">
-                                                        Sirajganj
-                                                    </option>
-                                                    <option value="SUN">
-                                                        Sunamganj
-                                                    </option>
-                                                    <option value="SYL">
-                                                        Sylhet
-                                                    </option>
-                                                    <option value="TAN">
-                                                        Tangail
-                                                    </option>
-                                                    <option value="THA">
-                                                        Thakurgaon
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="single-form">
-                                            <input type="text" placeholder="Postcode / ZIP" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="single-form">
-                                            <input type="text" placeholder="Phone *" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="single-form">
-                                            <input type="text" placeholder="Email address *" />
+                                    <div class="col-md-6">
+                                        <div class="account-address">
+                                            <h4 class="account-title">
+                                                Shipping address
+                                            </h4>
+                                            <h6 class="name">
+                                                Alex Tuntuni
+                                            </h6>
+                                            <p>
+                                                1355 Market St, Suite 900
+                                                <br />
+                                                    San Francisco, CA 94103
+                                            </p>
+                                            <p>Mobile: (123) 456-7890</p>
+                                            <a class="btn btn-primary btn-hover-dark" href="#"><i class="fa fa-edit"></i>
+                                                Edit Address</a>
+                                            <a class="btn btn-primary btn-hover-dark" href="#"><i class="fa fa-edit"></i>
+                                                add Address</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="single-form checkout-note">
-                                <label class="form-label">Order notes</label>
-                                <textarea placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                             </div>
                         </div>
                         <!-- Checkout Form End -->

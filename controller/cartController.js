@@ -2,45 +2,6 @@ const cartSchema = require('../model/cartData')
 const productSchema = require('../model/productData')
 // const productSchema = require('../model/productData')
 
-const updateQuantity = async (req, res) => {
-    try {
-        console.log('00000')
-        const { cartQuantity, productId } = req.body;
-
-        const cartData = await cartSchema.findOne({userId: req.session.user_id }).populate('products.productId').populate('userId')
-        const productData=cartData.products.find((product)=>{
-            return product.productId.equals(productId)
-        })
-        productData.quantity=cartQuantity
-        productData.totalAmount= productData.productId.price * cartQuantity
-        const priceTotal =productData.totalAmount
-        await cartData.save()
-        const cartTotal = cartData.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
-        console.log(cartTotal)
-        res.status(200).json({ status: 'success', message: 'Quantity updated successfully',cartTotal,priceTotal });
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ status: 'error', message: 'Internal server error' });
-    }
-}
-
-
-
-
-const viewCart =async(req,res)=>{
-    try {
-        
-        quantity=req.flash('quantity').toString()
-        
-        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
-        const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
-        res.render('cart',{cartDetails,cartTotal})
-       
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send({ status: 'error', message: 'Internal server error' });
-    }
-}
 
 const loadCart = async (req, res) => {
     try {
@@ -91,15 +52,15 @@ const loadCart = async (req, res) => {
                         products:productToAdd
                     }
                 }
-            );
-        }
-        
-
-        console.log('--------')
-        // const totalAmount=cartDetails.productId.price*quantity
-        
-        res.send({ status: 'success', message: 'Added to cart successfully', session:true});
-      
+                );
+            }
+            
+            
+            console.log('--------')
+            // const totalAmount=cartDetails.productId.price*quantity
+            
+            res.send({ status: 'success', message: 'Added to cart successfully', session:true});
+            
     }
     } catch (error) {
         console.log(error.message);
@@ -108,10 +69,81 @@ const loadCart = async (req, res) => {
 };
 
 
+const viewCart =async(req,res)=>{
+    try {
+        
+        quantity=req.flash('quantity').toString()
+        
+        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
+        const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+        res.render('cart',{cartDetails,cartTotal})
+       
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ status: 'error', message: 'Internal server error' });
+    }
+}
+
+
+const updateQuantity = async (req, res) => {
+    try {
+        console.log('00000')
+        const { cartQuantity, productId } = req.body;
+        
+        const cartData = await cartSchema.findOne({userId: req.session.user_id }).populate('products.productId').populate('userId')
+        const productData=cartData.products.find((product)=>{
+            return product.productId.equals(productId)
+        })
+        productData.quantity=cartQuantity
+        productData.totalAmount= productData.productId.price * cartQuantity
+        // const priceTotal=productData.totalAmount
+        await cartData.save()   
+        // console.log(priceTotal)
+        const cartTotal = cartData.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+        console.log(cartTotal)
+        res.status(200).json({ status: 'success', message: 'Quantity updated successfully',cartTotal});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
+}
+
+const deleteCartProduct = async (req, res) => {
+    try {
+        
+        const { productId } = req.body;
+
+        const cartData = await cartSchema.findOne({userId: req.session.user_id }).populate('products.productId').populate('userId')
+        const productIndex=cartData.products.findIndex((product) => {
+            return product.productId.equals(productId);
+        });
+        const deleteProduct = cartData.products.splice(productIndex, 1);
+        await cartData.save()   
+      
+        res.status(200).json({ status: 'success', message: 'product deleted successfully'});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
+}
+const checkout = async (req, res) => {
+    try {
+        
+        res.render('checkout')
+      
+        // res.status(200).json({ status: 'success', message: 'product deleted successfully'});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
+}
+
 
 
 module.exports={
     viewCart,
     loadCart,
-    updateQuantity
+    updateQuantity,
+    deleteCartProduct,
+    checkout
 }

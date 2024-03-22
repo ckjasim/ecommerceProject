@@ -115,7 +115,7 @@
 
                 <ul class="dropdown-menu dropdown-profile">
                   <li><a href="my-account.html">My Account</a></li>
-                  <li><a href="checkout.html">Checkout</a></li>
+                  <li><a href="/checkout">Checkout</a></li>
                   <li><a href="login.html">Sign In</a></li>
                 </ul>
               </div>
@@ -267,8 +267,8 @@
 
               <tbody>
                 <% cartDetails.products.forEach((element,index) => { %>
-                <tr>
-                  <td class="product-thumb">
+                <tr id="cartRefresh<%= element.productId._id %>">
+                  <td  class="product-thumb">
                     <img
                       src="/productImage/<%= element.productId.img[0] %>"
                       alt=""
@@ -300,7 +300,9 @@
                         data-product-id="<%= element.productId._id %>"
                         value="<%= element.quantity %>"
                       />
-                      <button type="button" class="add">+</button>
+                      
+                    <button type="button" class="add" >+</button>
+
                     </div>
                   </td>
 
@@ -308,9 +310,10 @@
                     <span class="price" id="totalPrice">$<%= element.totalAmount %></span>
                   </td>
                   <td class="product-action">
-                    <button class="remove">
+                    <button class="remove" onclick="deleteCartProduct('<%= element.productId._id %>')">
                       <i class="pe-7s-trash"></i>
-                    </button>
+                  </button>
+                  
                   </td>
                 </tr>
 
@@ -381,6 +384,7 @@
                         <p class="value">Subtotal</p>
                       </td>
                       <td>
+                      
                         <p class="price" id="cartTotal">£<%= cartTotal %></p>
                       </td>
                     </tr>
@@ -419,14 +423,14 @@
                         <p class="value">Total</p>
                       </td>
                       <td>
-                        <p class="price">£600.00</p>
+                        <p class="price" id="cartTotal">£<%= cartTotal %>.00</p>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="cart-total-btn">
-                <a href="#" class="btn btn-dark btn-hover-primary btn-block"
+                <a href="/checkout" class="btn btn-dark btn-hover-primary btn-block"
                   >Proceed To Checkout</a
                 >
               </div>
@@ -659,10 +663,11 @@
     function updateCart(productId, cartQuantity) {
         console.log("Updating cart with quantity:", cartQuantity, "for product ID:", productId);
         axios.post('/updateQuantity', { cartQuantity,productId })
-            .then(function(response) {  1
-                const {cartTotal,priceTotal} =response.data
+            .then(function(response) {  
+                const {cartTotal} =response.data
                 document.getElementById('cartTotal').innerHTML=cartTotal
-                document.getElementById('totalPrice').innerHTML=priceTotal
+                
+                // document.getElementById('totalPrice').innerHTML=priceTotal
                 console.log(cartTotal);
                 console.log(response.data);
             })
@@ -671,6 +676,21 @@
             })
     }
 });
+
+async function deleteCartProduct(productId) {
+  
+  axios.post('/deleteCartProduct', { productId })
+  
+    .then(function(response) {  
+      const refresh = document.getElementById(`cartRefresh${productId}`)
+      refresh.remove()
+                
+     console.log(response.data);
+     })
+     .catch(function(error) {
+       console.error('Error:', error);
+       })
+      }
 
     </script>
 

@@ -54,6 +54,8 @@ userRoute.get('/loadShop',userController.loadShop)
 userRoute.post('/loadCart',cartController.loadCart)
 userRoute.get('/viewCart',cartController.viewCart)
 userRoute.post('/updateQuantity',cartController.updateQuantity)
+userRoute.post('/deleteCartProduct',cartController.deleteCartProduct)
+userRoute.get('/checkout',cartController.checkout)
 
 //profile
 
