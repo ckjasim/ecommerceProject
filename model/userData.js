@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     createDate:{type:Date,required:true},
     // updated:{type:date,required:true},
     is_block:{type:Boolean,required:true},
-    isAdmin:{type:Number,required:true}
 })
 
 module.exports=mongoose.model('users',userSchema)

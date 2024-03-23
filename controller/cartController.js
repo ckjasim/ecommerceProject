@@ -1,6 +1,6 @@
 const cartSchema = require('../model/cartData')
 const productSchema = require('../model/productData')
-// const productSchema = require('../model/productData')
+const addressSchema = require('../model/addressData')
 
 
 const loadCart = async (req, res) => {
@@ -128,8 +128,13 @@ const deleteCartProduct = async (req, res) => {
 }
 const checkout = async (req, res) => {
     try {
+        const userData=req.session.user_id
+        const addressData = await addressSchema.find({userId:userData}).populate('userId')
+        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
+        const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+        console.log(cartTotal)
         
-        res.render('checkout')
+        res.render('checkout',{addressData,cartDetails,cartTotal})
       
         // res.status(200).json({ status: 'success', message: 'product deleted successfully'});
     } catch (error) {

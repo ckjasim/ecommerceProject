@@ -31,79 +31,6 @@
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/style.min.css" />
-    <style>
-    /* Style for the "Edit Address" button */
-    .edit-btn {
-        display: inline-block;
-        background-color: #637763;
-        color: white;
-        padding: 8px 20px;
-        text-align: center;
-        text-decoration: none;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    
-    .edit-btn:hover {
-        background-color: #4c544d;
-    }
-    
-    /* Adjust the icon size */
-    .edit-btn i {
-        margin-right: 5px;
-    }
-    
-    /* Style for the radio button container */
-    .address-option {
-        position: relative;
-        border: 1px solid #ddd;
-        width:350px;
-        padding: 10px;
-        margin-bottom: 15px;
-    }
-    
-    /* Style for the radio button */
-    .address-option input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-    
-    /* Style for the radio button label */
-    .address-option label {
-        cursor: pointer;
-        padding-left: 30px;
-        vertical-align: middle; /* Align text vertically with the radio button */
-    }
-    
-    /* Custom radio button styles */
-    .address-option input[type="radio"] {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        width: 20px;
-        height: 20px;
-        border: 2px solid #ccc;
-        border-radius: 50%;
-        outline: none;
-    }
-    
-    .address-option input[type="radio"]:checked {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-    
-    /* Style for the edit button */
-    .address-option .edit-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
-</style>    
 </head>
 
 
@@ -676,240 +603,123 @@
     <!-- Checkout Section Start -->
     <div class="section section-padding">
         <div class="container">
+            
 
-            <div class="checkout-info">
-                <p class="info-header">
-                    <i class="fa fa-exclamation-circle"></i> Have a coupon?
-                    <a data-bs-toggle="collapse" href="#coupon">Click here to enter your code</a>
-                </p>
 
-                <div class="collapse" id="coupon">
-                    <div class="card-body">
-                        <form action="#">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="single-form">
-                                        <input type="email" placeholder="Coupon code" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="single-form">
-                                        <button class="btn btn-primary btn-hover-dark">
-                                            Coupon
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+           
 
-            <form action="#">
+            <form action="" method="post">
                 <div class="row">
                     <div class="col-lg-7">
                         <!-- Checkout Form Start -->
                         <div class="checkout-form">
                             <div class="checkout-title">
-                                <h4 class="title">Shipping details</h4>
+                                <h4 class="title">Billing details</h4>
                             </div>
-
-                            <br>                       
-
-                            <form>
-                                <% addressData.forEach(element => { %>
-                                <input type="radio" name="billing-address" id="billing-address1">
-                                <div class="address-option">
-                                    <label for="billing-address1">
-                                        <h4 class="account-title">Shipping address</h4>
-                                        <h6 class="name"><%= element.name %></h6>
-                                        <p style="width: 80%;">
-                                            <%= element.address %>
-                                        , <%= element.city %>,<%= element.state %></p>
-                                        <p><%= element.pincode %></p>   
-                                        <p><%= element.mobile %></p>
-                                    </label>
-                                    <a class="edit-btn" href="#"><i class="fa fa-edit"></i></a>
+                            <div class="row">
+                                
+                                    <div class="col-sm-6">
+                                        <div class="single-form">
+                                            <label class="form-label">Street address *</label>
+                                            <input type="text" placeholder="Name *" name="name"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="single-form">
+                                            <label class="form-label">  <br></label>
+                                            <input type="text" placeholder="Contact no *"  name="mobile"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="single-form">
+                                            <input type="text" placeholder="Pincode *" name="pincode" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="single-form">
+                                            <input type="text" placeholder="Locality *" name="locality" />
+                                        </div>
+                                    </div>
+                                <div class="col-sm-12">
+                                    <div class="single-form">
+                                        <textarea type="text" placeholder="Address" style="height: 100px;" name="address"></textarea>
+                                        <!-- <input type="text" placeholder="Apartment, suite, unit etc. (optional)" /> -->
+                                    </div>
                                 </div>
-                                <% }); %>
-                            </form>
-                            
-                            <div class="single-form">
-                                <a class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" href="/loadAddress">add address</a>
-                            </div>
-                            
-                            </div>
-                            
-                        <!-- Checkout Form End -->
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="checkout-order">
-                            <div class="checkout-title">
-                                <h4 class="title">Your Order</h4>
-                            </div>
-
-                            <div class="checkout-order-table table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="Product-name">
-                                                Product
-                                            </th>
-                                            <th class="Product-price">
-                                                Total
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% cartDetails.products.forEach((element) => { %>
+                                <div class="col-sm-6">
+                                    <div class="single-form">
+                                        <input type="text" placeholder="Town / City *" name="city"  required/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="single-form">
+                                        <input type="text" placeholder="District *" name="district" required/>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <div class="single-select2">
+                                        <div class="form-select2">
                                             
-                                            
-                                        <tr>
-                                            <td class="Product-name">
-                                                <p>
-                                                    <%= element.productId.name %>
-                                                     × <%= element.quantity %>
-                                                </p>
-                                            </td>
-                                            <td class="Product-price">
-                                                <p>$<%= element.totalAmount %>.00</p>
-                                            </td>
-                                        </tr>
-                                        <% }); %>
-                                       
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td class="Product-name">
-                                                <p>Subtotal</p>
-                                            </td>
-                                            <td class="Product-price">
-                                                <p>$<%= cartTotal %>.00</p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="Product-name">
-                                                <p>Shipping</p>
-                                            </td>
-                                            <td class="Product-price">
-                                                <ul class="shipping-list">
-                                                    <!-- <li class="radio">
-                                                        <input type="radio" name="shipping" id="radio1" checked />
-                                                        <label for="radio1"><span></span>
-                                                            Flat Rate</label>
-                                                    </li> -->
-                                                    <li class="radio">
-                                                        <input type="radio" name="shipping" id="radio2" />
-                                                        <label for="radio2"><span></span>
-                                                            Free
-                                                            Shipping</label>
-                                                    </li>
-                                                    <!-- <li class="radio">
-                                                        <input type="radio" name="shipping" id="radio3" />
-                                                        <label for="radio3"><span></span>
-                                                            Local
-                                                            Pickup</label>
-                                                    </li> -->
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="Product-name">
-                                                <p>Total</p>
-                                            </td>
-                                            <td class="total-price">
-                                                <p>$<%= cartTotal %>.00</p>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-
-                            <div class="checkout-payment">
-                                <ul>
-                                    <li>
-                                        <div class="single-payment">
-                                            <div class="payment-radio radio">
-                                                <input type="radio" name="radio" id="bank" />
-                                                <label for="bank"><span></span> walllet
-                                                </label>
-
-                                                <div class="payment-details">
-                                                    <p>
-                                                        Please send a Check
-                                                        to Store name with
-                                                        Store Street, Store
-                                                        Town, Store State,
-                                                        Store Postcode,
-                                                        Store Country.
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <select class="select2" name="state">
+                                                
+                                                <option value="">Select a State *</option>
+                                                <option value="AND">Andaman and Nicobar Islands</option>
+                                                <option value="ANDH">Andhra Pradesh</option>
+                                                <option value="ARU">Arunachal Pradesh</option>
+                                                <option value="ASS">Assam</option>
+                                                <option value="BIH">Bihar</option>
+                                                <option value="CHD">Chandigarh</option>
+                                                <option value="CHH">Chhattisgarh</option>
+                                                <option value="DAD">Dadra and Nagar Haveli and Daman and Diu</option>
+                                                <option value="DEL">Delhi</option>
+                                                <option value="GOA">Goa</option>
+                                                <option value="GUJ">Gujarat</option>
+                                                <option value="HAR">Haryana</option>
+                                                <option value="HP">Himachal Pradesh</option>
+                                                <option value="JAMK">Jammu and Kashmir</option>
+                                                <option value="JHA">Jharkhand</option>
+                                                <option value="KAR">Karnataka</option>
+                                                <option value="KER">Kerala</option>
+                                                <option value="LAD">Ladakh</option>
+                                                <option value="LAKS">Lakshadweep</option>
+                                                <option value="MP">Madhya Pradesh</option>
+                                                <option value="MAH">Maharashtra</option>
+                                                <option value="MANI">Manipur</option>
+                                                <option value="MEG">Meghalaya</option>
+                                                <option value="MIZ">Mizoram</option>
+                                                <option value="NAG">Nagaland</option>
+                                                <option value="ODI">Odisha</option>
+                                                <option value="PUD">Puducherry</option>
+                                                <option value="PUN">Punjab</option>
+                                                <option value="RAJ">Rajasthan</option>
+                                                <option value="SIKK">Sikkim</option>
+                                                <option value="TN">Tamil Nadu</option>
+                                                <option value="TEL">Telangana</option>
+                                                <option value="TRIP">Tripura</option>
+                                                <option value="UP">Uttar Pradesh</option>
+                                                <option value="UK">Uttarakhand</option>
+                                                <option value="WB">West Bengal</option>
+                                            </select>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <div class="single-payment">
-                                            <div class="payment-radio radio">
-                                                <input type="radio" name="radio" id="check" />
-                                                <label for="check"><span></span> RazorPay
-                                                </label>
-
-                                                <div class="payment-details">
-                                                    <p>
-                                                        Please send a check
-                                                        to Store Name, Store
-                                                        Street, Store Town,
-                                                        Store State /
-                                                        County, Store
-                                                        Postcode.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="single-payment">
-                                            <div class="payment-radio radio">
-                                                <input type="radio" name="radio" id="cash" checked="checked" />
-                                                <label for="cash"><span></span> Cash on
-                                                    Delivery</label>
-
-                                                <div class="payment-details">
-                                                    <p>
-                                                        Pay with cash upon
-                                                        delivery.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="single-payment">
-                                            <div class="payment-radio radio">
-                                                <input type="radio" name="radio" id="paypal" />
-                                                <!-- <label for="paypal"><span></span> Paypal
-                                                    <img class="payment" src="assets/images/payment-2.html" alt="" />
-                                                    <a href="#">What is PayPal?</a></label> -->
-
-                                                <div class="payment-details">
-                                                    <p>
-                                                        Pay via PayPal; you
-                                                        can pay with your
-                                                        credit card if you
-                                                        don’t have a PayPal
-                                                        account.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="single-form">
+                                        <input type="text" placeholder="Landmark (optional)" name="landmark" />
+                                    </div>
+                                </div>
+                                
+                                
                                 <div class="single-form">
-                                    <a class="btn btn-primary btn-hover-dark d-block" href="#">Place Order</a>
+                                    <button class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" >add address</button>
                                 </div>
+                                
+                            
                             </div>
                         </div>
+                        <!-- Checkout Form End -->
                     </div>
                 </div>
             </form>

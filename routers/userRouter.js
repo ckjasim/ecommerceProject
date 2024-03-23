@@ -57,10 +57,14 @@ userRoute.post('/updateQuantity',cartController.updateQuantity)
 userRoute.post('/deleteCartProduct',cartController.deleteCartProduct)
 userRoute.get('/checkout',cartController.checkout)
 
+
 //profile
 
 userRoute.get('/loadProfile',userConfig.isLogin,profileController.loadProfile)
 userRoute.post('/loadProfile',userConfig.isLogin,profileController.editProfile)
+userRoute.get('/loadAddress',profileController.loadAddress)
+userRoute.post('/loadAddress',profileController.addAddress)
+userRoute.get('/editAddress/:addressId',profileController.editAddress)
 
 
 module.exports=userRoute
