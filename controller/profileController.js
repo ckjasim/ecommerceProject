@@ -1,5 +1,7 @@
 const userSchema = require('../model/userData')
 const addressSchema = require('../model/addressData')
+const orderSchema = require('../model/orderData') 
+const cartSchema = require('../model/cartData') 
 
 
 const loadProfile = async (req,res)=>{
@@ -112,11 +114,81 @@ const deleteAddress=async (req,res)=>{
 const loadOrder=async (req,res)=>{
     try {
        console.log('4444444')
+       const {selectedAddress,selectedPaymentOption} =req.body
+    //    quantity=req.flash('quantity').toString()
+    req.flash('selectedAddress', selectedAddress);
+req.flash('selectedPaymentOption', selectedPaymentOption);
+
+       console.log(selectedAddress)
+       res.send({ status: 'success', message: 'Order placed successfully'});
     } catch (error) {
         console.log(error.message);
     }
 }
+const viewOrder=async (req,res)=>{
+    try {
+        const selectedAddress=req.flash('selectedAddress').toString()
+        const selectedPaymentOption=req.flash('selectedPaymentOption').toString()
 
+        const cartData=await cartSchema.findOne({userId:req.session.user_id})
+    
+         const orderData =new orderSchema({
+            cartId:cartData._id,
+            userId:req.session.user_id,
+            addressId:selectedAddress, 
+            paymentOption:selectedPaymentOption, 
+         })   
+         await orderData.save();
+        
+        const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
+        .populate('cartId')
+        .populate('userId')
+        .populate({
+            path: 'cartId',
+            populate: {
+                path: 'products.productId'
+            }
+        })
+        .populate('addressId');
+        
+        
+
+        res.render('order',{orderDetails,selectedPaymentOption})
+    
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const orderDetails=async (req,res)=>{
+    try {
+        const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
+        .populate('cartId')
+        .populate('userId')
+        .populate({
+            path: 'cartId',
+            populate: {
+                path: 'products.productId'
+            }
+        })
+        .populate('addressId');
+        
+        
+       res.render('orderDetails',{orderDetails})
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const cancelOrder=async (req,res)=>{
+    try {
+         await orderSchema.findOneAndDelete({ userId: req.session.user_id })
+        
+        
+        
+       res.redirect('/viewCart')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 
 
@@ -128,5 +200,8 @@ module.exports={
     loadEditAddress,
     editAddress,
     deleteAddress,
-    loadOrder
+    loadOrder,
+    viewOrder,
+    orderDetails,
+    cancelOrder
 }

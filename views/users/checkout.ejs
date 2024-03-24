@@ -1034,6 +1034,8 @@
     ============================================ -->
 
     <!-- Modernizer & jQuery JS -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script>
       
       function placeOrder() {
@@ -1045,22 +1047,34 @@
         console.log("Selected payment option:", selectedPaymentOption);
         
         event.preventDefault();
+
+        axios.post('/checkout', { selectedAddress, selectedPaymentOption})
+        .then(function(response) {  
+        console.log(response.data);
+        if(response.data){
+                    if (response.data.session==false) {
+                        console.log('1111');
+                        window.location='/notLogin'
+
+                    } else {
+                        window.location='/loadOrder'
+                    }
+                   
+                }
+        })
+        .catch(function(error) {
+        console.error('Error:', error);
+        })
+  
+    
+                
     }
 
     const placeOrderBtn = document.getElementById('placeOrder');
     placeOrderBtn.addEventListener('click', placeOrder);
 
 
-    // axios.post('/checkout', { addressId })
-  
-    // .then(function(response) {  
     
-                
-    //  console.log(response.data);
-    //  })
-    //  .catch(function(error) {
-    //    console.error('Error:', error);
-    //    })
       
     </script>
 

@@ -1919,7 +1919,7 @@
         console.log(productId)
         axios.post('/loadCart', { quantity,productId })
             .then(function(response) {
-                // Handle response if needed
+                
                 console.log(response.data);
              
                 if(response.data){

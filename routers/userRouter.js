@@ -57,6 +57,9 @@ userRoute.post('/updateQuantity',cartController.updateQuantity)
 userRoute.post('/deleteCartProduct',cartController.deleteCartProduct)
 userRoute.get('/checkout',cartController.checkout)
 userRoute.post('/checkout',profileController.loadOrder)
+userRoute.get('/loadOrder',profileController.viewOrder)
+userRoute.get('/orderDetails',profileController.orderDetails)
+userRoute.get('/cancelOrder',profileController.cancelOrder)
 
 
 //profile
