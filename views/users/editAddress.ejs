@@ -621,39 +621,40 @@
                                     <div class="col-sm-6">
                                         <div class="single-form">
                                             <label class="form-label">Street address *</label>
-                                            <input type="text" placeholder="Name *" name="name"/>
+                                            <input type="text" value="<%= addressData.name %>" name="name"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="single-form">
                                             <label class="form-label">  <br></label>
-                                            <input type="text" placeholder="Contact no *"  name="mobile"/>
+                                            <input type="text" value="<%= addressData.mobile %>"  name="mobile"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="single-form">
-                                            <input type="text" placeholder="Pincode *" name="pincode" />
+                                            <input type="text" value="<%= addressData.pincode %>" name="pincode" />
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="single-form">
-                                            <input type="text" placeholder="Locality *" name="locality" />
+                                            <input type="text" value="<%= addressData.locality %>" name="locality" />
                                         </div>
                                     </div>
                                 <div class="col-sm-12">
                                     <div class="single-form">
-                                        <textarea type="text" placeholder="Address" style="height: 100px;" name="address"></textarea>
+                                        <textarea style="height: 100px;" name="address"><%= addressData.address %></textarea>
+
                                         <!-- <input type="text" placeholder="Apartment, suite, unit etc. (optional)" /> -->
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="single-form">
-                                        <input type="text" placeholder="Town / City *" name="city"  required/>
+                                        <input type="text" value="<%= addressData.city %>" name="city"  required/>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="single-form">
-                                        <input type="text" placeholder="District *" name="district" required/>
+                                        <input type="text" value="<%= addressData.district %>" name="district" required/>
                                     </div>
                                 </div>
                                 
@@ -661,45 +662,46 @@
                                     <div class="single-select2">
                                         <div class="form-select2">
                                             
-                                            <select class="select2" name="state">
+                                            <select class="select2" name="state" >
                                                 
-                                                <option value="">Select a State *</option>
-                                                <option value="AND">Andaman and Nicobar Islands</option>
-                                                <option value="ANDH">Andhra Pradesh</option>
-                                                <option value="ARU">Arunachal Pradesh</option>
-                                                <option value="ASS">Assam</option>
-                                                <option value="BIH">Bihar</option>
-                                                <option value="CHD">Chandigarh</option>
-                                                <option value="CHH">Chhattisgarh</option>
-                                                <option value="DAD">Dadra and Nagar Haveli and Daman and Diu</option>
-                                                <option value="DEL">Delhi</option>
-                                                <option value="GOA">Goa</option>
-                                                <option value="GUJ">Gujarat</option>
-                                                <option value="HAR">Haryana</option>
-                                                <option value="HP">Himachal Pradesh</option>
-                                                <option value="JAMK">Jammu and Kashmir</option>
-                                                <option value="JHA">Jharkhand</option>
-                                                <option value="KAR">Karnataka</option>
-                                                <option value="KER">Kerala</option>
-                                                <option value="LAD">Ladakh</option>
-                                                <option value="LAKS">Lakshadweep</option>
-                                                <option value="MP">Madhya Pradesh</option>
-                                                <option value="MAH">Maharashtra</option>
-                                                <option value="MANI">Manipur</option>
-                                                <option value="MEG">Meghalaya</option>
-                                                <option value="MIZ">Mizoram</option>
-                                                <option value="NAG">Nagaland</option>
-                                                <option value="ODI">Odisha</option>
-                                                <option value="PUD">Puducherry</option>
-                                                <option value="PUN">Punjab</option>
-                                                <option value="RAJ">Rajasthan</option>
-                                                <option value="SIKK">Sikkim</option>
-                                                <option value="TN">Tamil Nadu</option>
-                                                <option value="TEL">Telangana</option>
-                                                <option value="TRIP">Tripura</option>
-                                                <option value="UP">Uttar Pradesh</option>
-                                                <option value="UK">Uttarakhand</option>
-                                                <option value="WB">West Bengal</option>
+                                                <option value="<%= addressData.state %>">select your state</option>
+                                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                <option value="Assam">Assam</option>
+                                                <option value="Bihar">Bihar</option>
+                                                <option value="Chandigarh">Chandigarh</option>
+                                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                                <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+                                                <option value="Delhi">Delhi</option>
+                                                <option value="Goa">Goa</option>
+                                                <option value="Gujarat">Gujarat</option>
+                                                <option value="Haryana">Haryana</option>
+                                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                                <option value="Jharkhand">Jharkhand</option>
+                                                <option value="Karnataka">Karnataka</option>
+                                                <option value="Kerala">Kerala</option>
+                                                <option value="Ladakh">Ladakh</option>
+                                                <option value="Lakshadweep">Lakshadweep</option>
+                                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                <option value="Maharashtra">Maharashtra</option>
+                                                <option value="Manipur">Manipur</option>
+                                                <option value="Meghalaya">Meghalaya</option>
+                                                <option value="Mizoram">Mizoram</option>
+                                                <option value="Nagaland">Nagaland</option>
+                                                <option value="Odisha">Odisha</option>
+                                                <option value="Puducherry">Puducherry</option>
+                                                <option value="Punjab">Punjab</option>
+                                                <option value="Rajasthan">Rajasthan</option>
+                                                <option value="Sikkim">Sikkim</option>
+                                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                                <option value="Telangana">Telangana</option>
+                                                <option value="Tripura">Tripura</option>
+                                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                <option value="Uttarakhand">Uttarakhand</option>
+                                                <option value="West Bengal">West Bengal</option>
+
                                             </select>
                                         </div>
                                     </div>
@@ -707,13 +709,15 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="single-form">
-                                        <input type="text" placeholder="Landmark (optional)" name="landmark" />
+                                        <input type="text" value="<%= addressData.landmark %>" name="landmark" />
+                                        <input type="text" value="<%= addressData._id %>" name="_id"  hidden/>
+
                                     </div>
                                 </div>
                                 
                                 
                                 <div class="single-form">
-                                    <button class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" >add address</button>
+                                    <button class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" >update address</button>
                                 </div>
                                 
                             

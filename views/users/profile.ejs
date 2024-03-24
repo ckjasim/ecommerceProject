@@ -55,6 +55,28 @@
             margin-right: 5px;
         }
         
+        .delete-btn {
+            display: inline-block;
+            background-color: #637763;
+            color: white;
+            padding: 8px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .delete-btn:hover {
+            background-color: #4c544d;
+        }
+        
+        /* Adjust the icon size */
+        .delete-btn i {
+            margin-right: 5px;
+        }
+        
         /* Style for the radio button container */
         .address-option {
             position: relative;
@@ -861,15 +883,28 @@
                                                 <p><%= element.pincode %></p>   
                                                 <p><%= element.mobile %></p>
                                             </label>
-                                            <a class="edit-btn" href="/editAddress/:<%= element._id %>" ><i class="fa fa-edit"></i></a>
+                                            
+                                            <div class="edit-btn">   
+                                              <a  href="/loadEditAddress?_id=<%= element._id %>"><i class="fa fa-edit"></i></a>
+                                            </div> 
+                                            <div class="delete-btn">   
+                                              <a  href="/deleteAddress?_id=<%= element._id %>"><i class="fa fa-trash"></i></a>
+                                            </div> 
+                                           
+
+                                            
+                                            
+                                        
                                         </div>
                                     </div>
+
                                     <% }); %>
                                     
                                     </div>
                                     <div class="single-form">
                                         <a class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" href="/loadAddress">add address</a>
                                     </div>
+                                    
                                     
                                 
                             </div>

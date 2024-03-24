@@ -62,12 +62,56 @@ const addAddress=async (req,res)=>{
         console.log(error.message);
     }
 }
+const loadEditAddress=async (req,res)=>{
+    try {
+        const addressId=req.query._id
+
+        const addressData= await addressSchema.findOne({_id:addressId})
+        console.log(addressData);
+        console.log(addressData._id)
+       res.render('editAddress',{addressData})
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 const editAddress=async (req,res)=>{
     try {
-        const addressId=req.params.addressId
-        console.log(addressId)
-       res.render('editAddress')
 
+    
+        const addressId=req.body._id
+
+        const updateAddress={
+            name:req.body.name,
+            mobile:req.body.mobile,
+            pincode:req.body.pincode,
+            locality:req.body.locality,
+            address:req.body.address,
+            city:req.body.city,
+            district:req.body.district,
+            state:req.body.state,
+            landmark:req.body.landmark,
+            userId:req.session.user_id
+        }
+        
+        await addressSchema.findByIdAndUpdate({_id:addressId},{$set:updateAddress})
+        res.redirect('/loadProfile')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const deleteAddress=async (req,res)=>{
+    try {
+        const addressId=req.query._id
+        await addressSchema.findByIdAndDelete({_id:addressId})
+        res.redirect('/loadProfile')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const loadOrder=async (req,res)=>{
+    try {
+       console.log('4444444')
     } catch (error) {
         console.log(error.message);
     }
@@ -81,5 +125,8 @@ module.exports={
     editProfile,
     loadAddress,
     addAddress,
-    editAddress
+    loadEditAddress,
+    editAddress,
+    deleteAddress,
+    loadOrder
 }

@@ -56,6 +56,7 @@ userRoute.get('/viewCart',cartController.viewCart)
 userRoute.post('/updateQuantity',cartController.updateQuantity)
 userRoute.post('/deleteCartProduct',cartController.deleteCartProduct)
 userRoute.get('/checkout',cartController.checkout)
+userRoute.post('/checkout',profileController.loadOrder)
 
 
 //profile
@@ -64,7 +65,16 @@ userRoute.get('/loadProfile',userConfig.isLogin,profileController.loadProfile)
 userRoute.post('/loadProfile',userConfig.isLogin,profileController.editProfile)
 userRoute.get('/loadAddress',profileController.loadAddress)
 userRoute.post('/loadAddress',profileController.addAddress)
-userRoute.get('/editAddress/:addressId',profileController.editAddress)
+userRoute.get('/loadEditAddress',userConfig.isLogin,profileController.loadEditAddress)
+userRoute.post('/loadEditAddress',profileController.editAddress)
+userRoute.get('/deleteAddress',profileController.deleteAddress)
+
+
+userRoute.post('/placeOrder',cartController.placeOrder)
+
+
+
+
 
 
 module.exports=userRoute

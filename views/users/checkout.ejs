@@ -271,12 +271,12 @@
                             <div class="dropdown-menu dropdown-search">
                                 <!-- Header Search Start -->
                                 <div class="header-search">
-                                    <form action="#">
+                                    
                                         <input type="text" placeholder="Enter your search key ... " />
                                         <button>
                                             <i class="pe-7s-search"></i>
                                         </button>
-                                    </form>
+                                    
                                 </div>
                                 <!-- Header Search End -->
                             </div>
@@ -473,10 +473,10 @@
             <div class="container">
                 <!-- Header Search Start -->
                 <div class="header-search">
-                    <form action="#">
+                    
                         <input type="text" placeholder="Enter your search key ... " />
                         <button><i class="pe-7s-search"></i></button>
-                    </form>
+                   
                 </div>
                 <!-- Header Search End -->
             </div>
@@ -685,7 +685,7 @@
 
                 <div class="collapse" id="coupon">
                     <div class="card-body">
-                        <form action="#">
+                        
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="single-form">
@@ -700,12 +700,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        
                     </div>
                 </div>
             </div>
 
-            <form action="#">
+            <form id="checkoutForm" action="#" method="post">
                 <div class="row">
                     <div class="col-lg-7">
                         <!-- Checkout Form Start -->
@@ -713,70 +713,57 @@
                             <div class="checkout-title">
                                 <h4 class="title">Shipping details</h4>
                             </div>
-
-                            <br>                       
-
-                            <form>
-                                <% addressData.forEach(element => { %>
-                                <input type="radio" name="billing-address" id="billing-address1">
+            
+                            <!-- Shipping address options -->
+                            <% let firstAddress = true; %>
+                            <% addressData.forEach(element => { %>
+                                <input type="radio" value="<%= element._id %>" name="shippingAddress" id="billing-address<%= element._id %>" <% if (firstAddress) { %>checked<% firstAddress = false; } %>>
                                 <div class="address-option">
-                                    <label for="billing-address1">
+                                    <label for="billing-address<%= element._id %>">
                                         <h4 class="account-title">Shipping address</h4>
                                         <h6 class="name"><%= element.name %></h6>
                                         <p style="width: 80%;">
-                                            <%= element.address %>
-                                        , <%= element.city %>,<%= element.state %></p>
+                                            <%= element.address %>, <%= element.city %>, <%= element.state %>
+                                        </p>
                                         <p><%= element.pincode %></p>   
                                         <p><%= element.mobile %></p>
                                     </label>
                                     <a class="edit-btn" href="#"><i class="fa fa-edit"></i></a>
                                 </div>
-                                <% }); %>
-                            </form>
+                            <% }); %>
                             
                             <div class="single-form">
-                                <a class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" href="/loadAddress">add address</a>
+                                <a class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" href="/loadAddress">Add Address</a>
                             </div>
-                            
-                            </div>
-                            
+                        </div>
                         <!-- Checkout Form End -->
                     </div>
+            
                     <div class="col-lg-5">
                         <div class="checkout-order">
                             <div class="checkout-title">
                                 <h4 class="title">Your Order</h4>
                             </div>
-
+            
                             <div class="checkout-order-table table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="Product-name">
-                                                Product
-                                            </th>
-                                            <th class="Product-price">
-                                                Total
-                                            </th>
+                                            <th class="Product-name">Product</th>
+                                            <th class="Product-price">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <% cartDetails.products.forEach((element) => { %>
-                                            
-                                            
-                                        <tr>
-                                            <td class="Product-name">
-                                                <p>
-                                                    <%= element.productId.name %>
-                                                     × <%= element.quantity %>
-                                                </p>
-                                            </td>
-                                            <td class="Product-price">
-                                                <p>$<%= element.totalAmount %>.00</p>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td class="Product-name">
+                                                    <p><%= element.productId.name %> × <%= element.quantity %></p>
+                                                </td>
+                                                <td class="Product-price">
+                                                    <p>$<%= element.totalAmount %>.00</p>
+                                                </td>
+                                            </tr>
                                         <% }); %>
-                                       
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -793,23 +780,18 @@
                                             </td>
                                             <td class="Product-price">
                                                 <ul class="shipping-list">
-                                                    <!-- <li class="radio">
+                                                    <li class="radio">
                                                         <input type="radio" name="shipping" id="radio1" checked />
-                                                        <label for="radio1"><span></span>
-                                                            Flat Rate</label>
-                                                    </li> -->
+                                                        <label for="radio1"><span></span> Flat Rate</label>
+                                                    </li>
                                                     <li class="radio">
                                                         <input type="radio" name="shipping" id="radio2" />
-                                                        <label for="radio2"><span></span>
-                                                            Free
-                                                            Shipping</label>
+                                                        <label for="radio2"><span></span> Free Shipping</label>
                                                     </li>
-                                                    <!-- <li class="radio">
+                                                    <li class="radio">
                                                         <input type="radio" name="shipping" id="radio3" />
-                                                        <label for="radio3"><span></span>
-                                                            Local
-                                                            Pickup</label>
-                                                    </li> -->
+                                                        <label for="radio3"><span></span> Local Pickup</label>
+                                                    </li>
                                                 </ul>
                                             </td>
                                         </tr>
@@ -824,25 +806,16 @@
                                     </tfoot>
                                 </table>
                             </div>
-
+            
                             <div class="checkout-payment">
                                 <ul>
                                     <li>
                                         <div class="single-payment">
                                             <div class="payment-radio radio">
-                                                <input type="radio" name="radio" id="bank" />
-                                                <label for="bank"><span></span> walllet
-                                                </label>
-
+                                                <input type="radio" name="paymentOption" id="bank" value="wallet">
+                                                <label for="bank"><span></span> Wallet</label>
                                                 <div class="payment-details">
-                                                    <p>
-                                                        Please send a Check
-                                                        to Store name with
-                                                        Store Street, Store
-                                                        Town, Store State,
-                                                        Store Postcode,
-                                                        Store Country.
-                                                    </p>
+                                                    <p>Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -850,19 +823,10 @@
                                     <li>
                                         <div class="single-payment">
                                             <div class="payment-radio radio">
-                                                <input type="radio" name="radio" id="check" />
-                                                <label for="check"><span></span> RazorPay
-                                                </label>
-
+                                                <input type="radio" name="paymentOption" id="check" value="RazorPay">
+                                                <label for="check"><span></span> RazorPay</label>
                                                 <div class="payment-details">
-                                                    <p>
-                                                        Please send a check
-                                                        to Store Name, Store
-                                                        Street, Store Town,
-                                                        Store State /
-                                                        County, Store
-                                                        Postcode.
-                                                    </p>
+                                                    <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -870,49 +834,25 @@
                                     <li>
                                         <div class="single-payment">
                                             <div class="payment-radio radio">
-                                                <input type="radio" name="radio" id="cash" checked="checked" />
-                                                <label for="cash"><span></span> Cash on
-                                                    Delivery</label>
-
+                                                <input type="radio" name="paymentOption" id="cash" value="Cash on Delivery" checked>
+                                                <label for="cash"><span></span> Cash on Delivery</label>
                                                 <div class="payment-details">
-                                                    <p>
-                                                        Pay with cash upon
-                                                        delivery.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="single-payment">
-                                            <div class="payment-radio radio">
-                                                <input type="radio" name="radio" id="paypal" />
-                                                <!-- <label for="paypal"><span></span> Paypal
-                                                    <img class="payment" src="assets/images/payment-2.html" alt="" />
-                                                    <a href="#">What is PayPal?</a></label> -->
-
-                                                <div class="payment-details">
-                                                    <p>
-                                                        Pay via PayPal; you
-                                                        can pay with your
-                                                        credit card if you
-                                                        don’t have a PayPal
-                                                        account.
-                                                    </p>
+                                                    <p>Pay with cash upon delivery.</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
-
+            
                                 <div class="single-form">
-                                    <a class="btn btn-primary btn-hover-dark d-block" href="#">Place Order</a>
+                                    <button class="btn btn-primary btn-hover-dark d-block" id="placeOrder">Place Order</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+            
         </div>
     </div>
     <!-- Checkout Section End -->
@@ -954,12 +894,12 @@
                         <div class="footer-subscribe">
                             <span class="title">Subscribe Now :</span>
                             <div class="subscribe-form">
-                                <form action="#">
+                                
                                     <input type="text" placeholder="Your Mail" />
                                     <button>
                                         <i class="pe-7s-paper-plane"></i>
                                     </button>
-                                </form>
+                                
                             </div>
                         </div>
                         <!-- Footer Subscribe End -->
@@ -1094,6 +1034,37 @@
     ============================================ -->
 
     <!-- Modernizer & jQuery JS -->
+    <script>
+      
+      function placeOrder() {
+       
+        const selectedAddress = document.querySelector('input[name="shippingAddress"]:checked').value;
+        const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
+        
+        console.log("Selected shipping address:", selectedAddress);
+        console.log("Selected payment option:", selectedPaymentOption);
+        
+        event.preventDefault();
+    }
+
+    const placeOrderBtn = document.getElementById('placeOrder');
+    placeOrderBtn.addEventListener('click', placeOrder);
+
+
+    // axios.post('/checkout', { addressId })
+  
+    // .then(function(response) {  
+    
+                
+    //  console.log(response.data);
+    //  })
+    //  .catch(function(error) {
+    //    console.error('Error:', error);
+    //    })
+      
+    </script>
+
+
     <script src="assets/js/vendor/modernizr-3.11.2.min.js"></script>
     <script src="assets/js/vendor/jquery-3.5.1.min.js"></script>
 
