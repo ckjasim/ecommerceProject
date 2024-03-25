@@ -31,6 +31,8 @@
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/style.min.css" />
+        <link rel="stylesheet" href="assets/css/style.min.css" /><link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+
     <style>
     /* Style for the "Edit Address" button */
     .edit-btn {
@@ -719,16 +721,23 @@
                             <% addressData.forEach(element => { %>
                                 <input type="radio" value="<%= element._id %>" name="shippingAddress" id="billing-address<%= element._id %>" <% if (firstAddress) { %>checked<% firstAddress = false; } %>>
                                 <div class="address-option">
-                                    <label for="billing-address<%= element._id %>">
+                                    <label for="billing-address1">
                                         <h4 class="account-title">Shipping address</h4>
                                         <h6 class="name"><%= element.name %></h6>
                                         <p style="width: 80%;">
-                                            <%= element.address %>, <%= element.city %>, <%= element.state %>
-                                        </p>
+                                            <%= element.address %>
+                                        , <%= element.city %>,<%= element.state %></p>
                                         <p><%= element.pincode %></p>   
                                         <p><%= element.mobile %></p>
                                     </label>
-                                    <a class="edit-btn" href="#"><i class="fa fa-edit"></i></a>
+                                    
+                                    <div class="edit-btn">   
+                                      <a  href="/loadEditAddress?_id=<%= element._id %>"><i class="fa fa-edit"></i></a>
+                                    </div> 
+                                    <div class="delete-btn">   
+                                      <a  href="/deleteCheckoutAddress?_id=<%= element._id %>"><i class="fa fa-trash"></i></a>
+                                    </div> 
+
                                 </div>
                             <% }); %>
                             
@@ -843,10 +852,17 @@
                                         </div>
                                     </li>
                                 </ul>
-            
-                                <div class="single-form">
-                                    <button class="btn btn-primary btn-hover-dark d-block" id="placeOrder">Place Order</button>
-                                </div>
+                                <% if (addressData && addressData.length > 0) { %>
+                                    <div class="">
+                                        <button class="btn btn-primary btn-hover-dark d-block" id="placeOrder">Place Order</button>
+                                    </div>
+                                <% } else { %>
+                                    <div class="">
+                                        <button class="btn btn-primary btn-hover-dark d-block" id="placeOrder" disabled>Place Order</button>
+                                        <p class="text-danger">Please add an address to proceed.</p>
+                                    </div>
+                                <% } %>
+                                
                             </div>
                         </div>
                     </div>

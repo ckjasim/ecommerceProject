@@ -85,6 +85,8 @@ const viewCart =async(req,res)=>{
 }
 
 
+
+
 const updateQuantity = async (req, res) => {
     try {
         console.log('00000')
@@ -107,6 +109,7 @@ const updateQuantity = async (req, res) => {
         res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
 }
+
 
 const deleteCartProduct = async (req, res) => {
     try {

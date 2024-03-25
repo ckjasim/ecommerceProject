@@ -34,9 +34,10 @@ adminRoute.post('/newProduct',upload.array('image'), productController.addProduc
 adminRoute.get('/unList',adminConfig.isLogin, productController.unlistProduct)
 adminRoute.get('/editProduct',adminConfig.isLogin,productController.loadEditProduct)
 adminRoute.post('/editProduct',upload.array('image'),productController.editProduct)
+adminRoute.post('/deleteProductImage',productController.deleteProductImage)
 
-adminRoute.get('/orders',orderController.loadOrder)
-adminRoute.get('/adminOrderDetails',orderController.adminOrderDetails)
+adminRoute.get('/orders',adminConfig.isLogin,orderController.loadOrder)
+adminRoute.get('/adminOrderDetails',adminConfig.isLogin,orderController.adminOrderDetails)
 
 
 

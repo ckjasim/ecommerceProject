@@ -297,13 +297,17 @@
                       <input
                         type="text"
                         class="quantityInput"
+                        id="checkoutQuantity"
                         data-product-id="<%= element.productId._id %>"
                         value="<%= element.quantity %>"
+                        min="0"
+                      max="5"
                       />
                       
                     <button type="button" class="add" >+</button>
 
                     </div>
+                    <input type="text" id="quantity" value="<%=element.quantity%>" hidden />
                   </td>
 
                   <td class="product-total-price">
@@ -333,7 +337,7 @@
             </div>
             <div class="right-btn">
               <a href="#" class="btn btn-outline-dark">Clear Cart</a>
-              <a href="#" class="btn btn-outline-dark">Update Cart</a>
+              <!-- <a href="#" class="btn btn-outline-dark">Update Cart</a> -->
             </div>
           </div>
           <!-- Cart btn Start -->
@@ -429,11 +433,16 @@
                   </tbody>
                 </table>
               </div>
-              <div class="cart-total-btn">
-                <a href="/checkout" class="btn btn-dark btn-hover-primary btn-block"
-                  >Proceed To Checkout</a
-                >
+
+              <di v class="cart-btn">
+                <% if (cartDetails.products && cartDetails.products.length > 0) { %>
+                  <a href="/checkout" class="btn btn-dark btn-hover-primary btn-block">Proceed To Checkout</a>
+                <% } else { %>
+                  <button class="btn btn-dark btn-hover-primary btn-block" disabled>Proceed To Checkout</button>
+                <% } %>
               </div>
+              
+
             </div>
             <!-- Cart Totals End -->
           </div>
@@ -637,8 +646,31 @@
     ============================================ -->
     <!-- <script src="../../node_modules/axios/dist/axios.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const addButton = document.querySelector('.add');
+          const quantityInput = document.getElementById('checkoutQuantity');
+          const quantity = document.getElementById('quantity')
+
+  
+          addButton.addEventListener('click', function() {
+            console.log('////////')
+              let currentValue = parseInt(quantityInput.value);
+              let inStock = parseInt(quantity.value);
+              console.log(inStock)
+              if (currentValue <= 5) {
+                  quantityInput.value = currentValue;
+                  currentValue++;
+              }
+              
+              if (currentValue > 5 || currentValue > inStock) {
+                  addButton.disabled = true;
+              }
+          });
+      });
+  </script>
+    <script>
+
      document.addEventListener('DOMContentLoaded', function() {
     const quantityInputs = document.querySelectorAll('.quantityInput');
 

@@ -7,6 +7,7 @@ const orderSchema = new mongoose.Schema({
     cartId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'cart'},
     paymentOption:{type:String,required:true},
     orderedAt:{type:Date,required:true},
+    ordereStatus:{type:String,required:true},
 
     
 })

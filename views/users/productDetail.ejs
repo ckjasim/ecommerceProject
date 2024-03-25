@@ -726,14 +726,14 @@
                             <p>
                                 <%=productData.description%>
                             </p>
-                            <% if(productData.productStatus==true){%>
+                            <% if(productData.quantity==0){%>
                                 <div class="">
+                                    
                                     <span class="text-danger">Out of Stock</span>
                                 </div>
-                            <% }else{%>
-                                <div class="">
-                                    <span class="text-success">In Stock</span>
-
+                                <% }else{%>
+                                    <div class="">
+                                        <span class="text-success">In Stock</span>
                                 </div>
                             <% } %>
                             <!-- <form action="/loadCart" method="POST"> -->
@@ -758,8 +758,9 @@
                                         <div class="meta-action">
                                             <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">Add To Cart</button>
                                         </div>
-
-                                
+                                        
+                                        
+                                        <input type="text" id="quantity" value="<%=productData.quantity%>" hidden />
                                 
                                 
                                 <%} %>
@@ -1912,9 +1913,33 @@
 
     <!-- <script src="../../node_modules/axios/dist/axios.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const addButton = document.querySelector('.add');
+            const quantityInput = document.getElementById('quantityInput');
+            const quantity = document.getElementById('quantity')
+
+    
+            addButton.addEventListener('click', function() {
+                let currentValue = parseInt(quantityInput.value);
+                let inStock = parseInt(quantity.value);
+                console.log(inStock)
+                if (currentValue <= 5) {
+                    quantityInput.value = currentValue;
+                    currentValue++;
+                }
+                
+                if (currentValue > 5 ||currentValue > inStock) {
+                    addButton.disabled = true;
+                }
+            });
+        });
+    </script>
+    
 <script>
     function addToCart(productId) {
         const quantity = document.getElementById('quantityInput').value;
+        
         
         console.log(productId)
         axios.post('/loadCart', { quantity,productId })
@@ -1928,6 +1953,7 @@
                         window.location='/notLogin'
 
                     } else {
+                        window.location.reload()
                         window.location='/viewCart'
                     }
                    

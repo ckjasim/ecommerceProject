@@ -30,8 +30,85 @@
 
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
-    <link rel="stylesheet" href="assets/css/style.min.css" />
+    <link rel="stylesheet" href="assets/css/style.min.css" /><link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
     <style>
+	.hh-grayBox {
+	background-color: #F8F8F8;
+	margin-bottom: 20px;
+	padding: 35px;
+  margin-top: 20px;
+}
+.pt45{padding-top:45px;}
+.order-tracking{
+	text-align: center;
+	width: 20.33%;
+	position: relative;
+	display: block;
+}
+.order-tracking .is-complete{
+	display: block;
+	position: relative;
+	border-radius: 50%;
+	height: 24px;
+	width: 24px;
+	border: 0px solid #AFAFAF;
+	background-color: #393939;
+	margin: 0 auto;
+	transition: background 0.25s linear;
+	-webkit-transition: background 0.25s linear;
+	z-index: 2;
+}
+.order-tracking .is-complete:after {
+	display: block;
+	position: absolute;
+	content: '';
+	height: 14px;
+	width: 7px;
+	top: -2px;
+	bottom: 0;
+	left: 5px;
+	margin: auto 0;
+	border: 0px solid #AFAFAF;
+	border-width: 0px 2px 2px 0;
+	transform: rotate(45deg);
+	opacity: 0;
+}
+.order-tracking.completed .is-complete{
+	border-color: #03c74e;
+	border-width: 0px;
+	background-color: #03c74e;
+}
+.order-tracking.completed .is-complete:after {
+	border-color: #fff;
+	border-width: 0px 3px 3px 0;
+	width: 7px;
+	left: 11px;
+	opacity: 1;
+}
+.order-tracking p {
+	color: #A4A4A4;
+	font-size: 16px;
+	margin-top: 8px;
+	margin-bottom: 0;
+	line-height: 20px;
+}
+.order-tracking p span{font-size: 14px;}
+.order-tracking.completed p{color: #000;}
+.order-tracking::before {
+	content: '';
+	display: block;
+	height: 3px;
+	width: calc(100% - 40px);
+	background-color: #393939;
+	top: 13px;
+	position: absolute;
+	left: calc(-50% + 20px);
+	z-index: 0;
+}
+.order-tracking:first-child:before{display: none;}
+.order-tracking.completed:before{background-color: #03c74e;}
+
+
         /* Style for the "Edit Address" button */
         .edit-btn {
             display: inline-block;
@@ -760,59 +837,82 @@
                         </div>
 
                         <div class="tab-pane fade" id="pills-order">
-                            <div class="my-account-order account-wrapper">
-                                <h4 class="account-title">Orders</h4>
-                                <div class="account-table text-center table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th class="no">No</th>
-                                                <th class="name">Name</th>
-                                                <th class="date">Date</th>
-                                                <th class="status">
-                                                    Status
-                                                </th>
-                                                <th class="total">Total</th>
-                                                <th class="action">
-                                                    Action
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mostarizing Oil</td>
-                                                <td>Aug 22, 2020</td>
-                                                <td>Pending</td>
-                                                <td>$100</td>
-                                                <td>
-                                                    <a href="#">View</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Katopeno Altuni</td>
-                                                <td>July 22, 2020</td>
-                                                <td>Approved</td>
-                                                <td>$45</td>
-                                                <td>
-                                                    <a href="#">View</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Murikhete Paris</td>
-                                                <td>June 22, 2020</td>
-                                                <td>On Hold</td>
-                                                <td>$99</td>
-                                                <td>
-                                                    <a href="#">View</a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                <form action="/">
+                                    <div class="page-content"> 
+                                        <div class="container-fluid">
+                                            
+                                            
+                                            <div class="row d-flex justify-content-center mt-3">
+                                                
+                                                
+                                                <div class="col-xl-10 mt-5">
+                                                    <div class="card border shadow mb-3" style="border-radius: 0 !important;">
+                                                        <% orderDetails.cartId.products.forEach((element) => { %>
+                                                    
+                                                    <div class="card-body ">
+                                                        <article class="itemlist">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+                                                                    <a class="itemside" href="#">
+                                                                        <div class="left">
+                                                                            <img src="/productImage/<%= element.productId.img[0] %>" class="img-sm img-thumbnail" alt="Item" />
+                                                                            
+                                                                        </div> 
+                                                                        <div class="info">
+                                                                            <h6 class="mb-0"><%= element.productId.name %></h6>     
+                                                                                
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-lg-2 col-sm-2 col-4 col-price"><span>$<%= element.totalAmount %>.00</span></div>
+                                                                <div class="col-lg-2 col-sm-2 col-4 col-status">
+                                                                    <span class="badge rounded-pill alert-success">delivered</span>
+                                                                </div>
+                                                                <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                                                    <span>09-12-2024</span>
+                                                                </div>
+                                                                <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                                                    <span class="badge rounded-pill alert-success">cod</span>
+                                                                </div>
+                                                                <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                                                                    <a href="/orderDetails" class="btn btn-sm font-sm rounded btn-brand">View <br> details</a>
+                                                                    <a href="/cancelOrder" class="btn btn-sm font-sm rounded btn-danger">Cancel <br> order</a>
+                                                                    <!-- <a href="" class="btn btn-sm font-sm rounded btn-brand">Cancel order </a> -->
+                                                                    
+                                                                    
+                                                                    
+                                                                    <!-- <button class="btn btn-sm font-sm rounded text-white btn-danger " onclick="listProduct(this,'') "> Unlist </button>                    
+                                                                        
+                                                                        
+                                                                        <button class="btn btn-sm font-sm rounded text-white btn-success" onclick="listProduct(this,') "> List </button>                     -->
+                                                                        
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                <!-- row .// -->
+                                                            </article>
+                                                            
+                                                            <!-- itemlist  .// -->
+                                                            
+                                                            <!-- itemlist  .// -->
+                                                        </div>
+                                                        <% }); %>
+                                                </div>
+                                            </div>
+                                            
+                        
+                                            <!-- end card -->
+                                        </div>
+                                        
+                                    
+                        
+                                        
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+                           
+                                  </div>
                         </div>
 
                         <div class="tab-pane fade" id="pills-download">

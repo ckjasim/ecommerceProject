@@ -93,7 +93,8 @@ const addProducts=async (req,res)=>{
             description:req.body.description,
             createdAt:new Date(),
             productStatus:true,
-            img:req.files.map(file=>file.filename)
+            img:req.files.map(file=>file.filename),
+            
 
         })
 
@@ -114,7 +115,7 @@ const unlistProduct =async (req,res)=>{
         const {productId}=req.query
         console.log(productId);
         const productData=await productSchema.findOne({_id:productId})
-        console.log(productData);
+        
         productData.is_listed=!productData.is_listed
 
         await productData.save()
@@ -141,8 +142,8 @@ const loadEditProduct=async (req,res)=>{
     try {
         const categoryData = await categorySchema.find()
         
-        const productData = await productSchema.findOne({_id:req.query._id})
-        console.log(productData)
+        const productData = await productSchema.findOne({_id:req.query._id}).populate('categoryId')
+        
        
        return res.render('editProduct',{productData,categoryData})
        
@@ -150,6 +151,7 @@ const loadEditProduct=async (req,res)=>{
         console.log(error.message)
     }
 }
+
 
 // const cropImage =async (req,res)=>{
 //     (req, res, next) => {
@@ -207,14 +209,30 @@ const editProduct =async (req,res)=>{
         console.log(error.message)
     }
 }
+
+const deleteProductImage = async (req, res) => {
+    try {
+        console.log('111111111111111')
+        const{img}=req.body
+        console.log(img)
+         
+      
+        res.status(200).json({ status: 'success', message: 'product deleted successfully'});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
+}
+
+
 module.exports={
     loadProducts,
     loadNewProducts,
     addProducts,
     unlistProduct,
     loadEditProduct,
-    
     editProduct,
+    deleteProductImage
     // deleteImage
 
 }

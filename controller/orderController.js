@@ -38,12 +38,9 @@ const adminOrderDetails = async (req, res) => {
             path: 'products.productId'
         }
     });
-        
-        console.log(orderData)
-        res.render('adminOrderDetails',{orderData})
-        
-      
-        
+  
+    res.render('adminOrderDetails',{orderData})
+
     } catch (error) {
         console.log(error.message);
     }

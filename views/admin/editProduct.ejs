@@ -277,38 +277,17 @@
                                     <label class="form-label">Price</label>
                                     <input type="text" value="<%= productData.price%>" name="price" placeholder="Type here" class="form-control" required/>
                                 </div>
-                                <!-- <div class="mb-4">
-                                    <label class="form-label">Status</label>
-                                    <select class="form-select" name="status">
-                                        <option>In stock</option>
-                                        <option>Out of stock</option>
-                                    </select>
-                                </div> -->
-                                <!-- <div class="mb-4">
-                                    <label class="form-label">Tags</label>
-                                    <input type="text" placeholder="Type here" class="form-control" />
-                                </div>
-                                <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Tech</a>
-                                <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Mobile</a>
-                                <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Apple</a> -->
-                                <hr />
+                               
                                 <h5 class="mb-3">Categories</h5>
                                 <div class="mb-4">
                                     <!-- <label class="form-label">Categories</label> -->
                                     <select class="form-select" name="category">
-                                    <% categoryData.forEach(element => {  %>
-                                        
-                                        <option value="<%= element._id %>"><%= element.name %></option>
-
-                                    <% }); %>
-                                    <!-- <select class="form-select" name="category">
                                         <% categoryData.forEach(element => {  %>
-                                            <option value="<%= element._id %>" <%= element._id === defaultCategoryId ? 'selected' : '' %>><%= element.name %></option>
+                                            <option value="<%= element._id %>" <%= element._id.toString() === productData.categoryId._id.toString() ? 'selected' : '' %>><%= element.name %></option>
                                         <% }); %>
                                     </select>
-                                     -->
-                                        
-                                    </select>
+                                    
+                                    
                                 </div>
                              
                                 
@@ -320,20 +299,20 @@
                                         <label class="form-label">Images</label>
                                         <div class="left photo">
                                             <img src="/productImage/<%= productData.img[0]%>" class="img-sm img-thumbnail" alt="Item" />
-                                            <a href=""  class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
+                                            <button href=""  class="btn btn-sm font-sm rounded btn-brand delete-link" onclick="imageData('<% productData.img[0] %>')"> Delete </button>
                                         </div>
                                         <div class="left photo">
                                             <img src="/productImage/<%= productData.img[1]%>" class="img-sm img-thumbnail" alt="Item" />
-                                            <a href="deleteImage?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
+                                            <a href="deleteImage?_id=<% productData.img[1] %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
                                             
                                         </div>
                                         <div class="left photo">
                                             <img src="/productImage/<%= productData.img[2]%>" class="img-sm img-thumbnail" alt="Item" />
-                                            <a href="editProduct?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
+                                            <a href="deleteImage?_id=<% productData.img[2] %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
                                         </div>
                                         <div class="left photo">
                                             <img src="/productImage/<%= productData.img[3]%>" class="img-sm img-thumbnail" alt="Item" />
-                                            <a href="editProduct?_id=<%= productData._id %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
+                                            <a href="deleteImage?_id=<% productData.img[3] %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
                                         </div>
                                         <input multiple class="form-control" type="file" name="image" />
                                     </div>
@@ -381,16 +360,23 @@
                 // Add event listener to each delete link
                 deleteLinks.forEach(link => {
                     link.addEventListener('click', function(event) {
-                        event.preventDefault();
-        
-                        // Get the parent element of the delete link (the photo container)
+                        event.preventDefault();  
                         const photoContainer = link.closest('.photo');
-        
-                        // Remove the photo container from the DOM
                         photoContainer.remove();
                     });
                 });
+                function imageData(img){
+                axios.post('/deleteProductImage', { img })
+            .then(function(response) {  
+                
+                console.log(response.data);
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            })
+            }
             });
+            
         </script>
         
 

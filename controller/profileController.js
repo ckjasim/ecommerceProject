@@ -9,7 +9,17 @@ const loadProfile = async (req,res)=>{
         userId=req.session.user_id
         const addressData = await addressSchema.find({userId:userId}).populate('userId')
         const userData = await userSchema.findOne({_id:userId})
-        res.render('profile',{userData,addressData})
+        const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
+        .populate('cartId')
+        .populate('userId')
+        .populate({
+            path: 'cartId',
+            populate: {
+                path: 'products.productId'
+            }
+        })
+        .populate('addressId');
+        res.render('profile',{userData,addressData,orderDetails})
     } catch (error) {
         console.log(error.message);
     }
@@ -97,7 +107,7 @@ const editAddress=async (req,res)=>{
         }
         
         await addressSchema.findByIdAndUpdate({_id:addressId},{$set:updateAddress})
-        res.redirect('/loadProfile')
+        res.redirect('/checkout')
     } catch (error) {
         console.log(error.message);
     }
@@ -107,6 +117,15 @@ const deleteAddress=async (req,res)=>{
         const addressId=req.query._id
         await addressSchema.findByIdAndDelete({_id:addressId})
         res.redirect('/loadProfile')
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const deleteCheckoutAddress=async (req,res)=>{
+    try {
+        const addressId=req.query._id
+        await addressSchema.findByIdAndDelete({_id:addressId})
+        res.redirect('/checkout')
     } catch (error) {
         console.log(error.message);
     }
@@ -181,8 +200,10 @@ const orderDetails=async (req,res)=>{
 }
 const cancelOrder=async (req,res)=>{
     try {
-         await orderSchema.findOneAndDelete({ userId: req.session.user_id })
-        
+        console.log('[[[[[')
+         const orderData =await orderSchema.findOne({ userId: req.session.user_id })
+        orderSchema.orderStatus='cancelled'
+        orderData.save()
         
         
        res.redirect('/viewCart')
@@ -204,5 +225,6 @@ module.exports={
     loadOrder,
     viewOrder,
     orderDetails,
-    cancelOrder
+    cancelOrder,
+    deleteCheckoutAddress
 }
