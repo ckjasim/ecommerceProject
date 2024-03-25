@@ -73,7 +73,7 @@ userRoute.post('/loadEditAddress',profileController.editAddress)
 userRoute.get('/deleteAddress',profileController.deleteAddress)
 
 
-userRoute.post('/placeOrder',cartController.placeOrder)
+
 
 
 

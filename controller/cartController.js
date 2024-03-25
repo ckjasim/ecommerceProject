@@ -142,16 +142,7 @@ const checkout = async (req, res) => {
         res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
 }
-const placeOrder = async (req, res) => {
-    try {
-        
-      
-        res.status(200).json({ status: 'success', message: 'product deleted successfully'});
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ status: 'error', message: 'Internal server error' });
-    }
-}
+
 
 
 
@@ -161,5 +152,5 @@ module.exports={
     updateQuantity,
     deleteCartProduct,
     checkout,
-    placeOrder
+    
 }

@@ -3,6 +3,7 @@ const express=require('express')
 const adminController=require('../controller/adminController')
 const categoryController=require('../controller/categoryController')
 const productController=require('../controller/productController')
+const orderController=require('../controller/orderController')
 const adminConfig=require('../middleware/adminAuthentification')
 
 
@@ -33,6 +34,14 @@ adminRoute.post('/newProduct',upload.array('image'), productController.addProduc
 adminRoute.get('/unList',adminConfig.isLogin, productController.unlistProduct)
 adminRoute.get('/editProduct',adminConfig.isLogin,productController.loadEditProduct)
 adminRoute.post('/editProduct',upload.array('image'),productController.editProduct)
+
+adminRoute.get('/orders',orderController.loadOrder)
+adminRoute.get('/adminOrderDetails',orderController.adminOrderDetails)
+
+
+
+
+
 
 adminRoute.get('/adminLogout',adminConfig.isLogin,adminController.logout)
 

@@ -137,6 +137,7 @@ const viewOrder=async (req,res)=>{
             userId:req.session.user_id,
             addressId:selectedAddress, 
             paymentOption:selectedPaymentOption, 
+            orderedAt:new Date(), 
          })   
          await orderData.save();
         
