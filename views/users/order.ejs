@@ -227,7 +227,7 @@
                         
                         <div class="col-xl-10 mt-5">
                             <div class="card border shadow mb-3" style="border-radius: 0 !important;">
-                                <% orderDetails.cartId.products.forEach((element) => { %>
+                                <% orderDetails.products.forEach((element) => { %>
                             
                             <div class="card-body ">
                                 <article class="itemlist">
@@ -245,8 +245,10 @@
                                             </a>
                                         </div>
                                         <div class="col-lg-2 col-sm-2 col-4 col-price"><span>$<%= element.totalAmount %>.00</span></div>
+
+                                       
                                         <div class="col-lg-2 col-sm-2 col-4 col-status">
-                                            <span class="badge rounded-pill alert-success">delivered</span>
+                                            <span class="badge rounded-pill alert-success"><%= element.orderStatus %></span>
                                         </div>
                                         <div class="col-lg-1 col-sm-2 col-4 col-date">
                                             <span>09-12-2024</span>
@@ -254,9 +256,10 @@
                                         <div class="col-lg-1 col-sm-2 col-4 col-date">
                                             <span class="badge rounded-pill alert-success">cod</span>
                                         </div>
+
                                         <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
                                             <a href="/orderDetails" class="btn btn-sm font-sm rounded btn-brand">View <br> details</a>
-                                            <a href="/cancelOrder" class="btn btn-sm font-sm rounded btn-danger">Cancel <br> order</a>
+                                            <a href="/cancelOrder?_id=<%= element.productId._id %>" class="btn btn-sm font-sm rounded btn-danger">Cancel <br> order</a>
                                             <!-- <a href="" class="btn btn-sm font-sm rounded btn-brand">Cancel order </a> -->
                                             
                                             

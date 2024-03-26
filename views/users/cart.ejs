@@ -307,7 +307,7 @@
                     <button type="button" class="add" >+</button>
 
                     </div>
-                    <input type="text" id="quantity" value="<%=element.quantity%>" hidden />
+                    <input type="text" id="quantity" value="<%=element.productId.quantity%>" hidden />
                   </td>
 
                   <td class="product-total-price">
@@ -648,27 +648,36 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
-          const addButton = document.querySelector('.add');
-          const quantityInput = document.getElementById('checkoutQuantity');
-          const quantity = document.getElementById('quantity')
-
+        const addButton = document.querySelector('.add');
+        const quantityInput = document.getElementById('checkoutQuantity');
+        const quantity = document.getElementById('quantity');
+    
+        addButton.addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value);
+            let inStock = parseInt(quantity.value);
   
-          addButton.addEventListener('click', function() {
-            console.log('////////')
-              let currentValue = parseInt(quantityInput.value);
-              let inStock = parseInt(quantity.value);
-              console.log(inStock)
-              if (currentValue <= 5) {
-                  quantityInput.value = currentValue;
-                  currentValue++;
-              }
-              
-              if (currentValue > 5 || currentValue > inStock) {
-                  addButton.disabled = true;
-              }
-          });
-      });
+            if (currentValue < Math.min(5, inStock)) {
+                currentValue++;
+                quantityInput.value = currentValue;
+            }
+  
+            // Check condition after incrementing the value
+            if (currentValue >= Math.min(5, inStock)) {
+                addButton.disabled = true;
+            }
+        });
+  
+        // Check condition on page load
+        const currentValue = parseInt(quantityInput.value);
+        const inStock = parseInt(quantity.value);
+  
+        if (currentValue >= Math.min(5, inStock)) {
+            addButton.disabled = true;
+        }
+    });
   </script>
+  
+  
     <script>
 
      document.addEventListener('DOMContentLoaded', function() {
@@ -714,8 +723,9 @@ async function deleteCartProduct(productId) {
   axios.post('/deleteCartProduct', { productId })
   
     .then(function(response) {  
-      const refresh = document.getElementById(`cartRefresh${productId}`)
-      refresh.remove()
+      const element = document.getElementById(`cartRefresh${productId}`)
+      element.remove();
+      window.location.reload();
                 
      console.log(response.data);
      })

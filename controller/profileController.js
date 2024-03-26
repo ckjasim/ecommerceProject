@@ -1,6 +1,6 @@
 const userSchema = require('../model/userData')
-const addressSchema = require('../model/addressData')
 const orderSchema = require('../model/orderData') 
+const addressSchema = require('../model/addressData')
 const cartSchema = require('../model/cartData') 
 
 
@@ -45,7 +45,11 @@ const editProfile=async (req,res)=>{
 }
 const loadAddress=async (req,res)=>{
     try {
-       res.render('address')
+        const message=req.flash('message').toString()
+    if(message){
+        console.log(message);
+    }
+       res.render('address',{message})
 
     } catch (error) {
         console.log(error.message);
@@ -53,7 +57,62 @@ const loadAddress=async (req,res)=>{
 }
 const addAddress=async (req,res)=>{
     try {
-        console.log('fsdfsdfsfsfsfsfdsfds')
+
+
+        const name = req.body.name.trim();
+        
+        if(!name||!/^[a-zA-Z][a-zA-Z\s]*$/.test(name)){
+            req.flash('message','Invalid name provided')
+            return res.redirect('/loadAddress')
+        }
+
+        const mobile = req.body.mobile
+        const mobileRegex=/^\d{10}$/;
+
+        if(!mobileRegex.test(mobile)){
+            req.flash('message','Invalid mobile number')
+            return res.redirect('/loadAddress')
+        }
+        const pincode = req.body.pincode
+        const pincodeRegex=/^\d{6}$/;
+
+        if(!pincodeRegex.test(pincode)){
+            req.flash('message','Invalid pincode number')
+            return res.redirect('/loadAddress')
+        }
+
+        const locality = req.body.locality.trim();
+        
+        if(!locality||!/^[a-zA-Z][a-zA-Z\s]*$/.test(locality)){
+            req.flash('message','Invalid locality provided')
+            return res.redirect('/loadAddress')
+        }
+        const address = req.body.address.trim();
+        
+        if(!address||!/^[a-zA-Z][a-zA-Z\s]*$/.test(address)){
+            req.flash('message','Invalid address provided')
+           
+        }
+        const city = req.body.city.trim();
+        
+        if(!city||!/^[a-zA-Z][a-zA-Z\s]*$/.test(city)){
+            req.flash('message','Invalid city provided')
+            return res.redirect('/loadAddress')
+        }
+        const district = req.body.district.trim();
+        
+        if(!district||!/^[a-zA-Z][a-zA-Z\s]*$/.test(district)){
+            req.flash('message','Invalid district provided')
+            return res.redirect('/loadAddress')
+        }
+        const landmark = req.body.landmark.trim();
+        
+        if(!landmark||!/^[a-zA-Z][a-zA-Z\s]*$/.test(landmark)){
+            req.flash('message','Invalid landmark provided')
+            return res.redirect('/loadAddress')
+        }
+
+
         const addressData=new addressSchema({
             name:req.body.name,
             mobile:req.body.mobile,
@@ -76,12 +135,16 @@ const addAddress=async (req,res)=>{
 }
 const loadEditAddress=async (req,res)=>{
     try {
+        const message=req.flash('message').toString()
+    if(message){
+        console.log(message);
+    }
         const addressId=req.query._id
 
         const addressData= await addressSchema.findOne({_id:addressId})
         console.log(addressData);
         console.log(addressData._id)
-       res.render('editAddress',{addressData})
+       res.render('editAddress',{addressData,message})
 
     } catch (error) {
         console.log(error.message);
@@ -89,7 +152,6 @@ const loadEditAddress=async (req,res)=>{
 }
 const editAddress=async (req,res)=>{
     try {
-
     
         const addressId=req.body._id
 
@@ -130,87 +192,6 @@ const deleteCheckoutAddress=async (req,res)=>{
         console.log(error.message);
     }
 }
-const loadOrder=async (req,res)=>{
-    try {
-       console.log('4444444')
-       const {selectedAddress,selectedPaymentOption} =req.body
-    //    quantity=req.flash('quantity').toString()
-    req.flash('selectedAddress', selectedAddress);
-req.flash('selectedPaymentOption', selectedPaymentOption);
-
-       console.log(selectedAddress)
-       res.send({ status: 'success', message: 'Order placed successfully'});
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-const viewOrder=async (req,res)=>{
-    try {
-        const selectedAddress=req.flash('selectedAddress').toString()
-        const selectedPaymentOption=req.flash('selectedPaymentOption').toString()
-
-        const cartData=await cartSchema.findOne({userId:req.session.user_id})
-    
-         const orderData =new orderSchema({
-            cartId:cartData._id,
-            userId:req.session.user_id,
-            addressId:selectedAddress, 
-            paymentOption:selectedPaymentOption, 
-            orderedAt:new Date(), 
-         })   
-         await orderData.save();
-        
-        const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
-        .populate('cartId')
-        .populate('userId')
-        .populate({
-            path: 'cartId',
-            populate: {
-                path: 'products.productId'
-            }
-        })
-        .populate('addressId');
-        
-        
-
-        res.render('order',{orderDetails,selectedPaymentOption})
-    
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-const orderDetails=async (req,res)=>{
-    try {
-        const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
-        .populate('cartId')
-        .populate('userId')
-        .populate({
-            path: 'cartId',
-            populate: {
-                path: 'products.productId'
-            }
-        })
-        .populate('addressId');
-        
-        
-       res.render('orderDetails',{orderDetails})
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-const cancelOrder=async (req,res)=>{
-    try {
-        console.log('[[[[[')
-         const orderData =await orderSchema.findOne({ userId: req.session.user_id })
-        orderSchema.orderStatus='cancelled'
-        orderData.save()
-        
-        
-       res.redirect('/viewCart')
-    } catch (error) {
-        console.log(error.message);
-    }
-}
 
 
 
@@ -222,9 +203,6 @@ module.exports={
     loadEditAddress,
     editAddress,
     deleteAddress,
-    loadOrder,
-    viewOrder,
-    orderDetails,
-    cancelOrder,
+    
     deleteCheckoutAddress
 }

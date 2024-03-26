@@ -745,7 +745,7 @@
                                     
                                     
                                     <div class="meta-action">
-                                        <a href="/viewCart" id="addToCartButton" class="btn btn-dark btn-hover-primary">Go To Cart</a>
+                                        <a href="/viewCart" id="addToCartButton" class="btn btn-dark btn-hover-primary" >Go To Cart</a>
                                     </div>
                                     
                                     <%}else{%>
@@ -1924,14 +1924,15 @@
                 let currentValue = parseInt(quantityInput.value);
                 let inStock = parseInt(quantity.value);
                 console.log(inStock)
-                if (currentValue <= 5) {
-                    quantityInput.value = currentValue;
-                    currentValue++;
-                }
-                
-                if (currentValue > 5 ||currentValue > inStock) {
+
+                if (currentValue >= Math.min(5, inStock)) {
                     addButton.disabled = true;
                 }
+            else {
+              currentValue++;
+              quantityInput.value = currentValue;
+          }
+          
             });
         });
     </script>
@@ -1944,19 +1945,18 @@
         console.log(productId)
         axios.post('/loadCart', { quantity,productId })
             .then(function(response) {
-                
                 console.log(response.data);
              
                 if(response.data){
                     if (response.data.session==false) {
                         console.log('1111');
                         window.location='/notLogin'
-
+                        
                     } else {
-                        window.location.reload()
+                        
                         window.location='/viewCart'
                     }
-                   
+                    
                 }
             })
             .catch(function(error) {
@@ -1964,6 +1964,7 @@
             });
     };
 </script>
+
 
     <!-- Modernizer & jQuery JS -->
     <script src="/user/assets/js/vendor/modernizr-3.11.2.min.js"></script>

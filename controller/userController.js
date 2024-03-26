@@ -181,9 +181,10 @@ const loadProductDetail=async (req,res)=>{
     try {
         const productId=req.params.productId
         const productData= await productSchema.findOne({_id:productId}).populate('categoryId')
+        const relatedProducts= await productSchema.find().populate('categoryId')
         const userId=req.session.user_id
         const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:userId});
-        res.render('productDetail',{productData,alreadyCart})
+        res.render('productDetail',{productData,alreadyCart,relatedProducts})
     } catch (error) {
         console.log(error.message)
     }

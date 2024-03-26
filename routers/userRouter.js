@@ -5,13 +5,14 @@ const session=require('express-session')
 userRoute.set('views','./views/users')
 
 const userConfig=require('../middleware/userAuthentification')
-// const acessConfig=require('../middleware/accessAuthentification')
+const accessUser=require('../middleware/accessAuthentification')
 const googleLogin = require('../passport')
 
 const userController=require('../controller/userController')
 const otpController=require('../controller/otpController')
 const cartController=require('../controller/cartController')
 const profileController=require('../controller/profileController')
+const orderController=require('../controller/orderController')
 
 userRoute.use(session({
     secret:process.env.SESSION_SECRET,
@@ -27,9 +28,9 @@ userRoute.get('/register',userConfig.isLogout,userController.loadRegister)
 userRoute.post('/register',userController.submit)
 
 userRoute.post('/otp',otpController.otp)
-userRoute.post('/homePage',otpController.verifyMail)
+userRoute.post('/homePage', otpController.verifyMail)
 userRoute.get('/resend',otpController.resendOtp)
-userRoute.get('/userHome',userConfig.isLogin,userController.userHome)
+userRoute.get('/userHome',userConfig.isLogin,accessUser,userController.userHome)
 userRoute.get('/logout',userConfig.isLogin,userController.logout)
 userRoute.get('/notLogin',userController.notLogin)
 
@@ -53,26 +54,26 @@ userRoute.get('/loadShop',userController.loadShop)
 
 // userRoute.get('/loadCart',cartController.loadCart)
 userRoute.post('/loadCart',cartController.loadCart)
-userRoute.get('/viewCart',userConfig.isLogin,cartController.viewCart)
+userRoute.get('/viewCart',userConfig.isLogin,accessUser,cartController.viewCart)
 userRoute.post('/updateQuantity',cartController.updateQuantity)
 userRoute.post('/deleteCartProduct',cartController.deleteCartProduct)
-userRoute.get('/checkout',userConfig.isLogin,cartController.checkout)
-userRoute.post('/checkout',profileController.loadOrder)
-userRoute.get('/loadOrder',userConfig.isLogin,profileController.viewOrder)
-userRoute.get('/orderDetails',userConfig.isLogin,profileController.orderDetails)
-userRoute.get('/cancelOrder',userConfig.isLogin,profileController.cancelOrder)
+userRoute.get('/checkout',userConfig.isLogin,accessUser,cartController.checkout)
+userRoute.post('/checkout',orderController.loadOrder)
+userRoute.get('/loadOrder',userConfig.isLogin,accessUser,orderController.viewOrder)
+userRoute.get('/orderDetails',userConfig.isLogin,accessUser,orderController.orderDetails)
+userRoute.get('/cancelOrder',userConfig.isLogin,accessUser,orderController.cancelOrder)
 
 
 //profile
 
-userRoute.get('/loadProfile',userConfig.isLogin,profileController.loadProfile)
+userRoute.get('/loadProfile',userConfig.isLogin,accessUser,profileController.loadProfile)
 userRoute.post('/loadProfile',userConfig.isLogin,profileController.editProfile)
-userRoute.get('/loadAddress',userConfig.isLogin,profileController.loadAddress)
+userRoute.get('/loadAddress',userConfig.isLogin,accessUser,profileController.loadAddress)
 userRoute.post('/loadAddress',profileController.addAddress)
-userRoute.get('/loadEditAddress',userConfig.isLogin,profileController.loadEditAddress)
+userRoute.get('/loadEditAddress',userConfig.isLogin,accessUser,profileController.loadEditAddress)
 userRoute.post('/loadEditAddress',profileController.editAddress)
-userRoute.get('/deleteAddress',userConfig.isLogin,profileController.deleteAddress)
-userRoute.get('/deleteCheckoutAddress',userConfig.isLogin,profileController.deleteCheckoutAddress)
+userRoute.get('/deleteAddress',userConfig.isLogin,accessUser,profileController.deleteAddress)
+userRoute.get('/deleteCheckoutAddress',userConfig.isLogin,accessUser,profileController.deleteCheckoutAddress)
 
 
 
