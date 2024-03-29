@@ -13,6 +13,7 @@ const otpController=require('../controller/otpController')
 const cartController=require('../controller/cartController')
 const profileController=require('../controller/profileController')
 const orderController=require('../controller/orderController')
+const productController=require('../controller/productController')
 
 userRoute.use(session({
     secret:process.env.SESSION_SECRET,
@@ -23,6 +24,12 @@ userRoute.use(session({
 userRoute.get('/',userController.loadHome)
 userRoute.get('/login',userConfig.isLogout,userController.loadLogin)
 userRoute.post('/login',userController.loginSubmit)
+
+userRoute.get('/loadForgotPassword',userController.loadForgotPassword)
+userRoute.post('/loadForgotPassword',userController.forgotPassword)
+userRoute.post('/verifyForgotOtp', otpController.verifyForgotOtp)
+userRoute.get('/newPassword', userController.newPassword)
+userRoute.post('/newPassword', userController.newPasswordSubmit)
 
 userRoute.get('/register',userConfig.isLogout,userController.loadRegister)
 userRoute.post('/register',userController.submit)
@@ -43,8 +50,7 @@ userRoute.get("/auth/google/callback", googleLogin.googleCallback, googleLogin.s
 
 //product
 
-userRoute.get('/loadProduct',userController.loadProduct)
-userRoute.get('/loadProductDetail/:productId',userController.loadProductDetail)
+
 
 
 //shop
@@ -53,8 +59,9 @@ userRoute.get('/loadShop',userController.loadShop)
 //cart
 
 // userRoute.get('/loadCart',cartController.loadCart)
-userRoute.post('/loadCart',cartController.loadCart)
 userRoute.get('/viewCart',userConfig.isLogin,accessUser,cartController.viewCart)
+userRoute.post('/loadCart',cartController.loadCart)
+userRoute.post('/updateProductDetails',cartController.updateProductDetails)
 userRoute.post('/updateQuantity',cartController.updateQuantity)
 userRoute.post('/deleteCartProduct',cartController.deleteCartProduct)
 userRoute.get('/checkout',userConfig.isLogin,accessUser,cartController.checkout)
@@ -74,6 +81,15 @@ userRoute.get('/loadEditAddress',userConfig.isLogin,accessUser,profileController
 userRoute.post('/loadEditAddress',profileController.editAddress)
 userRoute.get('/deleteAddress',userConfig.isLogin,accessUser,profileController.deleteAddress)
 userRoute.get('/deleteCheckoutAddress',userConfig.isLogin,accessUser,profileController.deleteCheckoutAddress)
+userRoute.post('/changePassword',userConfig.isLogin,accessUser,profileController.changePassword)
+
+
+userRoute.get('/loadProduct',productController.loadUserProduct)
+userRoute.get('/loadProductDetail/:productId',productController.loadUserProductDetail)
+userRoute.post('/sort',productController.sort)
+
+
+
 
 
 

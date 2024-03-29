@@ -257,7 +257,7 @@
                                         <td><b><%= order.userId.fName %></b></td>
                                         <td><%= order.userId.email %></td>
 
-                                        <td>$<%= order.cartId.products.reduce((Total, amount) => Total + amount.totalAmount, 0); %>.00</td>
+                                        <td>$<%= order.products.reduce((Total, amount) => Total + amount.totalAmount, 0); %>.00</td>
                                         <td><span class="badge rounded-pill alert-warning">Pending</span></td>
                                         <td>03.12.2020</td>
                                         <td><span class="badge rounded-pill alert-warning"><%= order.paymentOption %></span></td>

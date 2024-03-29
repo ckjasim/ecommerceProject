@@ -20,7 +20,9 @@ const loadCart = async (req, res) => {
         req.flash('quantity',quantity)
         
         console.log('--------')
-        const productData = await productSchema.findOne({ _id: productId })
+        const productData = await productSchema.findOne({ _id: req.body.productId })
+        console.log('--sssss------')
+        console.log(productData)
         const total=quantity*productData.price
 
         const productToAdd = [{
@@ -55,11 +57,12 @@ const loadCart = async (req, res) => {
                 );
             }
             
-            
+            const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:req.session.user_id});
+
             console.log('--------')
             // const totalAmount=cartDetails.productId.price*quantity
             
-            res.send({ status: 'success', message: 'Added to cart successfully', session:true});
+            res.send({ status: 'success', message: 'Added to cart successfully', session:true,alreadyCart});
             
     }
     } catch (error) {
@@ -69,21 +72,45 @@ const loadCart = async (req, res) => {
 };
 
 
-const viewCart =async(req,res)=>{
+
+const updateProductDetails =async(req,res)=>{
     try {
         
-        quantity=req.flash('quantity').toString()
-        
-        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
-        const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
-        res.render('cart',{cartDetails,cartTotal})
+        const productId = req.body.productId;
+        const quantity = req.body.quantity;
+        const productData = await productSchema.findOne({ _id: req.body.productId })
+        console.log('--sssssppppppp------')
+        console.log(productData)
+        const total=quantity*productData.price
+
+        const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:req.session.user_id});
+
+        res.send({ status: 'success', message: 'Added to cart successfully',alreadyCart});
+                  
        
     } catch (error) {
         console.log(error.message);
         res.status(500).send({ status: 'error', message: 'Internal server error' });
     }
 }
-
+const viewCart =async(req,res)=>{
+    try {
+        
+        quantity=req.flash('quantity').toString()
+        
+        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
+        if(cartDetails){
+            const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+            res.render('cart',{cartDetails,cartTotal})
+        }else{
+            res.render('emptyCart')
+        }
+       
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ status: 'error', message: 'Internal server error' });
+    }
+}
 
 
 
@@ -155,5 +182,6 @@ module.exports={
     updateQuantity,
     deleteCartProduct,
     checkout,
+    updateProductDetails
     
 }

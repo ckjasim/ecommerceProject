@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- Mirrored from htmldemo.net/furbar-1/furbar/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 14 Dec 2023 16:16:18 GMT -->
+<!-- Mirrored from htmldemo.net/furbar-1/furbar/empty-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 14 Dec 2023 16:16:18 GMT -->
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -28,7 +28,6 @@
     <link rel="stylesheet" href="assets/css/plugins/select2.min.css" />
     <link rel="stylesheet" href="assets/css/plugins/ion.rangeSlider.min.css" />
 
-    <script src="https://kit.fontawesome.com/8859e6078b.js" crossorigin="anonymous"></script>     
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/style.min.css" />
@@ -589,11 +588,11 @@
         <div class="container">
             <!-- Page Banner Content End -->
             <div class="page-banner-content">
-                <h2 class="title">Login</h2>
+                <h2 class="title">Empty Cart</h2>
 
                 <ul class="breadcrumb">
                     <li><a href="index.html">Home</a></li>
-                    <li class="active">Login</li>
+                    <li class="active">Empty Cart</li>
                 </ul>
             </div>
             <!-- Page Banner Content End -->
@@ -601,66 +600,27 @@
     </div>
     <!-- Page Banner Section End -->
 
-    <!-- Login Section Start -->
-    <div class="section section-padding" style="background-image: url(assets/images/page-banner.jpg)">
+    <!-- Shopping Cart Section Start -->
+    <div class="section section-padding">
         <div class="container">
-            <div class="row justify-content-center">
-                
-                <div class="col-lg-6">
-                    <!-- Login & Register Start -->
-                    
-                    <div class="login-register-wrapper">
-                        <% if(message){%>
-                            <div class="alert alert-danger d-flex align-items-center" role="alert" id="existAlert">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 " viewBox="0 0 16 16" role="img" aria-label="Warning:">
-                                  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                </svg>
-                                <div >
-    
-                                    <strong>!!!</strong>
-                                    <%=message%>
-                                    
-                                </div>
-                                <%}%>
-                              </div>
-                        <h4 class="title">LOGIN</h4>
-                        <form action="" method="post">
-                            <div class="single-form">
-                                <input type="text" name="email" placeholder=" email *" value="vaseem@gmail.com" required />
-                            </div>
-                            <div class="single-form">
-                                <input type="password" name="password" placeholder="Password" value="11111111" required/>
-                            </div>
-                            <div class="single-form">
-                                <input type="checkbox" id="remember" />
-                                <label for="remember"><span></span> Remember me</label>
-                            </div>
-                            <div class="single-form">
-                                <button class="btn btn-primary btn-hover-dark">
-                                    Login
-                                </button>
-                            </div>
-         
-                            <div>
-                            <a href="/auth/google" class="btn border border-warning btn-hover-dark mt-3">Login with Google   </a>
-                            
-                            <a href="/auth/facebook" class="btn border border-warning btn-hover-dark mt-3">Login with Facebook </a>
-                            </div>
-                           
-                            
-                        </form>
-                        <p><a href="/loadForgotPassword">Forgot password?</a></p>
-                        <p>
-                            New to addo?
-                            <a href="register">Create an account</a>
-                        </p>
+            <div class="cart-wrapper">
+                <!-- empty cart Start -->
+                <div class="empty-cart text-center">
+                    <h2 class="empty-cart-title">
+                        There are no more items in your cart
+                    </h2>
+                    <div class="empty-cart-img">
+                        <img src="assets/images/cart.png" alt="Cart" />
                     </div>
-                    <!-- Login & Register End -->
+                    <p>Your cart is currently empty!</p>
+                    <a href="/userHome" class="btn btn-primary btn-hover-dark"><i class="fa fa-angle-left"></i> Continue
+                        browsing</a>
                 </div>
+                <!-- empty cart End -->
             </div>
         </div>
     </div>
-    <!-- Login Section End -->
+    <!-- Shopping Cart Section End -->
 
     <!-- Footer Section Start -->
     <div class="section footer-section">
@@ -860,5 +820,5 @@
 </body>
 
 
-<!-- Mirrored from htmldemo.net/furbar-1/furbar/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 14 Dec 2023 16:16:18 GMT -->
+<!-- Mirrored from htmldemo.net/furbar-1/furbar/empty-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 14 Dec 2023 16:16:18 GMT -->
 </html>

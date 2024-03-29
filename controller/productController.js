@@ -1,5 +1,6 @@
 const productSchema =require('../model/productData')
 const categorySchema = require('../model/categoryData')
+const cartSchema = require('../model/cartData')
 const path=require('path')
 
 const loadProducts =async (req,res)=>{
@@ -225,6 +226,79 @@ const deleteProductImage = async (req, res) => {
 }
 
 
+
+
+
+//---------------------------------------user-------------------
+
+
+const loadUserProduct=async (req,res)=>{
+    try {
+        const productData= await productSchema.find().populate('categoryId')
+        res.render('products',{productData})
+    } catch (error) {
+        console.log(error.message)
+    }
+ 
+}
+
+
+
+const loadUserProductDetail=async (req,res)=>{
+    try {
+        const productId=req.params.productId
+        const productData= await productSchema.findOne({_id:productId}).populate('categoryId')
+        const relatedProducts= await productSchema.find().populate('categoryId')
+        const userId=req.session.user_id
+        const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:userId});
+        res.render('productDetail',{productData,alreadyCart,relatedProducts})
+    } catch (error) {
+        console.log(error.message)
+    }
+    
+
+}
+
+//sort
+
+const sort =async (req,res)=>{
+    try {
+       const selectedValue=req.body.selectedValue
+
+        console.log(selectedValue)
+        let sort
+        switch (selectedValue) {
+            case "Price low to high":
+                
+             sort = await productSchema.find().sort({ 'price': 1 });
+
+            res.send({ status: 'success', message: 'sorted successfully', sort});
+            
+                break;
+            case "Price high to low":
+                 sort = await productSchema.find().sort({ 'price': -1 });
+                res.send({ status: 'success', message: 'sorted successfully', sort});
+                break;
+            case "a to z":
+                sort = await productSchema.find().collation({ locale: 'en', strength: 1 }).sort({ 'name': 1 });
+                res.send({ status: 'success', message: 'sorted successfully', sort});
+                break;
+            case "z to a":
+                sort = await productSchema.find().collation({ locale: 'en', strength: 1 }).sort({ 'name': -1 });
+                res.send({ status: 'success', message: 'sorted successfully', sort});
+                break;
+            default:
+                
+                break;
+        }
+        
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
 module.exports={
     loadProducts,
     loadNewProducts,
@@ -232,7 +306,10 @@ module.exports={
     unlistProduct,
     loadEditProduct,
     editProduct,
-    deleteProductImage
+    deleteProductImage,
+    sort,
+    loadUserProduct,
+    loadUserProductDetail
     // deleteImage
 
 }

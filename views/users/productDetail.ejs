@@ -31,6 +31,7 @@
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="/user/assets/css/style.css"> -->
     <link rel="stylesheet" href="/user/assets/css/style.min.css" />
+
 </head>
 
 
@@ -738,18 +739,8 @@
                             <% } %>
                             <!-- <form action="/loadCart" method="POST"> -->
 
-                            <div class="product-meta">
+                            <div class="product-meta" id="productContainer">
 
-                                <% if(alreadyCart){%>
-
-                                    
-                                    
-                                    <div class="meta-action">
-                                        <a href="/viewCart" id="addToCartButton" class="btn btn-dark btn-hover-primary" >Go To Cart</a>
-                                    </div>
-                                    
-                                    <%}else{%>
-                                        
                                         <div class="product-quantity d-inline-flex">
                                             <button type="button" class="sub">-</button>
                                             <input type="text" id="quantityInput" value="1" />
@@ -761,9 +752,10 @@
                                         
                                         
                                         <input type="text" id="quantity" value="<%=productData.quantity%>" hidden />
+                                        <input type="text" id="productId" value="<%=productData._id%>" hidden />
                                 
                                 
-                                <%} %>
+                             
                                 
                                 <div class="meta-action">
                                     <a class="action" href="#"><i class="pe-7s-like"></i></a>
@@ -1861,7 +1853,7 @@
                                 <div class="product-info">
                                     <div class="single-info">
                                         <span class="lable">SKU:</span>
-                                        <span class="value">Ch-256xl</span>
+                                        <span class="value">Ch-256xl</span>     
                                     </div>
                                     <div class="single-info">
                                         <span class="lable">Categories:</span>
@@ -1918,6 +1910,7 @@
             const addButton = document.querySelector('.add');
             const quantityInput = document.getElementById('quantityInput');
             const quantity = document.getElementById('quantity')
+            
 
     
             addButton.addEventListener('click', function() {
@@ -1936,28 +1929,88 @@
             });
         });
     </script>
+   
+
+<script>
+    const productId = document.getElementById('productId').value
+    const quantity = document.getElementById('quantityInput').value;
+    console.log(productId)
+    axios.post('/updateProductDetails',{productId,quantity})
+            .then(function(response) {
+                console.log(response.data);
+                const {alreadyCart} =response.data
+                console.log(alreadyCart)
+                const productContainer = document.getElementById('productContainer');
+                let productHTML = '';
+                if (alreadyCart) {
+                    productHTML += `
+                    <div class="meta-action">
+                    <a href="/viewCart" id="addToCartButton" class="btn btn-dark btn-hover-primary" >Go To Cart</a>
+                    </div>
+                    `;
+                    productContainer.innerHTML = productHTML;      
+            }
+            else{
+
+                    productHTML += `
+                    <div class="product-quantity d-inline-flex">
+                                            <button type="button" class="sub">-</button>
+                                            <input type="text" id="quantityInput" value="1" />
+                                            <button type="button" class="add">+</button>
+                                        </div>
+                                        <div class="meta-action">
+                                            <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">Add To Cart</button>
+                                        </div>
+                                        
+                                        
+                                        <input type="text" id="quantity" value="<%=productData.quantity%>" hidden />
+                                        <input type="text" id="productId" value="<%=productData._id%>" hidden />
+
+                                <div class="meta-action">
+                                    <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                </div>
+                                <div class="meta-action">
+                                    <a class="action" href="#"><i class="pe-7s-shuffle"></i></a>
+                                </div>
+                    `;
+                    productContainer.innerHTML = productHTML;
+                }
+                // window.location.reload()
+                
+                
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+    
+</script>
     
 <script>
     function addToCart(productId) {
         const quantity = document.getElementById('quantityInput').value;
         
-        
+    
+                                    
         console.log(productId)
         axios.post('/loadCart', { quantity,productId })
             .then(function(response) {
                 console.log(response.data);
+                const {session} =response.data
+
              
+
+
                 if(response.data){
-                    if (response.data.session==false) {
+                    if (session==false) {
                         console.log('1111');
                         window.location='/notLogin'
                         
                     } else {
                         
                         window.location='/viewCart'
-                    }
-                    
+                    }  
                 }
+                
             })
             .catch(function(error) {
                 console.error('Error:', error);

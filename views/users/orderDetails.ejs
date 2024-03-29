@@ -221,7 +221,7 @@
         <div class="page-content"> 
             <div class="container-fluid">
                
-                <% orderDetails.cartId.products.forEach((element) => { %>
+                
                 <div class="row d-flex justify-content-center mt-3">
               
                     
@@ -234,20 +234,26 @@
                                     <div class="row align-items-center">
                                         
                                         
-                                        <div class="col-lg-6 col-sm-4 col-8 flex-grow-5 col-name " style="width:auto;">
+                                        <div class="col-lg-6 col-sm-4 col-8 flex-grow-5 col-name" style="width:auto;">
                                             <a class="itemside" href="#">
-                                                <div class="left">
-                                                    <img src="/productImage/<%= element.productId.img[0] %>" class="img-sm img-thumbnail" style="width: 150px;" alt="Item" />
-                                                    
-                                                </div> 
-                                                <div class="info">
-                                                    <h6 class="mb-0"><%= element.productId.name %></h6>     
-                                                    <h6 class="mb-0">Rs.<%= element.totalAmount %>.00</h6>     
-                                                    <h6 class="mb-0">QTY:<%= element.quantity%></h6>     
-                                                    <!-- <h6 class="mb-0">neme</h6>      -->
-                                                </div>
+                                                <% if (orderDetails.products.length > 0) { %>
+                                                
+                                                    <% const productDetails = orderDetails.products[0].productId; %>
+                                                    <% if (productDetails && productDetails.img && productDetails.img.length > 0) { %>
+                                                        <div class="left">
+                                                            <img src="/productImage/<%= productDetails.img[0] %>" class="img-sm img-thumbnail" style="width: 150px;" alt="Item" />
+                                                        </div>
+                                                        <div class="info">
+                                                            <h6 class="mb-0"><%= productDetails.name %></h6>
+                                                            <h6 class="mb-0">Rs.<%= orderDetails.products[0].totalAmount %>.00</h6>
+                                                            <h6 class="mb-0">QTY:<%= orderDetails.products[0].quantity%></h6>
+                                                            <!-- <h6 class="mb-0">neme</h6> -->
+                                                        </div>
+                                                    <% } %>
+                                                <% } %>
                                             </a>
                                         </div>
+                                        
                                         
                                         <div class="col-lg-2 col-sm-2 col-4 col-price">
                                             <h6 class="mb-0"><%= orderDetails.addressId.address %></h6>     
@@ -261,7 +267,7 @@
         
                                         <div class="col-lg-4 col-sm-3 col-4 col-status">
                                             <h6 class="mb-0">Shipped on March 16,2024</h6>  
-                                            <h6 class="mb-0">Your item has been canceled</h6>  
+                                            <h6 class="mb-0">Your item has been <%= orderDetails.products[0].orderStatus %></h6>  
                                           
 
                                         </div>
@@ -316,7 +322,7 @@
                     <!-- end card -->
                 </div>
             
-                <% }); %>
+                
                 
             </div>
         </div>

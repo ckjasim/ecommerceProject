@@ -69,6 +69,66 @@ const loginSubmit = async (req,res)=>{
     }
 }
 
+//forgotPassword
+
+const loadForgotPassword=(req,res)=>{
+    const message=req.flash('message').toString()
+    if(message){
+        console.log(message);
+    }
+    res.render('forgotPassword',{message})
+}
+
+const forgotPassword = async (req,res)=>{
+    try {
+       
+    const checkEmail=  await userSchema.findOne({email:req.body.email})
+    
+    const email=req.body.email
+    const emailRegex=/^[A-Za-z0-9.%+-]+@gmail\.com$/;
+
+        if(!emailRegex.test(email)){
+            req.flash('message','Invalid email provided')
+            return res.redirect('/loadForgotPassword')
+        }
+    if (checkEmail) {
+        req.session.email=email
+        otpController.sendVerifyMail(email)
+
+        res.render('forgotOtp',{messsage:'Please check your email and Verify your OTP',email})
+        
+    }else{
+        console.log('123');
+        req.flash('message','Email doesnt exists, please register')
+            return res.redirect('/loadForgotPassword') 
+    }
+
+    } catch (error) {
+        console.log(error.message)  
+    }
+}
+
+const newPassword=(req,res)=>{
+    const message=req.flash('message').toString()
+    if(message){
+        console.log(message);
+    }
+    res.render('newPassword',{message})
+}
+
+const newPasswordSubmit = async (req,res)=>{
+    try {
+       
+        const sPassword = await securePassword(req.body.password)
+        
+        await userSchema.findOneAndUpdate({email:req.session.email},{$set:{password:sPassword}})
+
+        res.redirect('/login')
+
+    } catch (error) {
+        console.log(error.message)  
+    }
+}
 
 
 
@@ -83,6 +143,7 @@ const securePassword= async(password) =>{
         console.log(error.message);
     }
 }
+
 
 const submit = async (req,res)=>{
     try {
@@ -167,30 +228,9 @@ const submit = async (req,res)=>{
 
 //shop
 
-const loadProduct=async (req,res)=>{
-    try {
-        const productData= await productSchema.find().populate('categoryId')
-        res.render('products',{productData})
-    } catch (error) {
-        console.log(error.message)
-    }
- 
-}
 
-const loadProductDetail=async (req,res)=>{
-    try {
-        const productId=req.params.productId
-        const productData= await productSchema.findOne({_id:productId}).populate('categoryId')
-        const relatedProducts= await productSchema.find().populate('categoryId')
-        const userId=req.session.user_id
-        const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:userId});
-        res.render('productDetail',{productData,alreadyCart,relatedProducts})
-    } catch (error) {
-        console.log(error.message)
-    }
-    
 
-}
+
 const loadShop=async (req,res)=>{
     try {
         const productData= await productSchema.find().populate('categoryId')
@@ -235,9 +275,12 @@ module.exports={
     submit,
     userHome,
     logout,
-    loadProduct,
-    loadProductDetail,
     loadShop,
-    notLogin
+    notLogin,
+    forgotPassword,
+    loadForgotPassword,
+    newPassword,
+    newPasswordSubmit
+
 
 }

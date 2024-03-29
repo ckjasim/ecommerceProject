@@ -2,6 +2,7 @@ const userSchema = require('../model/userData')
 const orderSchema = require('../model/orderData') 
 const addressSchema = require('../model/addressData')
 const cartSchema = require('../model/cartData') 
+const bcrypt=require('bcrypt')
 
 
 const loadProfile = async (req,res)=>{
@@ -10,14 +11,8 @@ const loadProfile = async (req,res)=>{
         const addressData = await addressSchema.find({userId:userId}).populate('userId')
         const userData = await userSchema.findOne({_id:userId})
         const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
-        .populate('cartId')
         .populate('userId')
-        .populate({
-            path: 'cartId',
-            populate: {
-                path: 'products.productId'
-            }
-        })
+        .populate('products.productId')
         .populate('addressId');
         res.render('profile',{userData,addressData,orderDetails})
     } catch (error) {
@@ -35,9 +30,7 @@ const editProfile=async (req,res)=>{
             mobile:req.body.mobile,
         }
         
-        const userData = await userSchema.findByIdAndUpdate({_id:req.session.user_id},{$set:updateUser})
-        
-        
+        await userSchema.findByIdAndUpdate({_id:req.session.user_id},{$set:updateUser})
 
     } catch (error) {
         console.log(error.message);
@@ -192,6 +185,38 @@ const deleteCheckoutAddress=async (req,res)=>{
         console.log(error.message);
     }
 }
+//hashPassword
+const securePassword= async(password) =>{
+    try{
+        const passwordHash = await bcrypt.hash(password,10)
+        return passwordHash;
+    }catch (error){
+        console.log(error.message);
+    }
+}
+
+const changePassword=async (req,res)=>{
+    try {
+
+        const userData=await userSchema.findOne({_id:req.session.user_id})
+
+        const currentPassword=req.body.currentPassword
+        console.log(userData.password)
+        const correctPassword = await bcrypt.compare(currentPassword,userData.password)
+
+        if(correctPassword){
+            const sPassword = await securePassword(req.body.password)
+            await userSchema.findOneAndUpdate({_id:req.session.user_id},{$set:{password:sPassword}})
+        }else{
+
+            req.flash('message','Incorrect password')
+            return res.redirect('/loadProfile')
+        }
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 
 
@@ -203,6 +228,6 @@ module.exports={
     loadEditAddress,
     editAddress,
     deleteAddress,
-    
-    deleteCheckoutAddress
+    deleteCheckoutAddress,
+    changePassword
 }

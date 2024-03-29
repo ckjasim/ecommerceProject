@@ -295,8 +295,8 @@
                                         
                                             
                                         <tbody>
-                                            <% if(order.cartId && order.cartId.products) { %>
-                                                <% order.cartId.products.forEach(product => {%>
+                                            <% if(order && order.products) { %>
+                                                <% order.products.forEach(product => {%>
                                             <tr>
                                                 <td>
                                                     <a class="itemside" href="#">
@@ -317,7 +317,7 @@
                                                     <article class="float-end">
                                                         <dl class="dlist">
                                                             <dt>Subtotal:</dt>
-                                                            <dd>$<%= order.cartId.products.reduce((Total, amount) => Total + amount.totalAmount, 0) %>.00</dd>
+                                                            <dd>$<%= order.products.reduce((Total, amount) => Total + amount.totalAmount, 0) %>.00</dd>
                                                         </dl>
                                                         <dl class="dlist">
                                                             <dt>Shipping cost:</dt>
@@ -325,7 +325,7 @@
                                                         </dl>
                                                         <dl class="dlist">
                                                             <dt>Grand total:</dt>
-                                                            <dd><b class="h5">$<%= order.cartId.products.reduce((Total, amount) => Total + amount.totalAmount, 0) %>.00</b></dd>
+                                                            <dd><b class="h5">$<%= order.products.reduce((Total, amount) => Total + amount.totalAmount, 0) %>.00</b></dd>
                                                         </dl>
                                                         <dl class="dlist">
                                                             <dt class="text-muted">Status:</dt>

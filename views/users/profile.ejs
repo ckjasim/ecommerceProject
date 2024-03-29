@@ -848,7 +848,10 @@
                                                 
                                                 <div class="col-xl-10 mt-5">
                                                     <div class="card border shadow mb-3" style="border-radius: 0 !important;">
-                                                        <% orderDetails.cartId.products.forEach((element) => { %>
+                                                        <% if( orderDetails&&orderDetails.products){ %>
+                                                        
+
+                                                        <% orderDetails.products.forEach((element) => { %>
                                                     
                                                     <div class="card-body ">
                                                         <article class="itemlist">
@@ -876,8 +879,8 @@
                                                                     <span class="badge rounded-pill alert-success">cod</span>
                                                                 </div>
                                                                 <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                                                    <a href="/orderDetails" class="btn btn-sm font-sm rounded btn-brand">View <br> details</a>
-                                                                    <a href="/cancelOrder" class="btn btn-sm font-sm rounded btn-danger">Cancel <br> order</a>
+                                                                    <a href="/orderDetails?_id=<%= element.productId._id %>" class="btn btn-sm font-sm rounded btn-brand">View <br> details</a>
+                                                                    <a href="/cancelOrder?_id=<%= element.productId._id %>" class="btn btn-sm font-sm rounded btn-danger">Cancel <br> order</a>
                                                                     <!-- <a href="" class="btn btn-sm font-sm rounded btn-brand">Cancel order </a> -->
                                                                     
                                                                     
@@ -898,6 +901,7 @@
                                                             <!-- itemlist  .// -->
                                                         </div>
                                                         <% }); %>
+                                                        <% } %>
                                                 </div>
                                             </div>
                                             
@@ -971,6 +975,9 @@
                         <div class="tab-pane fade" id="pills-address">
                             <div class="my-account-address account-wrapper">
                                 <div class="row">
+                                    <% if (addressData) {%>
+                                        
+                                        
                                     <% addressData.forEach(element => { %>
                                     <div class="col-md-6">
                                         <div class="address-option">
@@ -999,6 +1006,7 @@
                                     </div>
 
                                     <% }); %>
+                                    <% } %>
                                     
                                     </div>
                                     <div class="single-form">
@@ -1020,8 +1028,12 @@
                                     
                                     <div class="row">
                                         
+                                        <% if(userData) {%>
+                                            
+                                        
+
                                         <div class="col-md-6">
-                                            <form action="" method="post">
+                                            <form action="/loadProfile" method="post">
                                             <div class="single-form">
                                                 <!-- <p>First name</p> -->
                                                 <input type="text" value="<%= userData.fName %>" name="fName"/>
@@ -1042,36 +1054,47 @@
                                                 <input type="text" value="<%= userData.mobile %>" name="mobile"/>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="single-form">
-                                                <h5 class="title">
-                                                    Password change
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="single-form">
-                                                <input type="password" placeholder="Current Password" />
-                                            </div>
-                                        </div>
                                         <div class="col-md-6">
                                             <div class="single-form">
-                                                <input type="password" placeholder="New Password" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="single-form">
-                                                <input type="password" placeholder="Confirm Password" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="single-form">
-                                                <button class="btn btn-primary btn-hover-dark">
+                                                <button type="submit" class="btn btn-primary btn-hover-dark">
                                                     Save Changes
                                                 </button>
                                             </div>
                                         </div>
                                     </form>
+                                        <% }%>
+                                        <form action="/changePassword" method="post">
+                                            <div class="col-md-12">
+                                                <div class="single-form">
+                                                    <h5 class="title">
+                                                        Password change
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="single-form">
+                                                    <input type="password" id="password" placeholder="Current Password" name="currentPassword" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="single-form">
+                                                    <input type="password" id="newPassword" placeholder="New Password" name="password" required/>
+                                                    <span id="passwordError" style="color: rgb(188, 5, 5);"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="single-form">
+                                                    <input type="password" id="confirmPassword" placeholder="Confirm Password" name="confirmPassword" required />
+                                                    <span id="confirmPasswordError" style="color: rgb(188, 5, 5);"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="single-form">
+                                                    <button type="submit" id="submitButton" class="btn btn-primary btn-hover-dark" disabled>change password</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        
                                     </div>
                                 
                                 </div>
@@ -1262,6 +1285,56 @@
     ============================================ -->
 
     <!-- Modernizer & jQuery JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('newPassword').addEventListener('input', function() {
+                validatePassword();
+                checkValidity(); 
+            });
+    
+            document.getElementById('confirmPassword').addEventListener('input', function() {
+                validateConfirmPassword();
+                checkValidity(); 
+            });
+        });
+    
+        function checkValidity() {
+            var password = document.getElementById('newPassword').value.trim();
+            var confirmPassword = document.getElementById('confirmPassword').value.trim();
+            var passwordError = document.getElementById('passwordError').textContent;
+            var confirmPasswordError = document.getElementById('confirmPasswordError').textContent;
+            var submitButton = document.getElementById('submitButton');
+    
+            if (password.length >= 8 && password === confirmPassword && passwordError === "" && confirmPasswordError === "") {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+    
+        function validatePassword() {
+            var password = document.getElementById('newPassword').value.trim();
+            var passwordError = document.getElementById('passwordError');
+    
+            if (password.length < 8) {
+                passwordError.textContent = 'Password must be at least 8 characters long';
+            } else {
+                passwordError.textContent = '';
+            }
+        }
+    
+        function validateConfirmPassword() {
+            var password = document.getElementById('newPassword').value.trim();
+            var confirmPassword = document.getElementById('confirmPassword').value.trim();
+            var confirmPasswordError = document.getElementById('confirmPasswordError');
+    
+            if (password !== confirmPassword) {
+                confirmPasswordError.textContent = 'Passwords do not match';
+            } else {
+                confirmPasswordError.textContent = '';
+            }
+        }
+    </script>
     <script src="assets/js/vendor/modernizr-3.11.2.min.js"></script>
     <script src="assets/js/vendor/jquery-3.5.1.min.js"></script>
 

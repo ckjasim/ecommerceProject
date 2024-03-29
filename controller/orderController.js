@@ -8,13 +8,7 @@ const loadAdminOrder = async (req, res) => {
         const orderData = await orderSchema.find()
     .populate('userId') 
     .populate('addressId')
-    .populate('cartId')
-    .populate({
-        path: 'cartId',
-        populate: {
-            path: 'products.productId'
-        }
-    });
+    .populate('products.productId')
         
         console.log(orderData)
         res.render('orders',{orderData})
@@ -33,13 +27,8 @@ const adminOrderDetails = async (req, res) => {
         const orderData = await orderSchema.find({_id:orderId})
     .populate('userId') 
     .populate('addressId')
-    .populate('cartId')
-    .populate({
-        path: 'cartId',
-        populate: {
-            path: 'products.productId'
-        }
-    });
+    .populate('products.productId')
+    
   
     res.render('adminOrderDetails',{orderData})
 
@@ -98,6 +87,7 @@ const viewOrder=async (req,res)=>{
         .populate('userId')
         .populate('addressId');
         
+        await cartSchema.findOneAndDelete({userId:req.session.user_id})
         
 
         res.render('order',{orderDetails})
@@ -108,17 +98,18 @@ const viewOrder=async (req,res)=>{
 }
 const orderDetails=async (req,res)=>{
     try {
-
-        const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
-        .populate('cartId')
-        .populate('userId')
-        .populate({
-            path: 'cartId',
-            populate: {
-                path: 'products.productId'
-            }
-        })
+        const productId =req.query._id
+        
+        const orderDetails =await orderSchema.findOne(
+            { 
+                userId: req.session.user_id,
+                'products.productId': productId 
+            },
+            
+        ).populate('userId')
+        .populate('products.productId')
         .populate('addressId');
+        console.log(orderDetails)
         
         
        res.render('orderDetails',{orderDetails})

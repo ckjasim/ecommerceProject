@@ -31,6 +31,78 @@
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/style.min.css" />
+    <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    <style>
+        /* Your CSS styles here */
+        .sidebar-container {
+            position: relative;
+        }
+    
+        #sidebar {
+            position: absolute;
+            top: 0;
+            left: -600px;
+            width: auto;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            background-color: #f7f7f7; /* Added background color */
+        }
+    
+        #sidebar.active {
+            left: 0;
+        }
+    
+        #sidebar-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            z-index: 1500; /* Higher z-index to ensure it's on top of the sidebar */
+        }
+    
+        #sidebar.active + #sidebar-overlay {
+            display: block;
+        }
+    
+        #toggle-sidebar-button {
+            position: absolute;
+            margin-top: 13px;
+            margin-left: 10px;
+            border-width: 0cap;
+            z-index: 2000; /* Higher z-index to ensure it's on top */
+        }
+    
+        .sidebar-content {
+            padding: 20px;
+            color: #f00e0e;
+        }
+    
+        .sidebar-widget {
+            margin-bottom: 20px;
+        }
+    
+        .widget-title {
+            margin-top: 0;
+        }
+    
+        .widget-categories label,
+        .widget-refine label,
+        .widget-colors label,
+        .widget-size label,
+        .widget-tags a {
+            color: #f70606;
+        }
+    
+        .widget-checkbox input[type="checkbox"] {
+            margin-right: 5px;
+        }
+    </style>
+    
+    
 </head>
 
 
@@ -199,433 +271,508 @@
     <!-- Page Banner Section End -->
 
     <!-- Shop Section Start -->
-    <div class="section section-padding">
-        <div class="container">
-            <!-- Product Section Wrapper Start -->
-            <div class="product-section-wrapper">
-                <!-- Shop top Bar Start -->
-                <div class="shop-top-bar">
-                    <div class="shop-text">
-                        <p>
-                            <span>12</span> Product Found of <span>30</span>
-                        </p>
+        <div class="section section-padding">
+            <div class="container">
+                <!-- Product Section Wrapper Start -->
+                <div class="sidebar-container">
+                <div class="product-section-wrapper">
+                    <!-- Shop top Bar Start -->
+                        <!-- <button id="toggle-sidebar-button">Toggle Sidebar</button> -->
+                        <button href="#" class="btn btn-light rounded font-md" id="toggle-sidebar-button" > <i class="fa fa-filter"></i>Filter</button>
+                        
+                        <div id="sidebar-overlay"></div>
+                    
+                        <div class="col-lg-3" id="sidebar">
+                            <!-- Sidebar Start -->
+                            <!-- Sidebar content goes here -->
+                            <div class="sidebar-content">
+                                <div class="sidebar-widget">
+                                    <h4 class="widget-title">Filter By Categories</h4>
+                                    <div class="widget-checkbox widget-categories">
+                                        <ul class="checkbox-items">
+                                            <li>
+                                                <input type="checkbox" id="checkbox1">
+                                                <label for="checkbox1"> <span></span>Office Chair</label>
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" id="checkbox2">
+                                                <label for="checkbox2"> <span></span>Dining Chair</label>
+                                            </li>
+                                           
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="sidebar-widget">
+                                    <h4 class="widget-title">Refine By</h4>
+                                    <div class="widget-checkbox widget-refine">
+                                        <ul class="checkbox-items">
+                                            <li>
+                                                <input type="checkbox" id="checkbox8">
+                                                <label for="checkbox8"> <span></span>On Sale</label>
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" id="checkbox9">
+                                                <label for="checkbox9"> <span></span>New</label>
+                                            </li>
+                                            <!-- Add more refine options here -->
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Add more sidebar widgets here -->
+                            </div>
+                            <!-- Sidebar End -->
+                        </div>
                     </div>
-                    <div class="shop-tabs">
-                        <ul class="nav">
-                            <li>
-                                <button class="active" data-bs-toggle="tab" data-bs-target="#grid">
-                                    <i class="fa fa-th"></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button data-bs-toggle="tab" data-bs-target="#list">
-                                    <i class="fa fa-list"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="shop-sort">
-                        <span class="title">Sort By :</span>
-                        <select class="select2-2">
-                            <option value="featured">Featured</option>
-                            <option value="rating">Rating</option>
-                            <option value="price">Price</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- Shop top Bar End -->
 
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="grid">
-                        <!-- Shop Product Wrapper Start -->
-                        <div class="shop-product-wrapper">
-                            
-                            <div class="row">
-                               
-                                    
-                                <% productData.forEach(element => {%>
-                                    <% if(element.is_listed===true){%>
 
-                                    
-                                <div class="col-lg-3 col-sm-6">
-                                    <!-- Single Product Start -->
-                                    <div class="single-product">
-                                        
-                                        <a href="/loadProductDetail/<%= element._id %>"><img src="/productImage/<%= element.img[0] %>" width="270" height="303" alt="product" /></a>
+
+
+
+                    <header class="card-header">
+                       
+                        <div class="row align-items-center">
+                            <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+            
+                            </div>
+                            <div class="col-md-2 col-6" style="width: auto;">
+                                <label for="sort" class="form-label">Sort:</label>
+                                <!-- <input type="date" value="02.05.2021" class="form-control" /> -->
+                            </div>
+                            <div class="col-md-2 col-6">
                                 
-                                        <div class="product-content">
-                                            <h4 class="title">
-                                                <a href="product-details.html"><%= element.name %></a>
-                                            </h4>
-                                            
-                                            <p><%= element.description %></p>
-                                            
-                                            <div class="price">
-                                                <span class="sale-price"
-                                                        >$<%= element.price %></span>
+                                <div class="custom_select">
+                                    <select id="sort" class="form-select select-nice">
+                                        <option selected>Latest</option>
+                                        <option>Price low to high</option>
+                                        <option>Price high to low</option>
+                                        <option>a to z</option>
+                                        <option>z to a</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </header>
+                    <!-- <div class="shop-top-bar">
+                        <div class="shop-text">
+                            
+                        </div>
+                        <div class="shop-text">
+                            <p>
+                                <span>12</span> Product Found of <span>30</span>
+                            </p>
+                        </div>
+                        <div class="shop-tabs">
+                            <ul class="nav">
+                                <li>
+                                    <button class="active" data-bs-toggle="tab" data-bs-target="#grid">
+                                        <i class="fa fa-th"></i>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button data-bs-toggle="tab" data-bs-target="#list">
+                                        <i class="fa fa-list"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <div class="custom_select">
+                                <select class="form-select select-nice" >
+                                    <option selected>sort</option>
+                                    <option>All</option>
+                                    <option>Paid</option>
+                                    <option>Chargeback</option>
+                                    <option>Refund</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- Shop top Bar End -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="grid">
+                            <!-- Shop Product Wrapper Start -->
+                            <div class="shop-product-wrapper">
+                                
+                                <div class="row" id="productContainer">
+                                    <% productData.forEach(element => { %>
+                                        <% if(element.is_listed === true) { %>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <!-- Single Product Start -->
+                                                <div class="single-product">
+                                                    <a href="/loadProductDetail/<%= element._id %>">
+                                                        <img src="/productImage/<%= element.img[0] %>" width="270" height="303" alt="product" />
+                                                    </a>
+                                                    <div class="product-content">
+                                                        <h4 class="title">
+                                                            <a href="product-details.html"><%= element.name %></a>
+                                                        </h4>
+                                                        <p><%= element.description %></p>
+                                                        <div class="price">
+                                                            <span class="sale-price">$<%= element.price %></span>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="product-meta">
+                                                        <li>
+                                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#">
+                                                                <i class="pe-7s-search"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- Single Product End -->
                                             </div>
-                                        </div>
+                                        <% } %>
+                                    <% }); %>
+                                </div>
+                                
+                                
+                            </div>
+                            <!-- Shop Product Wrapper End -->
+                        </div>
+                        <div class="tab-pane fade" id="list">
+                            <!-- Shop Product Wrapper Start -->
+                            <div class="shop-product-wrapper">
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-01.jpg" width="270" height="303" alt="product" /></a>
+
                                         <ul class="product-meta">
                                             <li>
-                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i
-                                                            class="pe-7s-search"
-                                                        ></i></a>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
                                             </li>
                                             <li>
-                                                <a class="action" href="#"><i
-                                                            class="pe-7s-shopbag"
-                                                        ></i></a>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
                                             </li>
                                             <li>
-                                                <a class="action" href="#"><i
-                                                            class="pe-7s-like"
-                                                        ></i></a>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
                                             </li>
                                         </ul>
                                     </div>
-                                    <!-- Single Product End -->
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">Elona bedside grey table</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
                                 </div>
-                                <% }%>
-                                <%  }); %>
+                                <!-- Single Product End -->
+
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-02.jpg" width="270" height="303" alt="product" /></a>
+
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">Simple minimal Chair</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Single Product End -->
+
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-03.jpg" width="270" height="303" alt="product" /></a>
+
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">Pendant Chandelier Light</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Single Product End -->
+
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-04.jpg" width="270" height="303" alt="product" /></a>
+
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">High quality vase bottle</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Single Product End -->
+
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-05.jpg" width="270" height="303" alt="product" /></a>
+
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">Living & Bedroom Chair</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Single Product End -->
+
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-06.jpg" width="270" height="303" alt="product" /></a>
+
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">Herman Arm Grey Chair</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Single Product End -->
+
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-07.jpg" width="270" height="303" alt="product" /></a>
+
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">Wooden decorations</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Single Product End -->
+
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-08.jpg" width="270" height="303" alt="product" /></a>
+
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">Herman Seater Sofa</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Single Product End -->
+
+                                <!-- Single Product Start -->
+                                <div class="single-product-02 product-list">
+                                    <div class="product-images">
+                                        <a href="#"><img src="assets/images/product/product-09.jpg" width="270" height="303" alt="product" /></a>
+
+                                        <ul class="product-meta">
+                                            <li>
+                                                <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                            </li>
+                                            <li>
+                                                <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-content">
+                                        <h4 class="title">
+                                            <a href="product-details.html">Reece Seater Sofa</a>
+                                        </h4>
+                                        <div class="price">
+                                            <span class="sale-price">$40.00</span>
+                                        </div>
+                                        <p>
+                                            Block out the haters with the fresh adidas® Originals Kaval
+                                            Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
+                                            eased, but not sloppy, and perfect for any activity. Plain-woven
+                                            jacket specifically constructed for freedom of movement.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Single Product End -->
                             </div>
-                            
+                            <!-- Shop Product Wrapper End -->
+
                         </div>
-                        <!-- Shop Product Wrapper End -->
                     </div>
-                    <div class="tab-pane fade" id="list">
-                        <!-- Shop Product Wrapper Start -->
-                        <div class="shop-product-wrapper">
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-01.jpg" width="270" height="303" alt="product" /></a>
 
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">Elona bedside grey table</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
 
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-02.jpg" width="270" height="303" alt="product" /></a>
 
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">Simple minimal Chair</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
 
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-03.jpg" width="270" height="303" alt="product" /></a>
 
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">Pendant Chandelier Light</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
-
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-04.jpg" width="270" height="303" alt="product" /></a>
-
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">High quality vase bottle</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
-
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-05.jpg" width="270" height="303" alt="product" /></a>
-
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">Living & Bedroom Chair</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
-
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-06.jpg" width="270" height="303" alt="product" /></a>
-
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">Herman Arm Grey Chair</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
-
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-07.jpg" width="270" height="303" alt="product" /></a>
-
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">Wooden decorations</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
-
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-08.jpg" width="270" height="303" alt="product" /></a>
-
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">Herman Seater Sofa</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
-
-                            <!-- Single Product Start -->
-                            <div class="single-product-02 product-list">
-                                <div class="product-images">
-                                    <a href="#"><img src="assets/images/product/product-09.jpg" width="270" height="303" alt="product" /></a>
-
-                                    <ul class="product-meta">
-                                        <li>
-                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i class="pe-7s-search"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
-                                        </li>
-                                        <li>
-                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="title">
-                                        <a href="product-details.html">Reece Seater Sofa</a>
-                                    </h4>
-                                    <div class="price">
-                                        <span class="sale-price">$40.00</span>
-                                    </div>
-                                    <p>
-                                        Block out the haters with the fresh adidas® Originals Kaval
-                                        Windbreaker Jacket. Part of the Kaval Collection. Regular fit is
-                                        eased, but not sloppy, and perfect for any activity. Plain-woven
-                                        jacket specifically constructed for freedom of movement.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Single Product End -->
-                        </div>
-                        <!-- Shop Product Wrapper End -->
-
+                    
+                    <!-- Page pagination Start -->
+                    <div class="page-pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left"></i></a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link active" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
+                        </ul>
                     </div>
+                    <!-- Page pagination End -->
+                    <!--  -->
                 </div>
-
-
-
-
-
                 
-                <!-- Page pagination Start -->
-                <div class="page-pagination">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left"></i></a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link active" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
-                    </ul>
-                </div>
-                <!-- Page pagination End -->
+                <!-- Product Section Wrapper End -->
             </div>
-            <!-- Product Section Wrapper End -->
         </div>
-    </div>
     <!-- Shop Section End -->
 
     <!-- Footer Section Start -->
@@ -1002,8 +1149,90 @@
     ============================================ -->
 
     <!-- Modernizer & jQuery JS -->
+    
+        
+
+   
     <script src="assets/js/vendor/modernizr-3.11.2.min.js"></script>
     <script src="assets/js/vendor/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const toggleSidebarButton = document.getElementById('toggle-sidebar-button');
+    
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+            }
+    
+            sidebarOverlay.addEventListener('click', toggleSidebar);
+            toggleSidebarButton.addEventListener('click', toggleSidebar);
+        });
+    </script>
+    <script>
+        const selectElement = document.getElementById('sort')
+        selectElement.addEventListener('change', handleChange)
+    
+        function handleChange(event) {
+            const selectedValue = event.target.value
+            console.log(selectedValue)
+    
+            axios.post('/sort', { selectedValue })
+    .then(function(response) {
+        const { sort } = response.data;
+        // const productContainer = document.querySelector('.product-container');
+        const productContainer = document.getElementById('productContainer');
+        let productHTML = '';
+
+        sort.forEach(element => {
+            if (element.is_listed === true) {
+                productHTML += `
+                    <div class="col-lg-3 col-sm-6">
+                        <!-- Single Product Start -->
+                        <div class="single-product">
+                            <a href="/loadProductDetail/${element._id}">
+                                <img src="/productImage/${element.img[0]}" width="270" height="303" alt="product" />
+                            </a>
+                            <div class="product-content">
+                                <h4 class="title">
+                                    <a href="product-details.html">${element.name}</a>
+                                </h4>
+                                <p>${element.description}</p>
+                                <div class="price">
+                                    <span class="sale-price">$${element.price}</span>
+                                </div>
+                            </div>
+                            <ul class="product-meta">
+                                <li>
+                                    <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#">
+                                        <i class="pe-7s-search"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                </li>
+                                <li>
+                                    <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Single Product End -->
+                    </div>
+                `;
+            }
+        });
+        // productContainer.style.display = 'none';
+        productContainer.innerHTML = productHTML;
+    })
+    .catch(function(error) {
+        console.error('Error:', error);
+    });
+
+        }
+    </script>
+    
 
     <!-- Bootstrap JS -->
     <script src="assets/js/plugins/popper.min.js"></script>
@@ -1019,6 +1248,7 @@
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
+    
 
 </body>
 
