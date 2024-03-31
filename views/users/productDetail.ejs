@@ -738,7 +738,9 @@
                                 </div>
                             <% } %>
                             <!-- <form action="/loadCart" method="POST"> -->
-
+                             
+                                    
+                                 
                             <div class="product-meta" id="productContainer">
 
                                         <div class="product-quantity d-inline-flex">
@@ -764,6 +766,7 @@
                                     <a class="action" href="#"><i class="pe-7s-shuffle"></i></a>
                                 </div>
                             </div>
+                            
                         <!-- </form> -->
 
                             <div class="product-info">
@@ -1938,10 +1941,19 @@
     axios.post('/updateProductDetails',{productId,quantity})
             .then(function(response) {
                 console.log(response.data);
-                const {alreadyCart} =response.data
+                const {alreadyCart,inStock} =response.data
+                console.log(inStock)
                 console.log(alreadyCart)
                 const productContainer = document.getElementById('productContainer');
                 let productHTML = '';
+                if(inStock===0){
+                    productHTML += `
+                    <h4 class="text-danger">Currently Unavailable</h4>
+                    `;
+                    productContainer.innerHTML = productHTML;      
+                }else{
+
+                
                 if (alreadyCart) {
                     productHTML += `
                     <div class="meta-action">
@@ -1974,6 +1986,7 @@
                                 </div>
                     `;
                     productContainer.innerHTML = productHTML;
+                }
                 }
                 // window.location.reload()
                 

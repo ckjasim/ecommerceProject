@@ -227,6 +227,9 @@
                         
                         <div class="col-xl-10 mt-5">
                             <div class="card border shadow mb-3" style="border-radius: 0 !important;">
+                                <% if(orderDetails && orderDetails.products) {%>
+                               
+
                                 <% orderDetails.products.forEach((element) => { %>
                             
                             <div class="card-body ">
@@ -241,7 +244,7 @@
                                                 <div class="info">
                                                     <h6 class="mb-0"><%= element.productId.name %></h6>     
                                                         
-                                                </div>
+                                                </div>  
                                             </a>
                                         </div>
                                         <div class="col-lg-2 col-sm-2 col-4 col-price"><span>$<%= element.totalAmount %>.00</span></div>
@@ -280,6 +283,7 @@
                                     <!-- itemlist  .// -->
                                 </div>
                                 <% }); %>
+                                <%} %>
                         </div>
                     </div>
                     

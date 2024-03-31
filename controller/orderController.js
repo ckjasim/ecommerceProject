@@ -1,6 +1,9 @@
 const orderSchema = require('../model/orderData')
 const addressSchema = require('../model/addressData')
-const cartSchema = require('../model/cartData')         
+const cartSchema = require('../model/cartData')  
+const productSchema = require('../model/productData')  
+
+//---------------------ADMIN-----------------------------
 
 const loadAdminOrder = async (req, res) => {
     try {
@@ -36,8 +39,15 @@ const adminOrderDetails = async (req, res) => {
         console.log(error.message);
     }
 }
+
+//-----------------------USER---------------------------
+
+
 const loadOrder=async (req,res)=>{
     try {
+        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id })
+       
+            
        console.log('4444444')
        const {selectedAddress,selectedPaymentOption} =req.body
     //    quantity=req.flash('quantity').toString()
@@ -46,51 +56,86 @@ req.flash('selectedPaymentOption', selectedPaymentOption);
 
        console.log(selectedAddress)
        res.send({ status: 'success', message: 'Order placed successfully'});
+
+        
+
     } catch (error) {
         console.log(error.message);
     }
+
 }
 const viewOrder=async (req,res)=>{
     try {
+        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id })
+        
+
+
         const selectedAddress=req.flash('selectedAddress').toString()
         const selectedPaymentOption=req.flash('selectedPaymentOption').toString()
        
 
-        const cartData=await cartSchema.findOne({userId:req.session.user_id})
-    const productDetails=[]
+        const cartData = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId');
+            const productDetails = [];
 
-    cartData.products.forEach(products=>{
+            cartData.products.forEach(cartProduct => {
+                const productItem = cartProduct.productId; 
 
-        productToAdd ={
-            productId: products.productId,
-            quantity:products.quantity,
-            totalAmount:products.totalAmount,
-            deliveryDate: new Date(),
-            shippingDate: new Date(),
-            orderStatus: "pending",
-        };
-        productDetails.push(productToAdd)
-    })
+                const productToAdd = {
+                    productId: productItem._id,
+                    quantity: cartProduct.quantity,
+                    orderedPrice: productItem.price,
+                    totalAmount: cartProduct.totalAmount,
+                    deliveryDate: new Date(),
+                    shippingDate: new Date(),
+                    orderStatus: "pending"
+                };
+                productDetails.push(productToAdd);
 
-         const orderData =new orderSchema({
-            products:productDetails,
-            userId:req.session.user_id,
-            addressId:selectedAddress, 
-            paymentOption:selectedPaymentOption, 
-            orderedAt:new Date(),
-             
-         })   
-         await orderData.save();
-        
+            });
+
+            console.log(productDetails); 
+
+            const orderData = new orderSchema({
+                products: productDetails,
+                userId: req.session.user_id,
+                addressId: selectedAddress, 
+                paymentOption: selectedPaymentOption, 
+                orderedAt: new Date(),
+                orderedAddress: selectedAddress
+            });   
+
+            await orderData.save();
+
+
+           
+
+            cartData.products.forEach(async (cartProduct) => {
+                const productItem = cartProduct.productId; 
+                console.log(cartProduct.quantity);
+                console.log('kkkkkkkkkkkkkkkkk');
+                console.log( productItem._id )
+                
+                try {
+                    const result = await productSchema.findByIdAndUpdate(
+                        { _id: productItem._id },
+                        { $inc: { quantity: -cartProduct.quantity } }
+                        // { new: true } 
+                    );
+                    console.log('Product updated successfully:', result);
+                } catch (error) {
+                    console.error('Error updating product:', error);
+                }
+            });
+            
+                  
+            await cartSchema.findOneAndDelete({userId:req.session.user_id})
         const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
         .populate('products.productId')
         .populate('userId')
         .populate('addressId');
         
-        await cartSchema.findOneAndDelete({userId:req.session.user_id})
-        
-
         res.render('order',{orderDetails})
+  
     
     } catch (error) {
         console.log(error.message);
@@ -109,9 +154,7 @@ const orderDetails=async (req,res)=>{
         ).populate('userId')
         .populate('products.productId')
         .populate('addressId');
-        console.log(orderDetails)
-        
-        
+
        res.render('orderDetails',{orderDetails})
     } catch (error) {
         console.log(error.message);

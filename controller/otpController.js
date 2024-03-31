@@ -24,8 +24,8 @@ const sendVerifyMail = async (email)=>{
         const newOtp = await otpSchema({
             email: email,
             otp: otpGenerator,
-            createdAt: new Date(), // Set the current date
-            expiredAt: new Date(new Date().getTime() + 1 * 60* 1000) // Set the expiry time
+            createdAt: new Date(), 
+            expiredAt: new Date(new Date().getTime() + 1 * 60* 1000) 
         });
         
         const result = await newOtp.save()

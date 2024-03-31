@@ -717,6 +717,9 @@
                             </div>
             
                             <!-- Shipping address options -->
+                            <% if(addressData){%>
+
+                                
                             <% let firstAddress = true; %>
                             <% addressData.forEach(element => { %>
                                 <input type="radio" value="<%= element._id %>" name="shippingAddress" id="billing-address<%= element._id %>" <% if (firstAddress) { %>checked<% firstAddress = false; } %>>
@@ -740,6 +743,7 @@
 
                                 </div>
                             <% }); %>
+                            <%  } %>
                             
                             <div class="single-form">
                                 <a class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" href="/loadAddress">Add Address</a>
@@ -763,6 +767,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <% if(cartDetails && cartDetails.products){ %>
+
+                                            
                                         <% cartDetails.products.forEach((element) => { %>
                                             <tr>
                                                 <td class="Product-name">
@@ -773,6 +780,7 @@
                                                 </td>
                                             </tr>
                                         <% }); %>
+                                        <%} %>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -852,6 +860,7 @@
                                         </div>
                                     </li>
                                 </ul>
+
                                 <% if (addressData && addressData.length > 0) { %>
                                     <div class="">
                                         <button class="btn btn-primary btn-hover-dark d-block" id="placeOrder">Place Order</button>
@@ -1073,7 +1082,7 @@
                         window.location='/notLogin'
 
                     } else {
-                        window.location='/loadOrder'
+                        window.location='/viewOrder'
                     }
                    
                 }

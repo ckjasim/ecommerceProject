@@ -297,21 +297,22 @@
                       <input
                         type="text"
                         class="quantityInput"
-                        id="checkoutQuantity"
+                        id="checkoutQuantity<%= element.productId._id %>"
                         data-product-id="<%= element.productId._id %>"
                         value="<%= element.quantity %>"
                         min="0"
                       max="5"
                       />
                       
-                    <button type="button" class="add" >+</button>
+                    
+                      <button type="button" class="add" id="addButton">+</button>
 
                     </div>
-                    <input type="text" id="quantity" value="<%=element.productId.quantity%>" hidden />
+                    <input type="text" id="quantity<%= element.productId._id %>" value="<%=element.productId.quantity%>" hidden />
                   </td>
 
                   <td class="product-total-price">
-                    <span class="price" id="totalPrice">$<%= element.totalAmount %></span>
+                    <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.totalAmount %></span>
                   </td>
                   <td class="product-action">
                     <button class="remove" onclick="deleteCartProduct('<%= element.productId._id %>')">
@@ -389,7 +390,7 @@
                       </td>
                       <td>
                       
-                        <p class="price" id="cartTotal">£<%= cartTotal %></p>
+                        <p class="price" id="subTotal">£<%= cartTotal %></p>
                       </td>
                     </tr>
                     <tr>
@@ -646,42 +647,74 @@
     ============================================ -->
     <!-- <script src="../../node_modules/axios/dist/axios.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const addButton = document.querySelector('.add');
-        const quantityInput = document.getElementById('checkoutQuantity');
-        const quantity = document.getElementById('quantity');
-    
-        addButton.addEventListener('click', function() {
-            let currentValue = parseInt(quantityInput.value);
-            let inStock = parseInt(quantity.value);
+    <!-- <script>
+      function enableAddButton() {
+        console.log('iiiiiiii')
+        var cartDetails =  JSON.stringify(cartDetails) 
+        console.log(cartDetails)
+          console.log('jkjjjjjjjjj  ')
+          
+          const quantityInput = parseInt(document.getElementById('checkoutQuantity')).value;
+          var button = document.getElementById('addButton');
+          cartDetails.products.forEach((element,index) => {
+           
+            
+            if (quantityInput <=  element.inStock) {
+              button.disabled = false;
+          } else {
+              button.disabled = true; 
+          }
+          })
+        
+      }
   
+      enableAddButton();
+  </script> -->
+  
+  
+  <script>
+    
+    const quantityInputs = document.querySelectorAll('.quantityInput');
+
+quantityInputs.forEach(function(input) {
+    const addButton = input.parentElement.querySelector('.add'); 
+    const productId = input.dataset.productId;
+    
+    addButton.addEventListener('click', function() { 
+        limitQuantity(productId, parseInt(input.value), addButton); 
+    });
+});
+
+function limitQuantity(productId, cartQuantity, addButton) {
+    axios.post('/limitQuantity', { productId })
+        .then(function(response) {
+            const { inStock } = response.data;
+            console.log(inStock);
+            const quantityInput = document.getElementById(`checkoutQuantity${productId}`);
+            let currentValue = parseInt(quantityInput.value);
+
             if (currentValue < Math.min(5, inStock)) {
                 currentValue++;
                 quantityInput.value = currentValue;
             }
-  
-            // Check condition after incrementing the value
+
             if (currentValue >= Math.min(5, inStock)) {
                 addButton.disabled = true;
             }
+
+            console.log(response.data);
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
         });
-  
-        // Check condition on page load
-        const currentValue = parseInt(quantityInput.value);
-        const inStock = parseInt(quantity.value);
-  
-        if (currentValue >= Math.min(5, inStock)) {
-            addButton.disabled = true;
-        }
-    });
+}
+
   </script>
-  
-  
-    <script>
+
+<script>
 
      document.addEventListener('DOMContentLoaded', function() {
-    const quantityInputs = document.querySelectorAll('.quantityInput');
+        const quantityInputs = document.querySelectorAll('.quantityInput');
 
     quantityInputs.forEach(function(input) {
         const productId = input.dataset.productId;
@@ -705,10 +738,11 @@
         console.log("Updating cart with quantity:", cartQuantity, "for product ID:", productId);
         axios.post('/updateQuantity', { cartQuantity,productId })
             .then(function(response) {  
-                const {cartTotal} =response.data
-                document.getElementById('cartTotal').innerHTML=cartTotal
+                const {cartTotal,productTotalPrice} =response.data
+                document.getElementById('subTotal').innerHTML=`$${cartTotal}`
+                document.getElementById('cartTotal').innerHTML=`$${cartTotal}`
                 
-                // document.getElementById('totalPrice').innerHTML=priceTotal
+                document.getElementById(`totalPrice${productId}`).innerHTML=`$${productTotalPrice}`
                 console.log(cartTotal);
                 console.log(response.data);
             })
@@ -716,9 +750,9 @@
                 console.error('Error:', error);
             })
     }
-});
+  });
 
-async function deleteCartProduct(productId) {
+  async function deleteCartProduct(productId) {
   
   axios.post('/deleteCartProduct', { productId })
   
@@ -734,7 +768,9 @@ async function deleteCartProduct(productId) {
        })
       }
 
-    </script>
+</script>
+
+
 
     <!-- Modernizer & jQuery JS -->
     <script src="assets/js/vendor/modernizr-3.11.2.min.js"></script>

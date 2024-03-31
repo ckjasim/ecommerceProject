@@ -22,7 +22,6 @@ const loadCart = async (req, res) => {
         console.log('--------')
         const productData = await productSchema.findOne({ _id: req.body.productId })
         console.log('--sssss------')
-        console.log(productData)
         const total=quantity*productData.price
 
         const productToAdd = [{
@@ -71,28 +70,6 @@ const loadCart = async (req, res) => {
     }
 };
 
-
-
-const updateProductDetails =async(req,res)=>{
-    try {
-        
-        const productId = req.body.productId;
-        const quantity = req.body.quantity;
-        const productData = await productSchema.findOne({ _id: req.body.productId })
-        console.log('--sssssppppppp------')
-        console.log(productData)
-        const total=quantity*productData.price
-
-        const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:req.session.user_id});
-
-        res.send({ status: 'success', message: 'Added to cart successfully',alreadyCart});
-                  
-       
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send({ status: 'error', message: 'Internal server error' });
-    }
-}
 const viewCart =async(req,res)=>{
     try {
         
@@ -100,6 +77,7 @@ const viewCart =async(req,res)=>{
         
         const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
         if(cartDetails){
+
             const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
             res.render('cart',{cartDetails,cartTotal})
         }else{
@@ -112,30 +90,58 @@ const viewCart =async(req,res)=>{
     }
 }
 
+const updateProductDetails =async(req,res)=>{
+    try {
+        
+        const productId = req.body.productId;
+        const quantity = req.body.quantity;
+        const productData = await productSchema.findOne({ _id: req.body.productId })
+        
+        console.log('--sssssppppppp------')
+ 
+        const inStock=productData.quantity
+
+        const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:req.session.user_id});
+
+        res.send({ status: 'success', message: 'Added to cart successfully',alreadyCart,inStock});
+                  
+       
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ status: 'error', message: 'Internal server error' });
+    }
+}
+
+
 
 
 const updateQuantity = async (req, res) => {
     try {
-        console.log('00000')
         const { cartQuantity, productId } = req.body;
         
-        const cartData = await cartSchema.findOne({userId: req.session.user_id }).populate('products.productId').populate('userId')
-        const productData=cartData.products.find((product)=>{
-            return product.productId.equals(productId)
-        })
-        productData.quantity=cartQuantity
-        productData.totalAmount= productData.productId.price * cartQuantity
-        // const priceTotal=productData.totalAmount
-        await cartData.save()   
-        // console.log(priceTotal)
-        const cartTotal = cartData.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
-        console.log(cartTotal)
-        res.status(200).json({ status: 'success', message: 'Quantity updated successfully',cartTotal});
+        const cartData = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId');
+        const productData = cartData.products.find((product) => {
+            return product.productId.equals(productId);
+        });
+
+        productData.quantity = cartQuantity;
+        productData.totalAmount = productData.productId.price * cartQuantity;
+        await cartData.save();
+
+        const cartTotal = cartData.products.reduce((total, product) => total + product.totalAmount, 0);
+        console.log('Cart Total:', cartTotal);
+
+        const productTotalPrice = productData.totalAmount;
+        const inStock=productData.inStock;
+        console.log('Product Total Price:', productTotalPrice);
+
+        res.status(200).json({ status: 'success', message: 'Quantity updated successfully', cartTotal, productTotalPrice,inStock });
+
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
-}
+};
 
 
 const deleteCartProduct = async (req, res) => {
@@ -156,8 +162,29 @@ const deleteCartProduct = async (req, res) => {
         res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
 }
+
+const limitQuantity= async (req, res) => {
+    try {
+        
+        const { productId } = req.body;
+        const productData = await productSchema.findOne({ _id: productId })
+        console.log(productData)
+        const inStock = productData.quantity
+        
+
+      
+        res.status(200).json({ status: 'success', message: 'product deleted successfully',inStock});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
+}
 const checkout = async (req, res) => {
     try {
+        const cartData = await cartSchema.findOne({ userId: req.session.user_id })
+        if(cartData){
+
+       
         const userData=req.session.user_id
         const addressData = await addressSchema.find({userId:userData}).populate('userId')
         const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
@@ -165,6 +192,9 @@ const checkout = async (req, res) => {
         console.log(cartTotal)
         
         res.render('checkout',{addressData,cartDetails,cartTotal})
+    }else{
+        res.render('emptyCart')
+    }
       
         // res.status(200).json({ status: 'success', message: 'product deleted successfully'});
     } catch (error) {
@@ -182,6 +212,7 @@ module.exports={
     updateQuantity,
     deleteCartProduct,
     checkout,
-    updateProductDetails
+    updateProductDetails,
+    limitQuantity
     
 }
