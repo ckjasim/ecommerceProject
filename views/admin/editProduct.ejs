@@ -14,6 +14,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg" />
         <!-- Template CSS -->
         <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+        
     </head>
 
     <body>
@@ -223,7 +224,7 @@
                             <h2 class="content-title">Edit Product</h2>
                             <div>
                                 <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
-                                <button class="btn btn-md rounded font-sm hover-up">Update product</button>
+                                <button class="btn btn-md rounded font-sm hover-up" id="submitButton" >Update product</button>
                             </div>
                         </div>
                     </div>
@@ -232,7 +233,8 @@
                             <div class="card-body">
                                 <div class="mb-4">
                                     <label for="product_title" class="form-label">Product title</label>
-                                    <input type="text" value="<%= productData.name %>" placeholder="Type here" name="name" class="form-control" id="product_name" required />
+                                    <input type="text" value="<%= productData.name %>" placeholder="Type here" name="name" class="form-control" id="productName" required />
+                                    <span id="nameError" style="color: rgb(188, 5, 5);"></span>
                                 </div>
                                 <div class="mb-4">
                                     <input type="hidden" name="id" value="<%= productData._id %>">
@@ -240,20 +242,26 @@
                                 <div class="row gx-3">
                                     <div class="col-md-4 mb-3">
                                         <label for="product_sku" class="form-label">Quantity</label>
-                                        <input type="text" placeholder="Type here" value="<%= productData.quantity %>" name="quantity" class="form-control" id="product_sku" required/>
+                                        <input type="text" placeholder="Type here" value="<%= productData.quantity %>" name="quantity" class="form-control" id="productQuantity" required/>
+                                        <span id="quantityError" style="color: rgb(188, 5, 5);"></span>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="product_color" class="form-label">Color</label>
-                                        <input type="text"  value="<%= productData.color %>" name="color" class="form-control" id="product_color" required/>
+                                        <input type="text"  value="<%= productData.color %>" name="color" class="form-control" id="productColor" required/>
+                                        <span id="colorError" style="color: rgb(188, 5, 5);"></span>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="product_size" class="form-label">Size</label>
-                                        <input type="text" placeholder="Type here" value="<%= productData.size %>" name="size" class="form-control" id="product_size" required/>
+                                        <input type="text" placeholder="Type here" value="<%= productData.size %>" name="size" class="form-control" id="productSize" required/>
+                                        <span id="sizeError" style="color: rgb(188, 5, 5);"></span>
                                     </div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_brand" class="form-label">Material</label>
-                                    <input type="text" value="<%= productData.material %>" name="material" class="form-control" id="product_brand" required/>
+                                    <input type="text" value="<%= productData.material %>" name="material" class="form-control" id="productMaterial" required/>
+                                    <span id="materialError" style="color: rgb(188, 5, 5);"></span>
+
+
                                 </div>
                             </div>
                         </div>
@@ -261,8 +269,50 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div>
-                                    <label class="form-label">Description</label>
-                                    <textarea   name="description" class="form-control" rows="4" required><%= productData.description %></textarea>
+                                    <!-- <label class="form-label">Description</label>
+                                    <textarea   name="description" class="form-control" rows="4" required><%= productData.description %></textarea> -->
+
+                                    <div>
+
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                    <label for="image1">
+                                                        <img id="i1" src="/productImage/<%=productData.img[0] %>" height="120">
+                                                        <br><br>
+                                                        <a type="button" class="btn btn-outline-dark waves-effect waves-light">replace</a>
+                                                    </label>
+                                                </td>
+                                                <input type="file" onchange="hello(this, '1')" name="image" hidden accept="image/*" id="image1">
+                                                <input type="text" hidden value="<%=productData.img[0] %>" name="pic" id="">
+                                                <span id="imageError1" style="color: rgb(188, 5, 5);"></span>
+
+                                                    <td><label for="image2"><img id="i2" src="/productImage/<%=productData.img[1] %>" height="120"><br> <br><a type="button" class="btn btn-outline-dark waves-effect waves-light">replace</a></label></td>
+                                                    <input type="file" onchange="hello(this,'2')" name="image" hidden accept="image/*" id="image2">
+                                                    <input type="text" hidden value="<%=productData.img[1] %>" name="pic" id="">
+                                                    <span id="nameError" style="color: rgb(188, 5, 5);"></span>
+
+                                                    <td><label for="image3"><img id="i3" src="/productImage/<%= productData.img[2]%>" height="120"><br> <br><a type="button" class="btn btn-outline-dark waves-effect waves-light">replace</a></label></td>
+                                                    <input type="file" onchange="hello(this,'3')" name="image" hidden accept="image/*" id="image3">
+                                                    <input type="text" hidden value="<%=productData.img[2] %>" name="pic" id="">
+                                                    <span id="nameError" style="color: rgb(188, 5, 5);"></span>
+
+                                                    <td><label for="image4"><img id="i4" src="/productImage/<%= productData.img[3]%>" height="120"><br> <br><a type="button" class="btn btn-outline-dark waves-effect waves-light">replace</a></label></td>
+                                                    <input type="file" onchange="hello(this,'4')" name="image" hidden accept="image/*" id="image4">
+                                                    <input type="text" hidden value="<%=productData.img[3] %>" name="pic" id="">
+                                                    <span id="nameError" style="color: rgb(188, 5, 5);"></span>
+
+                                                </tr>
+
+                                            </tbody>
+                                            
+                                        </table>
+                                        <br>
+                                        <br>
+                                        <input type="hidden" name="image" value="<%= productData._id %>">
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -275,12 +325,14 @@
                             <div class="card-body">
                                 <div class="mb-4">
                                     <label class="form-label">Price</label>
-                                    <input type="text" value="<%= productData.price%>" name="price" placeholder="Type here" class="form-control" required/>
+                                    <input type="text" value="<%= productData.price%>" name="price" placeholder="Type here" class="form-control" id="productPrice" required/>
+                                    <span id="priceError" style="color: rgb(188, 5, 5);"></span>
+
                                 </div>
                                
                                 <h5 class="mb-3">Categories</h5>
                                 <div class="mb-4">
-                                    <h4>sort:</h4>
+                                    
                                     <!-- <label class="form-label">Categories</label> -->
                                     <select class="form-select" name="category">
                                         <% categoryData.forEach(element => {  %>
@@ -297,7 +349,12 @@
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <div >
-                                        <label class="form-label">Images</label>
+                                         <label class="form-label">Description</label>
+                                    <textarea   name="description" class="form-control" rows="4" id="productDescription" required><%= productData.description %></textarea>
+                                    <span id="descriptionError" style="color: rgb(188, 5, 5);"></span>
+
+                                    
+                                        <!-- <label class="form-label">Images</label>
                                         <div class="left photo">
                                             <img src="/productImage/<%= productData.img[0]%>" class="img-sm img-thumbnail" alt="Item" />
                                             <button href=""  class="btn btn-sm font-sm rounded btn-brand delete-link" onclick="imageData('<% productData.img[0] %>')"> Delete </button>
@@ -315,7 +372,23 @@
                                             <img src="/productImage/<%= productData.img[3]%>" class="img-sm img-thumbnail" alt="Item" />
                                             <a href="deleteImage?_id=<% productData.img[3] %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
                                         </div>
-                                        <input multiple class="form-control" type="file" name="image" />
+                                        <input multiple class="form-control" type="file" name="image" /> -->
+
+
+
+
+
+
+
+
+
+
+                                        
+
+
+
+
+
                                     </div>
                                 </div>
                             </div>
@@ -353,7 +426,7 @@
             });
         }); 
         </script> -->
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Get all delete links
                 const deleteLinks = document.querySelectorAll('.delete-link');
@@ -378,9 +451,272 @@
             }
             });
             
+        </script> -->
+        <script>
+     function checkValidity() {
+        var nameError = document.getElementById('nameError').textContent;
+        var quantityError = document.getElementById('quantityError').textContent;
+        var colorError = document.getElementById('colorError').textContent;
+        var sizeError = document.getElementById('sizeError').textContent;
+        var materialError = document.getElementById('materialError').textContent;
+        var priceError = document.getElementById('priceError').textContent;
+        var descriptionError = document.getElementById('descriptionError').textContent;
+    
+        var submitButton = document.getElementById('submitButton');
+
+        if (
+            nameError === "" &&
+            quantityError === "" &&
+            colorError === "" &&
+            sizeError === "" &&
+            materialError === "" &&
+            priceError === "" &&
+            descriptionError === ""
+        
+        ) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+            
+
+
+            function validateName() {
+                var productName = document.getElementById('productName').value.trim();
+                var nameError = document.getElementById('nameError');
+        
+                var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+        
+                if (!productName || !namePattern.test(productName)) {
+                    nameError.textContent = 'invalid name provided';
+                } else {
+                    nameError.textContent = '';
+                }
+            }
+           
+            function validateQuantity() {
+                var productQuantity = document.getElementById('productQuantity').value.trim();
+                var quantityError = document.getElementById('quantityError');
+
+                var quantityPattern = /^[1-9]\d*$/;
+
+                if (!productQuantity || !quantityPattern.test(productQuantity)) {
+                    quantityError.textContent = 'Enter a valid number';
+                } else {
+                    quantityError.textContent = '';
+                }
+            }
+
+
+            function validateColor() {
+                var productColor = document.getElementById('productColor').value.trim();
+                var colorError = document.getElementById('colorError');
+        
+                var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+        
+                if (!productColor || !namePattern.test(productColor)) {
+                    colorError.textContent = 'invalid color provided';
+                } else {
+                    colorError.textContent = '';
+                }
+            }
+            function validateSize() {
+                var productQuantity = document.getElementById('productSize').value.trim();
+                var quantityError = document.getElementById('sizeError');
+
+                var quantityPattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+
+                if (!productQuantity || !quantityPattern.test(productQuantity)) {
+                    quantityError.textContent = 'Enter a valid size';
+                } else {
+                    quantityError.textContent = '';
+                }
+            }
+            function validateMaterial() {
+                var productName = document.getElementById('productMaterial').value.trim();
+                var nameError = document.getElementById('materialError');
+        
+                var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+        
+                if (!productName || !namePattern.test(productName)) {
+                    nameError.textContent = 'Invalid material provided';
+                } else {
+                    nameError.textContent = '';
+                }
+            }
+          
+
+           function validatePrice() {
+                var productQuantity = document.getElementById('productPrice').value.trim();
+                var quantityError = document.getElementById('priceError');
+
+                var quantityPattern = /^[1-9]\d*$/;
+
+                if (!productQuantity || !quantityPattern.test(productQuantity)) {
+                    quantityError.textContent = 'Enter a valid number';
+                } else {
+                    quantityError.textContent = '';
+                }
+            }
+
+            function validateDescription() {
+                var productName = document.getElementById('productDescription').value.trim();
+                var nameError = document.getElementById('descriptionError');
+        
+                var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+        
+                if (!productName || !namePattern.test(productName)) {
+                    nameError.textContent = 'Invalid material provided';
+                } else {
+                    nameError.textContent = '';
+                }
+            }
+
+            document.getElementById('productName').addEventListener('input', function() {
+                validateName();
+                checkValidity(); 
+        });
+            document.getElementById('productQuantity').addEventListener('input', function() {
+                validateQuantity();
+                checkValidity(); 
+        });
+    
+            document.getElementById('productColor').addEventListener('input', function() {
+                validateColor();
+                checkValidity(); 
+        });
+    
+            document.getElementById('productSize').addEventListener('input', function() {
+                validateSize();
+                checkValidity(); 
+        });
+    
+            document.getElementById('productMaterial').addEventListener('input', function() {
+                validateMaterial();
+                checkValidity(); 
+        });
+            document.getElementById('productPrice').addEventListener('input', function() {
+                validatePrice();
+                checkValidity(); 
+        });
+            document.getElementById('productDescription').addEventListener('input', function() {
+                validateDescription();
+                checkValidity(); 
+        });
+           
+
+        
+    
         </script>
         
+        
+        <script>
 
+            for (let i = 0; i < 3; i++) {
+              const icon = document.getElementById(`icon${i}`)
+              icon.addEventListener('click', (event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                const text = document.getElementById(`p${i}`);
+                const im = document.getElementById(`i${i}`);
+                const imL = document.getElementById(`imageL${i}`);
+                const inp = document.getElementById(`images${i}`);
+                inp.value = '';
+                im.src = '';
+                im.style.display = 'none';
+                text.style.display = 'block';
+                imL.style.display = 'none';
+                icon.style.opacity = 0;
+              });
+            }
+          
+            const textInput = document.querySelectorAll('.text');
+            const err1 = document.getElementById('err1');
+            const submit11 = document.querySelector('.submit');
+          
+            document.getElementById('myForm').addEventListener('keydown', function (e) {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            });
+            const msgP = document.getElementById(msgP);
+            const form = document.getElementById('myForm')
+            const imgco = document.querySelector('.image')
+            form.addEventListener('submit', (ev) => {
+             
+             
+                  const inp0 = document.getElementById(images0);
+                  const inp1 = document.getElementById(images1);
+                  const inp2 = document.getElementById(images2);
+                  const inp3 = document.getElementById(images3);
+                  if (inp1.value !== '' &&inp2.value!==''&&inp0.value!==''&&inp3.value!=='' ) {
+                    form.submit()
+                    
+                  } else {
+                  msgP.textContent='please fill three images';
+                  imgco.style.height='10rem'
+                  ev.preventDefault();
+                }
+
+              })
+          
+            function hello(e, i) {
+              const text = document.getElementById(`p${i}`);
+              const im = document.getElementById(`i${i}`);
+              const imL = document.getElementById(`imageL${i}`);
+          
+              im.src = URL.createObjectURL(e.files[0]);
+              const icon = document.getElementById(`icon${i}`)
+              icon.style.opacity = 1;
+              im.style.display = 'block';
+              text.style.display = 'none';
+              imL.style.display = 'flex';
+            }
+          
+            const regex = /^[a-zA-Z-]/;
+          
+            textInput.forEach((inputElement, i) => {
+              const errorElement = document.getElementById(`err${i + 1}`);
+          
+              inputElement.addEventListener('input', function (event) {
+                const inputValue = event.target.value;
+          
+                if (inputValue.trim() !== '' && !/\d/.test(inputValue)) {
+                  submit11.style.pointerEvents = 'all';
+                  submit11.style.opacity = 1;
+          
+          
+          
+                  errorElement.textContent = '';
+                  inputElement.style.borderColor = 'green';
+                } else {
+                  const submit11 = document.querySelector('.submit');
+                  errorElement.textContent = 'Only contains alphabets, no space or numbers allowed.';
+                  inputElement.style.borderColor = 'red';
+                  submit11.style.pointerEvents = 'none';
+                  submit11.style.opacity = 0.5;
+                }
+              });
+            });
+          
+            document.getElementById('myForm').addEventListener('submit', function (event) {
+              textInput.forEach((inputElement, i) => {
+                const inputValue = inputElement.value.trim();
+                const regex = /^[a-zA-Z]/;
+          
+                if (!regex.test(inputValue)) {
+                  document.getElementById(`err${i + 1}`).textContent = 'Only contains alphabets, no space or numbers allowed.';
+                  inputElement.style.borderColor = 'red';
+                  event.preventDefault();
+                }
+              });
+            });
+          
+          
+          
+          
+          </script>
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="assets/js/vendors/select2.min.js"></script>

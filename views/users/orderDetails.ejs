@@ -129,11 +129,14 @@
                     <div class="header-menu">
                         <ul class="nav-menu">
                             <li>
-                                <a href="#">Home</a>
+                                <a href="/">Home</a>
                             </li>
-                            <li><a href="about.html">Shop</a></li>
+                            <li><a href="/loadShop">Shop</a></li>
                             <li>
                                 <a href="#">Products</a>
+                            </li>
+                            <li>
+                                <a href="#">About us</a>
                             </li>
                             
                             <li>
@@ -169,35 +172,99 @@
                             <a class="action" href="#" role="button" data-bs-toggle="dropdown"><i class="pe-7s-user"></i></a>
 
                             <ul class="dropdown-menu dropdown-profile">
-                                <li><a href="my-account.html">My Account</a></li>
-                                <li><a href="checkout.html">Checkout</a></li>
-                                <li><a href="login.html">Sign In</a></li>
+                                <li><a href="/loadProfile">My Account</a></li>
+                                <li><a href="login">Sign In</a></li>
+                                <li><a href="register">Sign Up</a></li>
+                                <li><a href="logout">Logout</a></li>
                             </ul>
                         </div>
-                        <a class="action" href="wishlist.html"><i class="pe-7s-like"></i></a>
+                        <a class="action" href="/loadWishlist"><i class="pe-7s-like"></i></a>
 
-                        <div class="dropdown">
-                            <a class="action" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="pe-7s-shopbag"></i>
+                        <div >
+                            <a class="action" href="/viewCart" role="button" >
+                                <i class="pe-7s-cart"></i>
                                 <span class="number">3</span>
                             </a>
                         </div>
                     </div>
                     <!-- Header Meta End -->
                 </div>
-            </div>  
+            </div>
         </div>
     </div>
     <!-- Header End -->
 
     <!-- Header Mobile Start -->
-    
+    <div class="header-mobile section d-lg-none">
+        <!-- Header Mobile top Start -->
+        <div class="header-mobile-top header-sticky">
+            <div class="container">
+                <div class="row row-cols-3 gx-2 align-items-center">
+                    <div class="col">
+                        <!-- Header Toggle Start -->
+                        <div class="header-toggle">
+                            <button class="mobile-menu-open" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </div>
+                        <!-- Header Toggle End -->
+                    </div>
+                    <div class="col">
+                        <!-- Header Logo Start -->
+                        <div class="header-logo text-center">
+                            <a href="index.html"><img src="assets/images/logo.png" width="154" height="46" alt="Logo" /></a>
+                        </div>
+                        <!-- Header Logo End -->
+                    </div>
+                    <div class="col">
+                        <!-- Header Action Start -->
+                        <div class="header-meta">
+                            <div class="dropdown">
+                                <a class="action" href="#" role="button" data-bs-toggle="dropdown"><i class="pe-7s-user"></i></a>
+
+                                <ul class="dropdown-menu dropdown-profile">
+                                    <li>
+                                        <a href="my-account.html">My Account</a>
+                                    </li>
+                                    <li><a href="checkout.html">Checkout</a></li>
+                                    <li><a href="login.html">Sign In</a></li>
+                                </ul>
+                            </div>
+                            <a class="action" href="cart.html">
+                                <i class="pe-7s-shopbag"></i>
+                                <span class="number">3</span>
+                            </a>
+                        </div>
+                        <!-- Header Action End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header Mobile top End -->
+
+        <!-- Header Mobile Bottom End -->
+        <div class="header-mobile-bottom">
+            <div class="container">
+                <!-- Header Search Start -->
+                <div class="header-search">
+                    <form action="#">
+                        <input type="text" placeholder="Enter your search key ... " />
+                        <button><i class="pe-7s-search"></i></button>
+                    </form>
+                </div>
+                <!-- Header Search End -->
+            </div>
+        </div>
+        <!-- Header Mobile Bottom End -->
+    </div>
     <!-- Header Mobile End -->
 
     <!-- off Canvas Start -->
     
     <!-- Page Banner Section Start -->
-    <div class="section mb-3" style="background-image: url(assets/images/page-banner.jpg)">
+    <div class="section mb-3 " style="background-image: url(assets/images/page-banner.jpg) ">
         <!-- page-banner-section       deleted class full image-->
         <div class="container">
             <!-- Page Banner Content End -->
@@ -206,26 +273,28 @@
 
                 <ul class="breadcrumb">
                     <li><a href="index.html">Home</a></li>
-                    <li class="active">Shop Page</li>
+                    <li class="active">Checkout</li>
+                    
                 </ul>
+
+                <br>
             </div>
             <!-- Page Banner Content End -->
         </div>
     </div>
-    <!-- Page Banner Section End -->
 
     <!-- Shopping Cart Section Start -->
  
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12  ">
         <form action="/">
-        <div class="page-content"> 
+        <div class="page-content "> 
             <div class="container-fluid">
                
                 
                 <div class="row d-flex justify-content-center mt-3">
               
                     
-                    <div class="col-xl-6 mt-5">
+                    <div class="col-xl-7 mt-5">
                         <div class="card border shadow mb-3" style="border-radius: 0 !important;">
 
                             
@@ -245,8 +314,9 @@
                                                         </div>
                                                         <div class="info">
                                                             <h6 class="mb-0"><%= productDetails.name %></h6>
-                                                            <h6 class="mb-0">Rs.<%= orderDetails.products[0].totalAmount %>.00</h6>
+                                                            <h6 class="mb-0">Rs.<%= orderDetails.products[0].orderedPrice %>.00</h6>
                                                             <h6 class="mb-0">QTY:<%= orderDetails.products[0].quantity%></h6>
+                                                            <h6 class="mb-0">Toatal.<%= orderDetails.products[0].totalAmount %>.00</h6>
                                                             <!-- <h6 class="mb-0">neme</h6> -->
                                                         </div>
                                                     <% } %>
@@ -254,8 +324,10 @@
                                             </a>
                                         </div>
                                         
-                                        
+                                        <% if(orderDetails&&orderDetails.addressId){%>
                                         <div class="col-lg-2 col-sm-2 col-4 col-price">
+
+                                                
                                             <h6 class="mb-0"><%= orderDetails.addressId.address %></h6>     
                                             <h6 class="mb-0"><%= orderDetails.addressId.city %></h6> 
                                             <h6 class="mb-0"><%= orderDetails.addressId.district %></h6> 
@@ -263,7 +335,7 @@
                                             <h6 class="mb-0"><%= orderDetails.addressId.pincode %></h6> 
 
                                         </div>
-                                       
+                                        <% }%>
         
                                         <div class="col-lg-4 col-sm-3 col-4 col-status">
                                             <h6 class="mb-0">Shipped on March 16,2024</h6>  

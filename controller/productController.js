@@ -198,9 +198,28 @@ const editProduct =async (req,res)=>{
             categoryId:req.body.category,
             description:req.body.description,
         }
-        
+        // const newImg=req.files.map(file=>file.filename)
         if(req.files && req.files.length >0){
-            
+        //     let currentImage=[]
+        //     const previousImage=await productSchema.findOne({_id:req.body.id})
+        //     if(previousImage.img && previousImage.img.length>0){
+        //         console.log('1111')
+        //         for(let i=0;i<4;i++){
+        //             if(previousImage.img[i]!==req.body.pic[i]){
+        //                 console.log('222233')
+        //                 newImg.forEach(element => {
+        //                     if(element.split('-')[1]==req.body.pic[i].split('-')[1]){
+        //                         currentImage[i]=element
+        //                     }
+        //                 });
+        //             }else{
+        //                 console.log('3333')
+        //                 currentImage[i]=previousImage.img[i]
+        //             }
+        //         }
+        //     }
+        //     console.log(currentImage)
+        //     updateProduct.img=currentImage
             updateProduct.img=req.files.map(file=>file.filename)
         }
         await productSchema.findByIdAndUpdate({_id:req.body.id},{$set:updateProduct})

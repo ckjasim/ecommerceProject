@@ -1,4 +1,4 @@
-const express=require('express')
+    const express=require('express')
 const userRoute=express()
 const session=require('express-session')
 
@@ -14,6 +14,7 @@ const cartController=require('../controller/cartController')
 const profileController=require('../controller/profileController')
 const orderController=require('../controller/orderController')
 const productController=require('../controller/productController')
+const wishlistController=require('../controller/wishlistController')
 
 userRoute.use(session({
     secret:process.env.SESSION_SECRET,
@@ -69,7 +70,7 @@ userRoute.get('/checkout',userConfig.isLogin,accessUser,cartController.checkout)
 userRoute.post('/checkout',orderController.loadOrder)
 userRoute.get('/viewOrder',userConfig.isLogin,accessUser,orderController.viewOrder)
 userRoute.get('/orderDetails',userConfig.isLogin,accessUser,orderController.orderDetails)
-userRoute.get('/cancelOrder',userConfig.isLogin,accessUser,orderController.cancelOrder)
+userRoute.post('/cancelOrder',userConfig.isLogin,accessUser,orderController.cancelOrder)
 
 
 //profile
@@ -88,6 +89,10 @@ userRoute.post('/changePassword',userConfig.isLogin,accessUser,profileController
 userRoute.get('/loadProduct',productController.loadUserProduct)
 userRoute.get('/loadProductDetail/:productId',productController.loadUserProductDetail)
 userRoute.post('/sort',productController.sort)
+
+
+userRoute.get('/loadWishlist',wishlistController.loadWishlist)
+
 
 
 

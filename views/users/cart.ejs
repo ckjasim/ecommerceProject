@@ -42,104 +42,81 @@
     <!-- Header Start  -->
     <div class="header-area header-sticky d-none d-lg-block">
       <div class="container position-relative">
-        <div class="row align-items-center">
-          <div class="col-lg-3">
-            <!-- Header Logo Start -->
-            <div class="header-logo">
-              <a href="index.html"
-                ><img
-                  src="assets/images/logo.png"
-                  width="154"
-                  height="46"
-                  alt="Logo"
-              /></a>
-            </div>
-            <!-- Header Logo End -->
-          </div>
-          <div class="col-lg-6">
-            <div class="header-menu">
-              <ul class="nav-menu">
-                <li>
-                  <a href="#">Home</a>
-                </li>
-                <li><a href="about.html">Shop</a></li>
-                <li>
-                  <a href="#">Products</a>
-                </li>
-
-                <li>
-                  <a href="#">Blog</a>
-                </li>
-                <li><a href="contact.html">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <!-- Header Meta Start -->
-            <div class="header-meta">
-              <div class="dropdown">
-                <a
-                  class="action"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                >
-                  <i class="pe-7s-search"></i>
-                </a>
-
-                <div class="dropdown-menu dropdown-search">
-                  <!-- Header Search Start -->
-                  <div class="header-search">
-                    <form action="#">
-                      <input
-                        type="text"
-                        placeholder="Enter your search key ... "
-                      />
-                      <button>
-                        <i class="pe-7s-search"></i>
-                      </button>
-                    </form>
+          <div class="row align-items-center">
+              <div class="col-lg-3">
+                  <!-- Header Logo Start -->
+                  <div class="header-logo">
+                      <a href="index.html"><img src="assets/images/logo.png" width="154" height="46" alt="Logo" /></a>
                   </div>
-                  <!-- Header Search End -->
-                </div>
+                  <!-- Header Logo End -->
               </div>
-
-              <div class="dropdown">
-                <a
-                  class="action"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  ><i class="pe-7s-user"></i
-                ></a>
-
-                <ul class="dropdown-menu dropdown-profile">
-                  <li><a href="my-account.html">My Account</a></li>
-                  <li><a href="/checkout">Checkout</a></li>
-                  <li><a href="login.html">Sign In</a></li>
-                </ul>
+              <div class="col-lg-6">
+                  <div class="header-menu">
+                      <ul class="nav-menu">
+                          <li>
+                              <a href="/">Home</a>
+                          </li>
+                          <li><a href="/loadShop">Shop</a></li>
+                          <li>
+                              <a href="#/loadProduct">Products</a>
+                          </li>
+                          <li>
+                              <a href="#">About us</a>
+                          </li>
+                          
+                          <li>
+                              <a href="#">Blog</a>
+                          </li>
+                          <li><a href="contact.html">Contact</a></li>
+                      </ul>
+                  </div>
               </div>
-              <a class="action" href="wishlist.html"
-                ><i class="pe-7s-like"></i
-              ></a>
+              <div class="col-lg-3">
+                  <!-- Header Meta Start -->
+                  <div class="header-meta">
+                      <div class="dropdown">
+                          <a class="action" href="#" role="button" data-bs-toggle="dropdown">
+                              <i class="pe-7s-search"></i>
+                          </a>
 
-              <div class="dropdown">
-                <a
-                  class="action"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                >
-                  <i class="pe-7s-shopbag"></i>
-                  <span class="number">3</span>
-                </a>
+                          <div class="dropdown-menu dropdown-search">
+                              <!-- Header Search Start -->
+                              <div class="header-search">
+                                  <form action="#">
+                                      <input type="text" placeholder="Enter your search key ... " />
+                                      <button>
+                                          <i class="pe-7s-search"></i>
+                                      </button>
+                                  </form>
+                              </div>
+                              <!-- Header Search End -->
+                          </div>
+                      </div>
+
+                      <div class="dropdown">
+                          <a class="action" href="#" role="button" data-bs-toggle="dropdown"><i class="pe-7s-user"></i></a>
+
+                          <ul class="dropdown-menu dropdown-profile">
+                              <li><a href="/loadProfile">My Account</a></li>
+                              <li><a href="login">Sign In</a></li>
+                              <li><a href="register">Sign Up</a></li>
+                              <li><a href="logout">Logout</a></li>
+                          </ul>
+                      </div>
+                      <a class="action" href="/loadWishlist"><i class="pe-7s-like"></i></a>
+
+                      <div >
+                          <a class="action" href="/viewCart" role="button" >
+                              <i class="pe-7s-cart"></i>
+                              <span class="number">3</span>
+                          </a>
+                      </div>
+                  </div>
+                  <!-- Header Meta End -->
               </div>
-            </div>
-            <!-- Header Meta End -->
           </div>
-        </div>
       </div>
-    </div>
+  </div>
     <!-- Header End -->
 
     <!-- Header Mobile Start -->
@@ -240,8 +217,9 @@
 
           <ul class="breadcrumb">
             <li><a href="index.html">Home</a></li>
-            <li class="active">Shop Page</li>
+            <li class="active">Cart</li>
           </ul>
+          <br>
         </div>
         <!-- Page Banner Content End -->
       </div>
@@ -266,6 +244,9 @@
               </thead>
 
               <tbody>
+                <% if(cartDetails && cartDetails.products){%>
+
+                  
                 <% cartDetails.products.forEach((element,index) => { %>
                 <tr id="cartRefresh<%= element.productId._id %>">
                   <td  class="product-thumb">
@@ -323,6 +304,7 @@
                 </tr>
 
                 <% }); %>
+                <% } %>
               </tbody>
             </table>
           </div>

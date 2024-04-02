@@ -635,40 +635,45 @@
                                     <div class="col-sm-6">
                                         <div class="single-form">
                                             <label class="form-label">Street address *</label>
-                                            <input type="text" value="<%= addressData.name %>" name="name"/>
+                                            <input type="text" value="<%= addressData.name %>" name="userName" id="userName"/>
+                                            <span id="nameError" style="color: rgb(188, 5, 5);"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="single-form">
                                             <label class="form-label">  <br></label>
-                                            <input type="text" value="<%= addressData.mobile %>"  name="mobile"/>
+                                            <input type="text" value="<%= addressData.mobile %>"  name="mobile" id="mobileNumber" required/>
+                                            <span id="mobileError" style="color: rgb(188, 5, 5);"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="single-form">
-                                            <input type="text" value="<%= addressData.pincode %>" name="pincode" />
+                                            <input type="text" value="<%= addressData.pincode %>" name="pincode" id="pincode" required />
+                                            <span id="pincodeError" style="color: rgb(188, 5, 5);"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="single-form">
-                                            <input type="text" value="<%= addressData.locality %>" name="locality" />
-                                        </div>
+                                            <input type="text" value="<%= addressData.locality %>" name="locality" id="locality" required/>
+                                            <span id="localityError" style="color: rgb(188, 5, 5);"></span></div>
                                     </div>
                                 <div class="col-sm-12">
                                     <div class="single-form">
-                                        <textarea style="height: 100px;" name="address"><%= addressData.address %></textarea>
-
+                                        <textarea style="height: 100px;" name="address" id="address" required><%= addressData.address %></textarea>
+                                        <span id="addressError" style="color: rgb(188, 5, 5);"></span>
                                         <!-- <input type="text" placeholder="Apartment, suite, unit etc. (optional)" /> -->
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="single-form">
-                                        <input type="text" value="<%= addressData.city %>" name="city"  required/>
+                                        <input type="text" value="<%= addressData.city %>" name="city" id="city" required/>
+                                        <span id="cityError" style="color: rgb(188, 5, 5);"></span>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="single-form">
-                                        <input type="text" value="<%= addressData.district %>" name="district" required/>
+                                        <input type="text" value="<%= addressData.district %>" name="district" id="district" required/>
+                                        <span id="districtError" style="color: rgb(188, 5, 5);"></span>
                                     </div>
                                 </div>
                                 
@@ -723,7 +728,8 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="single-form">
-                                        <input type="text" value="<%= addressData.landmark %>" name="landmark" />
+                                        <input type="text" value="<%= addressData.landmark %>" name="landmark" id="landmark" />
+                                        <span id="landmarkError" style="color: rgb(188, 5, 5);"></span>
                                         <input type="text" value="<%= addressData._id %>" name="_id"  hidden/>
 
                                     </div>
@@ -731,7 +737,7 @@
                                 
                                 
                                 <div class="single-form">
-                                    <button class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" >update address</button>
+                                    <button class="btn btn-primary btn-hover-dark d-block" style="width: fit-content;" id="submitEditAddress" disabled >update address</button>
                                 </div>
                                 
                             
@@ -922,6 +928,183 @@
     ============================================ -->
 
     <!-- Modernizer & jQuery JS -->
+
+    <script>
+        function checkValidity() {
+           var nameError = document.getElementById('nameError').textContent;
+           var mobileError = document.getElementById('mobileError').textContent;
+           var pincodeError = document.getElementById('pincodeError').textContent;
+           var localityError = document.getElementById('localityError').textContent;
+           var addressError = document.getElementById('addressError').textContent;
+           var cityError = document.getElementById('cityError').textContent;
+           var districtError = document.getElementById('districtError').textContent;
+           var landmarkError = document.getElementById('landmarkError').textContent;
+       
+           var submitButton = document.getElementById('submitEditAddress');
+   
+           if (
+               nameError === "" &&
+               mobileError === "" &&
+               pincodeError === "" &&
+               localityError === "" &&
+               addressError === "" &&
+               cityError === "" &&
+               districtError === "" &&
+               landmarkError === ""
+           
+           ) {
+               submitButton.disabled = false;
+           } else {
+               submitButton.disabled = true;
+           }
+       }
+               
+   
+   
+               function validateName() {
+                   var productName = document.getElementById('userName').value.trim();
+                   var nameError = document.getElementById('nameError');
+           
+                   var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+           
+                   if (!productName || !namePattern.test(productName)) {
+                       nameError.textContent = 'invalid name provided';
+                   } else {
+                       nameError.textContent = '';
+                   }
+               }
+              
+                function validateMobile() {
+                    var mobileNumber = document.getElementById('mobileNumber').value.trim();
+                    var mobileError = document.getElementById('mobileError');
+
+                    var mobilePattern = /^[0-9]{10}$/;
+
+                    if (!mobileNumber || !mobilePattern.test(mobileNumber)) {
+                        mobileError.textContent = 'Enter a valid 10-digit mobile number';
+                    } else {
+                        mobileError.textContent = '';
+                    }
+                }
+              
+                function validatePincode() {
+                    var mobileNumber = document.getElementById('pincode').value.trim();
+                    var mobileError = document.getElementById('pincodeError');
+
+                    var mobilePattern = /^[0-9]{6}$/;
+
+                    if (!mobileNumber || !mobilePattern.test(mobileNumber)) {
+                        mobileError.textContent = 'Enter a valid 6-digit pincode';
+                    } else {
+                        mobileError.textContent = '';
+                    }
+                }
+   
+                function validateLocality() {
+                   var productName = document.getElementById('locality').value.trim();
+                   var nameError = document.getElementById('localityError');
+           
+                   var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+           
+                   if (!productName || !namePattern.test(productName)) {
+                       nameError.textContent = 'invalid locality provided';
+                   } else {
+                       nameError.textContent = '';
+                   }
+               }
+                function validateAddress() {
+                   var productName = document.getElementById('address').value.trim();
+                   var nameError = document.getElementById('addressError');
+           
+                   var namePattern = /^[a-zA-Z0-9][a-zA-Z0-9\s]*$/;
+
+           
+                   if (!productName || !namePattern.test(productName)) {
+                       nameError.textContent = 'invalid address provided';
+                   } else {
+                       nameError.textContent = '';
+                   }
+               }
+                function validateCity() {
+                   var productName = document.getElementById('city').value.trim();
+                   var nameError = document.getElementById('cityError');
+           
+                   var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+
+           
+                   if (!productName || !namePattern.test(productName)) {
+                       nameError.textContent = 'invalid city provided';
+                   } else {
+                       nameError.textContent = '';
+                   }
+               }
+                function validateDistrict() {
+                   var productName = document.getElementById('district').value.trim();
+                   var nameError = document.getElementById('districtError');
+           
+                   var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+
+           
+                   if (!productName || !namePattern.test(productName)) {
+                       nameError.textContent = 'invalid district provided';
+                   } else {
+                       nameError.textContent = '';
+                   }
+               }
+                function validateLandmark() {
+                   var productName = document.getElementById('landmark').value.trim();
+                   var nameError = document.getElementById('landmarkError');
+           
+                   var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+
+           
+                   if (!productName || !namePattern.test(productName)) {
+                       nameError.textContent = 'invalid district provided';
+                   } else {
+                       nameError.textContent = '';
+                   }
+               }
+              
+               document.getElementById('userName').addEventListener('input', function() {
+                   validateName();
+                   checkValidity(); 
+           });
+               document.getElementById('mobileNumber').addEventListener('input', function() {
+                validateMobile();
+                   checkValidity(); 
+           });
+       
+               document.getElementById('pincode').addEventListener('input', function() {
+                   validatePincode();
+                   checkValidity(); 
+           });
+       
+               document.getElementById('locality').addEventListener('input', function() {
+                   validateLocality();
+                   checkValidity(); 
+           });
+       
+               document.getElementById('address').addEventListener('input', function() {
+                   validateAddress();
+                   checkValidity(); 
+           });
+               document.getElementById('city').addEventListener('input', function() {
+                   validateCity();
+                   checkValidity(); 
+           });
+               document.getElementById('district').addEventListener('input', function() {
+                   validateDistrict();
+                   checkValidity(); 
+           });
+               document.getElementById('landmark').addEventListener('input', function() {
+                   validateLandmark();
+                   checkValidity(); 
+           });
+              
+   
+           
+       
+           </script>
     <script src="assets/js/vendor/modernizr-3.11.2.min.js"></script>
     <script src="assets/js/vendor/jquery-3.5.1.min.js"></script>
 

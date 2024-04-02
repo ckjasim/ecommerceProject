@@ -122,11 +122,14 @@
                     <div class="header-menu">
                         <ul class="nav-menu">
                             <li>
-                                <a href="#">Home</a>
+                                <a href="/">Home</a>
                             </li>
-                            <li><a href="about.html">Shop</a></li>
+                            <li><a href="/loadShop">Shop</a></li>
                             <li>
                                 <a href="#">Products</a>
+                            </li>
+                            <li>
+                                <a href="#">About us</a>
                             </li>
                             
                             <li>
@@ -162,16 +165,17 @@
                             <a class="action" href="#" role="button" data-bs-toggle="dropdown"><i class="pe-7s-user"></i></a>
 
                             <ul class="dropdown-menu dropdown-profile">
-                                <li><a href="my-account.html">My Account</a></li>
-                                <li><a href="checkout.html">Checkout</a></li>
-                                <li><a href="login.html">Sign In</a></li>
+                                <li><a href="/loadProfile">My Account</a></li>
+                                <li><a href="login">Sign In</a></li>
+                                <li><a href="register">Sign Up</a></li>
+                                <li><a href="logout">Logout</a></li>
                             </ul>
                         </div>
-                        <a class="action" href="wishlist.html"><i class="pe-7s-like"></i></a>
+                        <a class="action" href="/loadWishlist"><i class="pe-7s-like"></i></a>
 
-                        <div class="dropdown">
-                            <a class="action" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="pe-7s-shopbag"></i>
+                        <div >
+                            <a class="action" href="/viewCart" role="button" >
+                                <i class="pe-7s-cart"></i>
                                 <span class="number">3</span>
                             </a>
                         </div>
@@ -264,6 +268,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li class="active">Shop Page</li>
                 </ul>
+                <br>
             </div>
             <!-- Page Banner Content End -->
         </div>

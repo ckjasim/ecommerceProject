@@ -10,9 +10,10 @@ const loadProfile = async (req,res)=>{
         userId=req.session.user_id
         const addressData = await addressSchema.find({userId:userId}).populate('userId')
         const userData = await userSchema.findOne({_id:userId})
-        const orderDetails = await orderSchema.findOne({ userId: req.session.user_id })
-        .populate('userId')
+        const orderDetails = await orderSchema.find({ userId: req.session.user_id })
+        .populate('products')
         .populate('products.productId')
+        .populate('userId')
         .populate('addressId');
         res.render('profile',{userData,addressData,orderDetails})
     } catch (error) {
@@ -31,6 +32,7 @@ const editProfile=async (req,res)=>{
         }
         
         await userSchema.findByIdAndUpdate({_id:req.session.user_id},{$set:updateUser})
+        res.redirect('/loadProfile')
 
     } catch (error) {
         console.log(error.message);
