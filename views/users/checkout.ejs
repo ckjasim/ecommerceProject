@@ -435,9 +435,7 @@
                                             <div class="payment-radio radio">
                                                 <input type="radio" name="paymentOption" id="bank" value="wallet">
                                                 <label for="bank"><span></span> Wallet</label>
-                                                <div class="payment-details">
-                                                    <p>Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </li>
@@ -446,9 +444,7 @@
                                             <div class="payment-radio radio">
                                                 <input type="radio" name="paymentOption" id="check" value="RazorPay">
                                                 <label for="check"><span></span> RazorPay</label>
-                                                <div class="payment-details">
-                                                    <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </li>
@@ -457,21 +453,22 @@
                                             <div class="payment-radio radio">
                                                 <input type="radio" name="paymentOption" id="cash" value="Cash on Delivery" checked>
                                                 <label for="cash"><span></span> Cash on Delivery</label>
-                                                <div class="payment-details">
-                                                    <p>Pay with cash upon delivery.</p>
-                                                </div>
+                                
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
+                                <br>
 
                                 <% if (addressData && addressData.length > 0) { %>
                                     <div class="">
-                                        <button class="btn btn-primary btn-hover-dark d-block" id="placeOrder">Place Order</button>
+                                        <button class="btn btn-primary btn-hover-dark d-block"  id="placeOrder">Place Order</button>
+                                        
                                     </div>
                                 <% } else { %>
                                     <div class="">
-                                        <button class="btn btn-primary btn-hover-dark d-block" id="placeOrder" disabled>Place Order</button>
+                                        <button class="btn btn-primary btn-hover-dark d-block"  id="placeOrder" disabled>Place Order</button>
+                                        
                                         <p class="text-danger">Please add an address to proceed.</p>
                                     </div>
                                 <% } %>
@@ -664,18 +661,120 @@
 
     <!-- Modernizer & jQuery JS -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        
+        </script>
 
     <script>
       
       function placeOrder() {
-       
-        const selectedAddress = document.querySelector('input[name="shippingAddress"]:checked').value;
-        const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
-        
-        console.log("Selected shipping address:", selectedAddress);
-        console.log("Selected payment option:", selectedPaymentOption);
-        
-        event.preventDefault();
+       console.log('222222222222222222222')
+       console.log('4444444')
+const selectedAddress = document.querySelector('input[name="shippingAddress"]:checked').value;
+const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
+
+console.log("Selected shipping address:", selectedAddress);
+console.log("Selected payment option:", selectedPaymentOption);
+
+if (selectedPaymentOption === "RazorPay") {
+    console.log('suiiii');
+
+    event.preventDefault();
+
+    axios.post('/checkout', { selectedAddress, selectedPaymentOption })
+    .then(function (response) {
+        console.log(response.data);
+        if (response.data.session==false) {
+                        console.log('1111');  
+                        window.location='/notLogin'
+
+                    } else {
+                        console.log(response.data.response)
+                        if(response.data.response){
+                            const productContainer = document.getElementById('outOfStock');
+                            let productHTML = '';
+                            productHTML += `
+                           <p class="text-danger">currently unavailable</p>
+                             `;
+                           productContainer.innerHTML = productHTML;   
+                            console.log('xxxxxxxxxxxxxxxxxxxxxx')
+
+
+                        }else{
+        const { order, KEY_ID, cartTotal } = response.data;
+        console.log(KEY_ID);
+        console.log(order.id);
+
+        if (response.data) {
+            if (response.data.session === false) {
+                console.log('1111');
+                window.location = '/notLogin';
+            } else {
+                console.log('else');
+                var options = {
+                    "key": KEY_ID,
+                    "amount": order.amount,
+                    "currency": "INR",
+                    "name": "prinDecor",
+                    "description": "Test Transaction",
+                    "image": "assets/images/favicon.png",
+                    "order_id": order.id,
+                    "handler": function (response) {
+                        console.log('ready', response.razorpay_signature);
+                        console.log(response.razorpay_payment_id);
+                        
+                        axios.post('/checkout', {
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature 
+                        })
+                        .then(function (response) {
+                            console.log(response.data);
+                            
+                        })
+                        .catch(function (error) {
+                            console.error('Error:', error);
+                        });
+                        window.location='/viewOrder'
+                    },
+                    "prefill": {
+                        "name": "Gaurav Kumar",
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9000090000"
+                    },
+                    "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response) {
+                    // alert(response.error.code);
+                    alert(response.error.description);
+                    // alert(response.error.source);
+                    // alert(response.error.step);
+                    // alert(response.error.reason);
+                    // alert(response.error.metadata.order_id);
+                    // alert(response.error.metadata.payment_id);
+
+                });
+                
+                rzp1.open();
+            }
+        }
+    }
+}
+    })
+    .catch(function (error) {
+        console.error('Error:', error);
+    });
+
+
+    }else if (selectedPaymentOption==="Cash on Delivery") {
+            event.preventDefault();
 
         axios.post('/checkout', { selectedAddress, selectedPaymentOption})
         .then(function(response) {  
@@ -707,10 +806,19 @@
         .catch(function(error) {
         console.error('Error:', error);
         })
-  
-    
-                
+        } else {
+            
+        }
+         
+            
+           
+        
+        
+        
     }
+
+                
+    
 
     const placeOrderBtn = document.getElementById('placeOrder');
     placeOrderBtn.addEventListener('click', placeOrder);

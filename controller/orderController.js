@@ -2,6 +2,8 @@ const orderSchema = require('../model/orderData')
 const addressSchema = require('../model/addressData')
 const cartSchema = require('../model/cartData')  
 const productSchema = require('../model/productData')  
+const Razorpay = require('razorpay')  
+const crypto = require('crypto')  
 
 //---------------------ADMIN-----------------------------
 
@@ -71,16 +73,126 @@ const loadOrder=async (req,res)=>{
         if (response.length > 0) {
             res.send({ status: 'success', message: 'Out of stock',response});
         } else {
-            console.log('4444444')
-            const {selectedAddress,selectedPaymentOption} =req.body
-            console.log(typeof(selectedAddress))
-         //    quantity=req.flash('quantity').toString()
-         req.flash('selectedAddress', selectedAddress);
-     req.flash('selectedPaymentOption', selectedPaymentOption);
+    //         console.log('4444444')
+    //         const {selectedAddress,selectedPaymentOption,razorpay_payment_id,razorpay_order_id,razorpay_signature} =req.body
+    //         console.log('aaaaaalllll')
+    //         console.log(razorpay_signature)
+    //         const signature =razorpay_signature
+    //      //    quantity=req.flash('quantity').toString()
+    //      req.flash('selectedAddress', selectedAddress);
+    //  req.flash('selectedPaymentOption', selectedPaymentOption);
+    //  req.flash('razorpay_signature', razorpay_signature);
      
-            console.log(selectedAddress)
-            res.send({ status: 'success', message: 'Order placed successfully'});
+
+    //  if(selectedPaymentOption==='RazorPay'){
+     
+
+    //     const KEY_ID=process.env.KEY_ID
+    
+    //      const YOUR_SECRET = process.env.YOUR_SECRET
+    //      const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
+    //     const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+
+    //     var instance = new Razorpay({ key_id:KEY_ID, key_secret:YOUR_SECRET })
+        
+    //     instance.orders.create({
+    //         amount: cartTotal * 100,
+    //         currency: "INR",
+    //         receipt: "receipt#1",
+    //         notes: {
+    //             key1: "value3",
+    //             key2: "value2"
+    //         }
+    //     }).then(function(order) {
+
+    //         console.log("Order created:", order);
+          
+    //         const KEY_ID=process.env.KEY_ID
+            
+    //         res.send({ status: 'success', message: 'Order placed successfully',order,KEY_ID});
+    //         // const razorpay_signature=req.body.razorpay_signature
+    //         const razorpay_signature=req.flash('razorpay_signature').toString()
+    //         console.log("Ordsig:", razorpay_signature);
+    //         const generated_signature = crypto.createHmac('sha256', YOUR_SECRET).update(order.id + "|" + razorpay_payment_id).digest('hex');
+    //         console.log(generated_signature,'--------------',razorpay_signature)
+    //         if (generated_signature === razorpay_signature) {
+    //             console.log('Payment succeeded');
+    //         } else {
+    //             console.error('Payment signature verification failed');
+    //         }
+    //     }).catch(function(error) {
+
+    //         console.error("Error creating order:", error);
+    //         res.send({ status: 'success', message: 'Order razor failed'});
+    //     });
+        
+
+
+    console.log('4444444')
+    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+    console.log('aaaaaalllll');
+    console.log('88888888888888888888888888888', razorpay_signature);
+    // const signature = razorpay_signature;
+    
+
+    req.flash('selectedAddress', selectedAddress);
+    req.flash('selectedPaymentOption', selectedPaymentOption);
+    // req.flash('razorpay_signature', razorpay_signature);
+    
+    if (selectedPaymentOption === 'RazorPay') {
+        const KEY_ID = process.env.KEY_ID;
+        const YOUR_SECRET = process.env.YOUR_SECRET;
+
+       { const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId');
+        const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+
+        var instance = new Razorpay({ key_id: KEY_ID, key_secret: YOUR_SECRET });
+    
+            const order = await instance.orders.create({
+                amount: cartTotal * 100,
+                currency: "INR",
+                receipt: "receipt#1",
+                notes: {
+                    key1: "value3",
+                    key2: "value2"
+                }
+            });
+    
+            console.log("Order created:", order);
+            console.log("Order iddd:", order.id);
+    
+
+            res.send({ status: 'success', order });
+            
         }
+        res.send({ status: 'success', message: 'Order place'});
+            // console.log("Ordsig:", razorpay_signature);
+    
+            // // Generating signature
+            // const generated_signature = crypto.createHmac('sha256', YOUR_SECRET).update(order.id + "|" + razorpay_payment_id).digest('hex');
+            // console.log(generated_signature, '--------------', razorpay_signature);
+    
+            // // Comparing signatures
+            // if (generated_signature === razorpay_signature) {
+            //     console.log('Payment succeeded');
+            // } else {
+            //     console.error('Payment signature verification failed');
+            // }
+       
+    }else if(selectedPaymentOption === 'Cash on Delivery'){
+        res.send({ status: 'success', message: 'Order place'});
+    }
+    
+
+        
+
+      
+        // res.send({ status: 'success', message: 'Order razor place',KEY_ID,});
+    }
+    // res.send({ status: 'success', message: 'Order place'});
+
+          
+       
       
         
 
@@ -91,9 +203,15 @@ const loadOrder=async (req,res)=>{
 }
 const viewOrder=async (req,res)=>{
     try {
+
        
         const selectedAddress=req.flash('selectedAddress').toString()
         const selectedPaymentOption=req.flash('selectedPaymentOption').toString()
+        console.log('-------')
+        console.log(selectedPaymentOption)
+        console.log('-------')
+       
+        
        
 
         const cartData = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId');
@@ -160,7 +278,7 @@ const viewOrder=async (req,res)=>{
         .populate('addressId');
         
         res.render('order',{orderDetails})
-  
+    
     
     } catch (error) {
         console.log(error.message);

@@ -354,7 +354,7 @@
                                             <button type="button" class="add">+</button>
                                         </div>
                                         <div class="meta-action">
-                                            <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">Add To Cart</button>
+                                            <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>')">Add To Cart</button>
                                         </div>
                                         
                                         
@@ -365,11 +365,11 @@
                              
                                 
                                 <div class="meta-action">
-                                    <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                    <a class="action" id="addWishlist" onclick="addToWishlist('<%=productData._id%>')"><i class="pe-7s-like"></i></a>
                                 </div>
-                                <div class="meta-action">
+                                <!-- <div class="meta-action">
                                     <a class="action" href="#"><i class="pe-7s-shuffle"></i></a>
-                                </div>
+                                </div> -->
                             </div>
                             
                         <!-- </form> -->
@@ -1546,7 +1546,7 @@
     axios.post('/updateProductDetails',{productId,quantity})
             .then(function(response) {
                 console.log(response.data);
-                const {alreadyCart,inStock} =response.data
+                const {alreadyCart,inStock,productData} =response.data
                 console.log(inStock)
                 console.log(alreadyCart)
                 const productContainer = document.getElementById('productContainer');
@@ -1576,18 +1576,15 @@
                                             <button type="button" class="add">+</button>
                                         </div>
                                         <div class="meta-action">
-                                            <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>',)">Add To Cart</button>
+                                            <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('${productData._id}')">Add To Cart</button>
                                         </div>
                                         
                                         
-                                        <input type="text" id="quantity" value="<%=productData.quantity%>" hidden />
-                                        <input type="text" id="productId" value="<%=productData._id%>" hidden />
+                                        <input type="text" id="quantity" value="${productData.quantity}" hidden />
+                                        <input type="text" id="productId" value="${productData._id}" hidden />
 
-                                <div class="meta-action">
-                                    <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                </div>
-                                <div class="meta-action">
-                                    <a class="action" href="#"><i class="pe-7s-shuffle"></i></a>
+                                        <div class="meta-action">
+                                    <a class="action" id="addWishlist" onclick="addToWishlist('${productData._id}')"><i class="pe-7s-like"></i></a>
                                 </div>
                     `;
                     productContainer.innerHTML = productHTML;
@@ -1606,17 +1603,12 @@
 <script>
     function addToCart(productId) {
         const quantity = document.getElementById('quantityInput').value;
-        
-    
-                                    
+              
         console.log(productId)
         axios.post('/loadCart', { quantity,productId })
             .then(function(response) {
                 console.log(response.data);
                 const {session} =response.data
-
-             
-
 
                 if(response.data){
                     if (session==false) {
@@ -1635,6 +1627,49 @@
             });
     };
 </script>
+<script>
+    function addToWishlist(productId) {
+   
+            axios.post('/addToWishlist', { productId })
+                .then(function(response) {
+                    console.log(response.data);
+                    const{wishlistDetails,session}= response.data
+                    const wishlistButton = document.getElementById('addWishlist');
+                    if(session==false){
+                        window.location=('/notlogin')
+                    }else{
+
+                        let wishlistHtml = '';
+                        if(wishlistDetails){
+                            wishlistHtml += `
+                                <div class="meta-action">
+                                    <a class="action" onclick="addToWishlist('${productId}')" style="color: red;"><i class="pe-7s-like"></i></a>
+                                </div>
+                            `;
+        
+                            wishlistButton.innerHTML = wishlistHtml;
+                        }else{
+                            wishlistHtml += `
+                                <div class="meta-action">
+                                    <a class="action" onclick="addToWishlist('${productId}')"><i class="pe-7s-like"></i></a>
+                                </div>
+                            `;
+        
+                            wishlistButton.innerHTML = wishlistHtml;
+                            window.location.reload()
+                        }
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                });
+        }
+      
+
+   
+</script>
+
+
 
 
     <!-- Modernizer & jQuery JS -->

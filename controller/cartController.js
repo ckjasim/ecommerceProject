@@ -103,7 +103,7 @@ const updateProductDetails =async(req,res)=>{
 
         const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:req.session.user_id});
 
-        res.send({ status: 'success', message: 'Added to cart successfully',alreadyCart,inStock});
+        res.send({ status: 'success', message: 'Added to cart successfully',alreadyCart,inStock,productData});
                   
        
     } catch (error) {

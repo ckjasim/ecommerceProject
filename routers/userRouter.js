@@ -92,6 +92,7 @@ userRoute.post('/sort',productController.sort)
 
 
 userRoute.get('/loadWishlist',wishlistController.loadWishlist)
+userRoute.post('/addToWishlist',wishlistController.addToWishlist)
 
 
 
