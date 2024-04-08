@@ -4,9 +4,10 @@ const adminController=require('../controller/adminController')
 const categoryController=require('../controller/categoryController')
 const productController=require('../controller/productController')
 const orderController=require('../controller/orderController')
+const couponController=require('../controller/couponController')
+
+
 const adminConfig=require('../middleware/adminAuthentification')
-
-
 const upload=require('../middleware/multer')
 
 
@@ -39,6 +40,8 @@ adminRoute.post('/deleteProductImage',productController.deleteProductImage)
 adminRoute.get('/orders',adminConfig.isLogin,orderController.loadAdminOrder)
 adminRoute.get('/adminOrderDetails',adminConfig.isLogin,orderController.adminOrderDetails)
 
+adminRoute.get('/coupons',adminConfig.isLogin,couponController.loadCoupon)
+adminRoute.get('/newCoupon',adminConfig.isLogin,couponController.loadNewCoupon)
 
 
 
