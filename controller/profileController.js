@@ -209,6 +209,7 @@ const changePassword=async (req,res)=>{
         if(correctPassword){
             const sPassword = await securePassword(req.body.password)
             await userSchema.findOneAndUpdate({_id:req.session.user_id},{$set:{password:sPassword}})
+            return res.redirect('/loadProfile')
         }else{
 
             req.flash('message','Incorrect password')
