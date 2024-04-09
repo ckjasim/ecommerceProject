@@ -294,12 +294,13 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="single-form">
-                                        <input type="email" placeholder="Coupon code" />
+                                        <input id="couponCode" type="name" placeholder="Coupon code" style="text-transform:uppercase"/>
+                                        <span id="couponError" style="color: rgb(188, 5, 5);"></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="single-form">
-                                        <button class="btn btn-primary btn-hover-dark">
+                                        <button class="btn btn-primary btn-hover-dark" onclick="applyCoupon()">
                                             Coupon
                                         </button>
                                     </div>
@@ -392,27 +393,35 @@
                                                 <p>Subtotal</p>
                                             </td>
                                             <td class="Product-price">
-                                                <p>$<%= cartTotal %>.00</p>
+                                                <p >$<%= cartTotal %>.00</p>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="Product-name">
-                                                <p>Shipping</p>
+                                                <p>Coupon Discount</p>
+                                            </td>
+                                            <td class="Product-price couponDiscount">
+                                                <p>$0.00</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="Product-name">
+                                                <p>Shipping Charge</p>
                                             </td>
                                             <td class="Product-price">
                                                 <ul class="shipping-list">
-                                                    <li class="radio">
-                                                        <input type="radio" name="shipping" id="radio1" checked />
-                                                        <label for="radio1"><span></span> Flat Rate</label>
-                                                    </li>
-                                                    <li class="radio">
+                                                    <div class="price">
+                                                        <span class="old-price"><s> $40 </s></span>&nbsp;<span></span>
+                                                        <span class="sale-price text-success">Free</span>
+                                                    </div>
+                                                    <!-- <li class="radio">
                                                         <input type="radio" name="shipping" id="radio2" />
                                                         <label for="radio2"><span></span> Free Shipping</label>
-                                                    </li>
-                                                    <li class="radio">
+                                                    </li> -->
+                                                    <!-- <li class="radio">
                                                         <input type="radio" name="shipping" id="radio3" />
                                                         <label for="radio3"><span></span> Local Pickup</label>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </td>
                                         </tr>
@@ -420,7 +429,7 @@
                                             <td class="Product-name">
                                                 <p>Total</p>
                                             </td>
-                                            <td class="total-price">
+                                            <td class="total-price cartTotal">
                                                 <p>$<%= cartTotal %>.00</p>
                                             </td>
                                         </tr>
@@ -662,9 +671,35 @@
     <!-- Modernizer & jQuery JS -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
     <script>
-        
-        </script>
+        function applyCoupon(){
+            console.log('wer')
+            const couponCode=document.getElementById('couponCode').value 
+            const totalPriceElement = document.querySelector('.Product-price p');
+            const subTotal = parseFloat(totalPriceElement.textContent.trim().substring(1));
+            console.log(subTotal)
+            console.log(couponCode)
+            axios.post('/couponValidate',{couponCode,subTotal})
+            .then(function(res){
+                console.log(res.data)
+                const {couponDiscount,cartTotal,message}=res.data
+                if(couponDiscount && cartTotal){
+                    const couponDiscountElement = document.querySelector('.couponDiscount p');
+                    couponDiscountElement.innerHTML=`$ ${couponDiscount}`
+                    const cartTotalElement = document.querySelector('.cartTotal p');
+                    cartTotalElement.innerHTML=`$ ${cartTotal}`
+                }else{
+                    console.log(message)
+                    var couponError = document.getElementById('couponError');
+                    couponError.textContent =message;
+                }
+            })
+            .catch(function (error) {
+            console.error('Error:', error);
+    });
+        }
+    </script>
 
     <script>
       
@@ -673,6 +708,9 @@
        console.log('4444444')
 const selectedAddress = document.querySelector('input[name="shippingAddress"]:checked').value;
 const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
+const totalPriceElement = document.querySelector('.cartTotal p');
+const cartTotal = parseFloat(totalPriceElement.textContent.trim().substring(1));
+console.log('ddddddddddd',cartTotal)
 
 console.log("Selected shipping address:", selectedAddress);
 console.log("Selected payment option:", selectedPaymentOption);
@@ -682,7 +720,7 @@ if (selectedPaymentOption === "RazorPay") {
 
     event.preventDefault();
 
-    axios.post('/checkout', { selectedAddress, selectedPaymentOption })
+    axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal })
     .then(function (response) {
         console.log(response.data);
         if (response.data.session==false) {
@@ -776,7 +814,8 @@ if (selectedPaymentOption === "RazorPay") {
     }else if (selectedPaymentOption==="Cash on Delivery") {
             event.preventDefault();
 
-        axios.post('/checkout', { selectedAddress, selectedPaymentOption})
+
+        axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal})
         .then(function(response) {  
         console.log(response.data);
         if(response.data){
@@ -809,11 +848,6 @@ if (selectedPaymentOption === "RazorPay") {
         } else {
             
         }
-         
-            
-           
-        
-        
         
     }
 

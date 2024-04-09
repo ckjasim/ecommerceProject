@@ -15,6 +15,7 @@ const profileController=require('../controller/profileController')
 const orderController=require('../controller/orderController')
 const productController=require('../controller/productController')
 const wishlistController=require('../controller/wishlistController')
+const couponController=require('../controller/couponController')
 
 userRoute.use(session({
     secret:process.env.SESSION_SECRET,
@@ -93,6 +94,10 @@ userRoute.post('/sort',productController.sort)
 
 userRoute.get('/loadWishlist',wishlistController.loadWishlist)
 userRoute.post('/addToWishlist',wishlistController.addToWishlist)
+
+//-------------coupon-----------
+
+userRoute.post('/couponValidate',couponController.couponValidate)
 
 
 

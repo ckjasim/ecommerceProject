@@ -2,6 +2,7 @@ const userSchema = require('../model/userData')
 const orderSchema = require('../model/orderData') 
 const addressSchema = require('../model/addressData')
 const cartSchema = require('../model/cartData') 
+const couponSchema = require('../model/couponData') 
 const bcrypt=require('bcrypt')
 
 
@@ -10,12 +11,13 @@ const loadProfile = async (req,res)=>{
         userId=req.session.user_id
         const addressData = await addressSchema.find({userId:userId}).populate('userId')
         const userData = await userSchema.findOne({_id:userId})
+        const couponData = await couponSchema.find()
         const orderDetails = await orderSchema.find({ userId: req.session.user_id })
         .populate('products')
         .populate('products.productId')
         .populate('userId')
         .populate('addressId');
-        res.render('profile',{userData,addressData,orderDetails})
+        res.render('profile',{userData,addressData,orderDetails,couponData})
     } catch (error) {
         console.log(error.message);
     }

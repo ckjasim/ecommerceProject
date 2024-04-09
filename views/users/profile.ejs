@@ -408,6 +408,9 @@
                                     Details</a>
                             </li>
                             <li>
+                                <a data-bs-toggle="pill" href="#pills-coupons"><i class="fa fa-ticket"></i> Coupons</a>
+                            </li>
+                            <li>
                                 <a data-bs-toggle="pill" href="#pills-password"><i class="fa fa-lock"></i> Change Password</a>
                             </li>
                             <li>
@@ -473,7 +476,7 @@
                                                                             </div>  
                                                                         </a>
                                                                     </div>
-                                                                    <div class="col-lg col-sm-2 col-4 col-price"><span>$<%= products.totalAmount %>.00</span></div>
+                                                                    <div class="col-lg col-sm-2 col-4 col-price"><span>$<%= products.totalAmount %></span></div>
                             
                                                                    
                                                                     <div class="col-lg col-sm-2 col-4 col-status" >
@@ -564,15 +567,69 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="pills-payment">
-                            <div class="my-account-payment account-wrapper">
-                                <h4 class="account-title">
-                                    Payment Method
-                                </h4>
-                                <p>
-                                    You Can't Saved Your Payment Method yet.
-                                </p>
-                            </div>
+                        
+                        <div class="tab-pane fade" id="pills-coupons" style="width: 1100px;;">
+                            <div class="col-lg-5 col-md-6 col-sm-12 col-12 " >
+                                <form action="/">
+                                    <div class="page-content"> 
+                                        <div class="container-fluid">
+                                            <% if(couponData) {%>
+                                   
+    
+                                                <% couponData.forEach((element) => { %>
+                                            
+                                            
+                                            <div class="row d-flex justify-content-center mt-3">
+                                                
+                                                
+                                                <div class="col-xl mt-5">
+                                                    <div class="card border shadow" style="border-radius: 0 !important;">
+                
+                                                           
+                                                 
+                                                            <div class="row row-cols-6 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
+                                                                <div class="col-xl-12">
+                                        
+
+                                                                    <div class="card card-user">
+                                                                        <!-- <div class="card-header">
+                                                                            <img class="img-md img-avatar" src="assets/imgs/people/avatar-1.png" alt="User pic" />
+                                                                        </div> -->
+                                                                        <div class="card-body">
+                                                                            <h5 class="card-title "><%= element.name %></h5>
+                                                                            <h5 class="card-title "><%= element.code %></h5>
+                                                                            <!-- <h5 class="card-title "></h5> -->
+                                                                            <div class="card-text text-muted">
+                                                                                <p class="m-0"><%= element.description %></p>
+                                                                                <p>mary90@example.com</p>
+                                                                                <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15">Copy Code</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                              
+                                                            </div>
+                                                          
+                                                            
+                                                            <!-- row.// -->
+                                                        
+                                                </div>
+                                            </div>
+                                            
+                        
+                                            <!-- end card -->
+                                        </div>
+                                        
+                                    
+                        
+                                        
+                                        <% }); %>
+                                                                    <%} %>
+                                    </div>
+                                </div>
+                            </form>
+                           
+                                  </div>
                         </div>
 
                         <div class="tab-pane fade" id="pills-address">

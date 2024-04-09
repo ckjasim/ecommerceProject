@@ -129,7 +129,7 @@ const loadOrder=async (req,res)=>{
 
 
     console.log('4444444')
-    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature,cartTotal } = req.body;
     console.log('aaaaaalllll');
     console.log('88888888888888888888888888888', razorpay_signature);
     // const signature = razorpay_signature;
@@ -137,6 +137,7 @@ const loadOrder=async (req,res)=>{
 
     req.flash('selectedAddress', selectedAddress);
     req.flash('selectedPaymentOption', selectedPaymentOption);
+    req.flash('cartTotal', cartTotal);
     // req.flash('razorpay_signature', razorpay_signature);
     
     if (selectedPaymentOption === 'RazorPay') {
@@ -144,7 +145,7 @@ const loadOrder=async (req,res)=>{
         const YOUR_SECRET = process.env.YOUR_SECRET;
 
        { const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId');
-        const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+        // const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
 
         var instance = new Razorpay({ key_id: KEY_ID, key_secret: YOUR_SECRET });
     
@@ -207,6 +208,7 @@ const viewOrder=async (req,res)=>{
        
         const selectedAddress=req.flash('selectedAddress').toString()
         const selectedPaymentOption=req.flash('selectedPaymentOption').toString()
+        const cartTotal=req.flash('cartTotal').toString()
         console.log('-------')
         console.log(selectedPaymentOption)
         console.log('-------')
@@ -225,7 +227,7 @@ const viewOrder=async (req,res)=>{
                     productId: productItem._id,
                     quantity: cartProduct.quantity,
                     orderedPrice: productItem.price,
-                    totalAmount: cartProduct.totalAmount,
+                    totalAmount: cartTotal,
                     deliveryDate: new Date(),
                     shippingDate: new Date(),
                     orderStatus: "pending"

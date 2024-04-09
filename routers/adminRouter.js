@@ -42,6 +42,7 @@ adminRoute.get('/adminOrderDetails',adminConfig.isLogin,orderController.adminOrd
 
 adminRoute.get('/coupons',adminConfig.isLogin,couponController.loadCoupon)
 adminRoute.get('/newCoupon',adminConfig.isLogin,couponController.loadNewCoupon)
+adminRoute.post('/newCoupon',adminConfig.isLogin,couponController.addCoupon)
 
 
 
