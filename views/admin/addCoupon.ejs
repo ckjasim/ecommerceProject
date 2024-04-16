@@ -413,7 +413,7 @@ function validateName() {
 function validateDescription() {
     var productName = document.getElementById('couponDescription').value.trim();
     var descriptionError = document.getElementById('descriptionError');
-    var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
+    var namePattern = /^[a-zA-Z0-9]+$/;
 
     if (!productName || !namePattern.test(productName)) {
         descriptionError.textContent = 'Invalid description provided';
@@ -438,7 +438,7 @@ function validatePercentage() {
 function validateMinAmount() {
     var productQuantity = document.getElementById('couponMinAmount').value.trim();
     var minAmountError = document.getElementById('minAmountError');
-    var quantityPattern = /^[1-9]\d*$/;
+    var quantityPattern = /^[0-9]\d*$/;
 
     if (!productQuantity || !quantityPattern.test(productQuantity)) {
         minAmountError.textContent = 'Enter a valid number';

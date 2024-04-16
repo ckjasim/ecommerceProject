@@ -263,7 +263,7 @@
                                         </div>
 
                                         <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                            <a href="/orderDetails?_id=<%= products.productId._id %>" class="btn btn-sm font-sm rounded btn-brand">View <br> details</a>
+                                            <a href="/orderDetails?productId=<%= products._id %>&orderId=<%= element._id %>" class="btn btn-sm font-sm rounded btn-brand">View <br> details</a>
                                             <a href="" class="btn btn-sm font-sm rounded btn-danger" onclick="cancelOrder('<%= products.productId._id %>','<%= element._id%>')">Cancel <br> order</a>
                                             <!-- <a href="" class="btn btn-sm font-sm rounded btn-brand">Cancel order </a> -->
                                             

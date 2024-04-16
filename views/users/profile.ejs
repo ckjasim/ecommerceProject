@@ -226,7 +226,7 @@
                             </li>
                             <li><a href="/loadShop">Shop</a></li>
                             <li>
-                                <a href="#">Products</a>
+                                <a href="loadProduct">Products</a>
                             </li>
                             <li>
                                 <a href="#">About us</a>
@@ -490,7 +490,7 @@
                                                                     </div>
                             
                                                                     <div class="col-lg-1 col-sm-2 col-4 col-action text-end">
-                                                                        <a href="/orderDetails?_id=<%= products.productId._id %>" class="btn btn-sm font-sm rounded btn-brand">View <br> details</a>
+                                                                        <a href="/orderDetails?productId=<%= products._id %>&orderId=<%= element._id %>" class="btn btn-sm font-sm rounded btn-brand">View <br> details</a>
                                                                         
                                                                     </div>
                                                                     <div class="col-lg-2 col-sm-2 col-4 col-action text-end">

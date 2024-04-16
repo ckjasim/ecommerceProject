@@ -16,6 +16,7 @@ const orderController=require('../controller/orderController')
 const productController=require('../controller/productController')
 const wishlistController=require('../controller/wishlistController')
 const couponController=require('../controller/couponController')
+const walletController=require('../controller/walletController')
 
 userRoute.use(session({
     secret:process.env.SESSION_SECRET,
@@ -67,8 +68,10 @@ userRoute.post('/limitQuantity',cartController.limitQuantity)
 userRoute.post('/updateProductDetails',cartController.updateProductDetails)
 userRoute.post('/updateQuantity',cartController.updateQuantity)
 userRoute.post('/deleteCartProduct',cartController.deleteCartProduct)
+
 userRoute.get('/checkout',userConfig.isLogin,accessUser,cartController.checkout)
 userRoute.post('/checkout',orderController.loadOrder)
+
 userRoute.get('/viewOrder',userConfig.isLogin,accessUser,orderController.viewOrder)
 userRoute.get('/orderDetails',userConfig.isLogin,accessUser,orderController.orderDetails)
 userRoute.post('/cancelOrder',userConfig.isLogin,accessUser,orderController.cancelOrder)
@@ -92,12 +95,19 @@ userRoute.get('/loadProductDetail/:productId',productController.loadUserProductD
 userRoute.post('/sort',productController.sort)
 
 
-userRoute.get('/loadWishlist',wishlistController.loadWishlist)
+userRoute.get('/loadWishlist',userConfig.isLogin,accessUser,wishlistController.loadWishlist)
 userRoute.post('/addToWishlist',wishlistController.addToWishlist)
+userRoute.post('/deleteWishlistProduct',wishlistController.deleteWishlistProduct)
+ 
+
 
 //-------------coupon-----------
 
 userRoute.post('/couponValidate',couponController.couponValidate)
+
+//--------------return------------------
+
+userRoute.post('/orderDetails',walletController.addReturnProduct)
 
 
 

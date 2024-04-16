@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
         deliveryDate:{type:Date,required:true},
         shippingDate:{type:Date,required:true},
         orderStatus:{type:String,required:true},
+        reason:{type:String}
         
     }],
     userId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'users'},

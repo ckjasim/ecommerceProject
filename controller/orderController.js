@@ -290,19 +290,19 @@ const viewOrder=async (req,res)=>{
 
 const orderDetails=async (req,res)=>{
     try {
-        const productId =req.query._id
+        const { productId, orderId } = req.query;
+        console.log('qqqqqq',productId, orderId);
         
-        const orderDetails =await orderSchema.findOne(
-            { 
-                userId: req.session.user_id,
-                'products.productId': productId 
-            },
-            
-        ).populate('userId')
-        .populate('products.productId')
-        .populate('addressId');
+        const orderData = await orderSchema.findOne({ userId: req.session.user_id, _id: orderId }).populate('products.productId').populate('userId');
+        
+        const orderDetails = orderData.products.find((product) => {
+            return product._id.equals(productId);
+        });
+        
+        console.log('sss', orderDetails);
+        
 
-       res.render('orderDetails',{orderDetails})
+       res.render('orderDetails',{orderDetails,orderId})
     } catch (error) {
         console.log(error.message);
     }
