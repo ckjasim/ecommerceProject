@@ -5,6 +5,7 @@ const categoryController=require('../controller/categoryController')
 const productController=require('../controller/productController')
 const orderController=require('../controller/orderController')
 const couponController=require('../controller/couponController')
+const walletController=require('../controller/walletController')
 
 
 const adminConfig=require('../middleware/adminAuthentification')
@@ -40,6 +41,10 @@ adminRoute.post('/deleteProductImage',productController.deleteProductImage)
 adminRoute.get('/orders',adminConfig.isLogin,orderController.loadAdminOrder)
 adminRoute.get('/adminOrderDetails',adminConfig.isLogin,orderController.adminOrderDetails)
 adminRoute.post('/orderStatusChange',adminConfig.isLogin,orderController.orderStatusChange)
+
+adminRoute.post('/acceptReturn',adminConfig.isLogin,walletController.acceptReturn)
+
+
 
 
 adminRoute.get('/coupons',adminConfig.isLogin,couponController.loadCoupon)

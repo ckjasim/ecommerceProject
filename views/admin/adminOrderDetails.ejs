@@ -14,6 +14,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg" />
         <!-- Template CSS -->
         <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     </head>
 
     <body>
@@ -313,21 +314,25 @@
                                                 </td>
                                                 <td>$<%= product.productId.price %>.00</td>
                                                 <td><%= product.quantity%></td>
-                                                <td hidden class="productObjectId" ><%= product._id %></td>
-                                                <td hidden class="orderId" ><%= order._id %></td>
-                                                <td hidden class="orderStatus" ><%= product.orderStatus %></td>
-                                                <td>
-                                                    <div class="ms-auto text-md-end">
-                                                        <select class="form-select d-inline-block orderStatusChange" >
-                                                            <option>Pending</option>
-                                                            <!-- <option>Awaiting payment</option> -->
-                                                            <option>Shipped</option>
-                                                            <option>Delivered</option>
-                                                            <option>returned</option>
-                                                        </select> 
-                                                    </div>
-                                                </td>
+                                                <% if(product.reason){%>
+                                                    <td> <a  class="text-danger"  onclick="acceptReturn('<%= order._id%>','<%= product._id%>')">Return Requested</a></td>
                                                 
+                                                <%  }else{%>
+                                                    <td hidden class="productObjectId" ><%= product._id %></td>
+                                                    <td hidden class="orderId" ><%= order._id %></td>
+                                                    <td hidden class="orderStatus" ><%= product.orderStatus %></td>
+                                                    <td>
+                                                        <div class="ms-auto text-md-end">
+                                                            <select class="form-select d-inline-block orderStatusChange" >
+                                                                <option>Pending</option>
+                                                                <!-- <option>Awaiting payment</option> -->
+                                                                <option>Shipped</option>
+                                                                <option>Delivered</option>
+                                                                <option>returned</option>
+                                                            </select> 
+                                                        </div>
+                                                    </td>
+                                                    <% } %>
                                                 <td class="text-end">$<%= product.orderedPrice*product.quantity %>.00</td>
                                             </tr>
                                             <% }) %>
@@ -405,6 +410,7 @@
                 </div>
             </footer>
         </main>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
 
@@ -459,7 +465,66 @@
             }
 
 
-        </script>>
+        </script>
+        <script>
+        function acceptReturn(orderId,productObjectId){
+            const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+            });
+            swalWithBootstrapButtons.fire({
+            title: "Return Requested",
+            // text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Accept",
+            cancelButtonText: "Reject!",
+            reverseButtons: true
+            }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                title: "Return accepted",
+                // text: "Your file has been deleted.",
+                icon: "success"
+                });
+
+                axios.post('/acceptReturn',{status:'accepted',orderId,productObjectId})
+                .then(function(response) {  
+                    
+                            
+                console.log(response.data);
+                })
+                .catch(function(error) {
+                console.error('Error:', error);
+                })
+                
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire({
+                title: "Return rejected",
+                // text: "Your imaginary file is safe :)",
+                icon: "error"
+                });
+                axios.post('/acceptReturn',{status:'rejected',orderId,productObjectId})
+                .then(function(response) {  
+                    
+                            
+                console.log(response.data);
+                })
+                .catch(function(error) {
+                console.error('Error:', error);
+                }) 
+            }
+            });
+                    }
+               
+        </script>
 
 
         <script src="assets/js/vendors/select2.min.js"></script>
