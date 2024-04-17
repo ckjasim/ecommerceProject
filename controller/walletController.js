@@ -1,43 +1,33 @@
 const orderSchema=require('../model/orderData')
 
 
+//--------------------return user-------------------------
+
 const addReturnProduct= async (req,res)=>{
 try {
-    const {reason,productId,orderId}=req.body
-    console.log('11')
-    console.log(reason)
-    console.log('11')
-
-    console.log(orderId)
-    console.log('11')
-
-    console.log(productId)
-    console.log('11')
+    const {reason,orderId,productObjectId}=req.body
+    console.log("------------------",productObjectId)
+    console.log("------------------",orderId)
 
     const orderDetails = await orderSchema.findOne({ userId: req.session.user_id,_id: orderId}).populate('products.productId').populate('userId');
-   
-    console.log('llllllllllllllll',orderDetails)
 
     const updatedOrder = orderDetails.products.find((product) => {
-        return product._id.equals(productId);
+        return product._id.equals(productObjectId);
     });
-
-    console.log('llllllllllllllll',updatedOrder)
 
         updatedOrder.reason = reason;
 
         await orderDetails.save()
 
-    
-
-        
-    
-    res.redirect('/loadProfile')
+        res.redirect('/loadProfile')
     
 } catch (error) {
     console.log(error)
 }
 }
+
+//-------------------return admin-------------------------------
+
 
 module.exports={
 

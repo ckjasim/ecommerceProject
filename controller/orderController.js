@@ -293,11 +293,11 @@ const orderDetails=async (req,res)=>{
         const { productId, orderId } = req.query;
         console.log('qqqqqq',productId, orderId);
         
-        const orderData = await orderSchema.findOne({ userId: req.session.user_id, _id: orderId }).populate('products.productId').populate('userId');
+        const orderDetails = await orderSchema.findOne({ userId: req.session.user_id, _id: orderId }).populate('products.productId').populate('userId').populate('addressId');
         
-        const orderDetails = orderData.products.find((product) => {
-            return product._id.equals(productId);
-        });
+        // const orderDetails = orderData.products.find((product) => {
+        //     return product._id.equals(productId);
+        // });
         
         console.log('sss', orderDetails);
         

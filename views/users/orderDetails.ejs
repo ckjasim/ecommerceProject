@@ -296,7 +296,11 @@
                 
                 <div class="row d-flex justify-content-center mt-3">
               
-                    
+                    <% if(orderDetails && orderDetails.products){%>
+                        <% orderDetails.products.forEach(order => {%>
+                            
+                            
+
                     <div class="col-xl-7 mt-5">
                         <div class="card border shadow mb-3" style="border-radius: 0 !important;">
 
@@ -311,16 +315,16 @@
                                                 <% if (orderDetails) { %>
                                                     
                                                 
-                                                        <% const productDetails = orderDetails.productId; %>
+                                                        <% const productDetails = order.productId; %>
                                                         <% if (productDetails && productDetails.img && productDetails.img.length > 0) { %>
                                                             <div class="left">
                                                                 <img src="/productImage/<%= productDetails.img[0] %>" class="img-sm img-thumbnail" style="width: 150px;" alt="Item" />
                                                                 </div>
                                                                 <div class="info">
                                                                 <h6 class="mb-0"><%= productDetails.name %></h6>
-                                                                <h6 class="mb-0">Rs.<%= orderDetails.orderedPrice %>.00</h6>
-                                                                <h6 class="mb-0">QTY:<%= orderDetails.quantity%></h6>
-                                                                <h6 class="mb-0">Toatal.<%= orderDetails.totalAmount %>.00</h6>
+                                                                <h6 class="mb-0">Rs.<%= order.orderedPrice %>.00</h6>
+                                                                <h6 class="mb-0">QTY:<%= order.quantity%></h6>
+                                                                <h6 class="mb-0">Total Rs.<%= order.orderedPrice*order.quantity %>.00</h6>
                                                             <!-- <h6 class="mb-0">neme</h6> -->
                                                             </div>
                                                         <% } %>
@@ -344,7 +348,7 @@
         
                                         <div class="col-lg-4 col-sm-3 col-4 col-status">
                                             <h6 class="mb-0">Shipped on March 16,2024</h6>  
-                                            <h6 class="mb-0">Your item has been <%= orderDetails.orderStatus %></h6>  
+                                            <h6 class="mb-0">Your item has been <%= order.orderStatus %></h6>  
                                           
 
                                         </div>
@@ -394,7 +398,7 @@
 
                               <div>
                             <!-- Modal Trigger Link -->
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#myModal">Do you want to return?</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#myModal" onclick="setProductObjectId('<%= order._id %>')">Do you want to return?</a>
 
                             <!-- Modal -->
                             <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -414,9 +418,10 @@
 
                                                 <label for="reason" class="form-label">Reason for Return</label>
                                                 <input id="return" type="text" class="form-control" id="reason" name="reason" placeholder="Enter a valid reason">
-                                                <input  type="text" class="form-control" name="orderId" value="<%= orderId %>" hidden>
-                                                
-                                                <input  type="text" class="form-control" name="productId" value="<%= orderDetails._id %>" hidden>
+                                 
+                                                <input type="text" class="form-control" name="orderId" value="<%= orderId %>" hidden>
+                                                <input type="text" class="form-control" name="productObjectId" id="productObjectId" hidden>
+
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -443,6 +448,9 @@
                         
                         </div>
                     </div>
+                    <% });%>
+                            <% } %>
+
                     <!-- end card -->
                     
                 </div>
@@ -648,10 +656,14 @@
     <script src="assets/js/plugins/popper.min.js"></script>
     <script src="assets/js/plugins/bootstrap.min.js"></script>
 
-    <script>
-        const reason= document.getElementById('return').value
-        console.log(reason)
-    </script>
+
+      <script>
+    function setProductObjectId(productId) {
+        document.getElementById('productObjectId').value = productId;
+    }
+</script>
+
+
     <!-- Plugins JS -->
     <script src="assets/js/plugins/swiper-bundle.min.js"></script>
     <script src="assets/js/plugins/ajax-contact.js"></script>
