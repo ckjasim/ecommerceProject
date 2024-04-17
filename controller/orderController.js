@@ -42,6 +42,31 @@ const adminOrderDetails = async (req, res) => {
     }
 }
 
+const orderStatusChange =async (req,res)=>{
+    try {
+        const {selectedValue,productObjectId,orderId}=req.body
+ 
+         console.log(selectedValue)
+         console.log(productObjectId)
+         console.log(orderId)
+         
+         const orderDetails = await orderSchema.findOne({_id: orderId}).populate('products.productId').populate('userId');
+         console.log(orderDetails)
+    const updatedOrder = orderDetails.products.find((product) => {
+        return product._id.equals(productObjectId);
+    });
+
+        updatedOrder.orderStatus = selectedValue;
+
+        await orderDetails.save()
+        res.send({message:'order status changed'})
+
+     } catch (error) {
+         console.log(error.message)
+     }
+}
+
+
 //-----------------------USER---------------------------
 
 
@@ -352,5 +377,6 @@ module.exports={
     viewOrder,
     orderDetails,
     cancelOrder,
+    orderStatusChange   
     
 }

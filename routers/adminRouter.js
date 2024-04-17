@@ -39,10 +39,14 @@ adminRoute.post('/deleteProductImage',productController.deleteProductImage)
 
 adminRoute.get('/orders',adminConfig.isLogin,orderController.loadAdminOrder)
 adminRoute.get('/adminOrderDetails',adminConfig.isLogin,orderController.adminOrderDetails)
+adminRoute.post('/orderStatusChange',adminConfig.isLogin,orderController.orderStatusChange)
+
 
 adminRoute.get('/coupons',adminConfig.isLogin,couponController.loadCoupon)
 adminRoute.get('/newCoupon',adminConfig.isLogin,couponController.loadNewCoupon)
 adminRoute.post('/newCoupon',adminConfig.isLogin,couponController.addCoupon)
+
+
 
 
 
