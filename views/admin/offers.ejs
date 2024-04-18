@@ -255,15 +255,13 @@
                                 
                                 
                                  
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Code</h6></div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Name</h6></div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Description</h6></div>
+                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Offer Name</h6></div>
+                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Percentage</h6></div>
+                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Offer Type</h6></div>
                                 <div class="col-lg-2 col-sm-2 col-4 col-status">
-                                    <h6 class="mb-0">Percentage</h6>
+                                    <h6 class="mb-0">Expiry Date</h6>
                                 </div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-date">
-                                    <h6 class="mb-0">Min Amount</h6>
-                                </div>
+                                
                                 <div class="col-lg-1 col-sm-2 col-4 col-date">
                                     <h6 class="mb-0">Status</h6>
                                 </div>
@@ -279,29 +277,44 @@
                        
                         <!-- itemlist  .// -->
                     </div>
-   
+                    <% if(offerData){ %>
+                        <%offerData.forEach(offer => { %>
+                            
+                          
 
                     <div class="card-body">
                         <article class="itemlist">
                             <div class="row align-items-center">
                             
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"><span> rfgsergfgfd</span></div>
+                                <div class="col-lg-2 col-sm-2 col-4 col-price"><span><%= offer.name %></span></div>
 
                                 <div class="col-lg-2 col-sm-2 col-4 col-status">
-                                    <span>fgfgfd</span>
+                                    <span><%= offer.percentage %></span>
                                 </div>
                                 <div class="col-lg-2 col-sm-2 col-4 col-date">
-                                    <span>fgfg</span>
+                                    <span><%= offer.offerType %></span>
                                 </div>
                                 <div class="col-lg-2 col-sm-2 col-4 col-date">
-                                    <span>dffgf</span>
+                                    <% const expirationDate = new Date(offer.expiredAt); %>
+                                    <span><%= expirationDate.getDate() %>/</span> 
+                                    <span><%= expirationDate.getMonth() + 1 %>/</span>
+                                    <span><%= expirationDate.getFullYear() %></span> 
                                 </div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-date">
-                                    <span>fgfg</span>
-                                </div>
-                                <div class="col-lg-1 col-sm-2 col-4 col-date">
-                                    <span class="badge rounded-pill alert-success">Active</span>
-                                </div>
+                                
+
+                                <% const currentDate = new Date(); %>
+                                <% const offerExpiredDate = new Date(offerData.expiredAt); %>
+
+                                <% if (offerExpiredDate > currentDate) { %>
+                                    <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                        <span class="badge rounded-pill alert-success">Active</span>
+                                    </div>
+                                <% } else { %>
+                                    <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                        <span class="badge rounded-pill alert-danger">Expired</span>
+                                    </div>
+                                <% } %>
+
                                 <div class="col-lg-1 col-sm-2 col-4 col-action text-end">
                                     <button class="btn btn-sm font-sm rounded text-white btn-danger " onclick="listProduct(this,'') "> Unlist </button>                    
                                       
@@ -313,7 +326,8 @@
                        
                         <!-- itemlist  .// -->
                     </div>
-                   
+                    <%});%>
+                    <% } %>
                     
                     <!-- card-body end// -->
                 </div>
