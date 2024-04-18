@@ -6,6 +6,7 @@ const productController=require('../controller/productController')
 const orderController=require('../controller/orderController')
 const couponController=require('../controller/couponController')
 const walletController=require('../controller/walletController')
+const offerController=require('../controller/offerController')
 
 
 const adminConfig=require('../middleware/adminAuthentification')
@@ -50,6 +51,9 @@ adminRoute.post('/acceptReturn',adminConfig.isLogin,walletController.acceptRetur
 adminRoute.get('/coupons',adminConfig.isLogin,couponController.loadCoupon)
 adminRoute.get('/newCoupon',adminConfig.isLogin,couponController.loadNewCoupon)
 adminRoute.post('/newCoupon',adminConfig.isLogin,couponController.addCoupon)
+
+adminRoute.get('/offers',adminConfig.isLogin,offerController.loadOffer)
+adminRoute.get('/addOffer',adminConfig.isLogin,offerController.addOffer)
 
 
 

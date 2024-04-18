@@ -1,4 +1,5 @@
 const orderSchema=require('../model/orderData')
+const walletSchema=require('../model/walletData')
 
 
 //--------------------return user-------------------------
@@ -18,6 +19,7 @@ try {
         updatedOrder.reason = reason;
 
         await orderDetails.save()
+        
 
         res.redirect('/loadProfile')
     
@@ -29,7 +31,7 @@ try {
 //-------------------return admin-------------------------------
 const   acceptReturn= async (req,res)=>{
     try {
-        const{productObjectId,orderId}=req.body
+        const{productObjectId,orderId,returnAmount}=req.body
         if(req.body.status==='accepted'){
             console.log('jjjssssssiimm')
             const orderDetails = await orderSchema.findOne({_id: orderId}).populate('products.productId').populate('userId');
@@ -40,6 +42,30 @@ const   acceptReturn= async (req,res)=>{
         updatedOrder.orderStatus = "returned";
         updatedOrder.reason = undefined;
         await orderDetails.save()
+
+        const walletDetails= await walletSchema.findOne({userId:req.session.user_id})
+        console.log(walletDetails)
+        if(walletDetails){
+            console.log('jjjsssssssssssgggggggiimm')
+
+            const walletTotal = Number(walletDetails.walletAmount)+Number(returnAmount)
+            console.log(walletTotal)
+            console.log(typeof(walletTotal))
+            walletDetails.walletAmount=walletTotal
+
+           await walletDetails.save()
+        }else{
+            console.log('jjjsssshhhhhhhhhhhhhhhssiimm')
+
+            const walletData=new walletSchema({
+                walletAmount:returnAmount,
+                userId:req.session.user_id
+            
+            })
+            await walletData.save()
+
+        }
+
 
 
         }

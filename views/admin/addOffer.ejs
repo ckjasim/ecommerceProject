@@ -14,7 +14,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg" />
         <!-- Template CSS -->
         <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
-
+  
     </head>
 
     <body>
@@ -211,80 +211,83 @@
             </header>
             <section class="content-main">
                 <form action="" method="post" enctype="form-data">
-                <div class="row">
-                   
-                    <div class="col-9">
-                        <div class="content-header">
-                            <h2 class="content-title">Add New Coupon</h2>
-                            <div>
-                                <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
-                                <button class="btn btn-md rounded font-sm hover-up" id="submitButton"  >add coupon</button>
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="content-header">
+                                <h2 class="content-title">Add New Offer</h2>
+                                <div>
+                                    <button class="btn btn-md rounded font-sm hover-up" id="submitButton">add coupon</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        
-                        <div class="card mb-4">
-                           
-                            <div class="card-body">
-                                
-                                <div class="row gx-3">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="product_sku" class="form-label">Coupon Code</label>
-                                        <input type="text" placeholder="Type here" name="code" class="form-control" id="couponCode" required/>
-                                        <span id="codeError" style="color: rgb(188, 5, 5);"></span>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="product_color" class="form-label">Coupon Name</label>
-                                        <input type="text" placeholder="Type here" name="name" class="form-control" id="couponName" required/>
-                                        <span id="nameError" style="color: rgb(188, 5, 5);"></span>
-                                    </div>
-                                    
-                                </div>
-                                <div class="card mb-4">
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
                                 <div class="card-body">
-                                    <div>
-                                        <!-- <label class="form-label">Images</label>
-                                        <input class="form-control" type="file" name="image" multiple/> -->
-                                        <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" name="description" class="form-control" rows="4" id="couponDescription" required></textarea>
-                                    <span id="descriptionError" style="color: rgb(188, 5, 5);"></span>    
-                                </div>
-                                </div>
-                                <div class="row gx-3">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="product_sku" class="form-label">Percentage</label>
-                                        <input type="text" placeholder="Type here" name="percentage" class="form-control" id="couponPercentage" required/>
-                                        <span id="percentageError" style="color: rgb(188, 5, 5);"></span>
+                                    <div class="row gx-3">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="product_sku" class="form-label">Offer Name</label>
+                                            <input type="text" placeholder="Type here" name="code" class="form-control" id="couponCode" required/>
+                                            <span id="codeError" style="color: rgb(188, 5, 5);"></span>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="product_color" class="form-label">Min amount</label>
-                                        <input type="text" placeholder="Type here" name="minAmount" class="form-control" id="couponMinAmount" required/>
-                                        <span id="minAmountError" style="color: rgb(188, 5, 5);"></span>
+                                    <div class="row gx-3">
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label">Description</label>
+                                            <textarea placeholder="Type here" name="description" class="form-control" rows="4" id="couponDescription" required></textarea>
+                                            <span id="descriptionError" style="color: rgb(188, 5, 5);"></span>
+                                        </div>
                                     </div>
-                                    
-                                </div>
-                                <div class="row gx-3">
-                                    <div class="col-md-12 mb-3">
-                                        <label for="product_sku" class="form-label">Expiry date</label>
-                                        <input type="date" placeholder="Type here" name="date" class="form-control" required/>
-                                        <span  style="color: rgb(188, 5, 5);"></span>
+                                    <div class="row gx-3">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="product_sku" class="form-label">Percentage</label>
+                                            <input type="text" placeholder="Type here" name="percentage" class="form-control" id="couponPercentage" required/>
+                                            <span id="percentageError" style="color: rgb(188, 5, 5);"></span>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="product_sku" class="form-label">Expiry date</label>
+                                            <input type="date" placeholder="Type here" name="date" class="form-control" required/>
+                                            <span style="color: rgb(188, 5, 5);"></span>
+                                        </div>
                                     </div>
-                                    
+                                    <div class="row gx-3">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="product_sku" class="form-label">Offer Type</label>
+                                            <div class="ms-auto text-md-end">
+                                                <select class="form-select d-inline-block" id="offerType">
+                                                    <option>select</option>
+                                                    <option>Product</option>
+                                                    <option>Category</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3" id="category" hidden>
+                                            <label for="product_sku" class="form-label">Categories</label>
+                                            <div class="ms-auto text-md-end">
+                                                <select class="form-select" name="offerType">
+                                                    <% categoryData.forEach(element => {  %>
+                                                        <option value="<%= element._id %>"><%= element.name %></option>
+                                                    <% }); %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3" id="productsDiv" hidden>
+                                            <label for="product_sku" class="form-label">Products</label>
+                                            <div class="ms-auto text-md-end">
+                                                <select class="form-select" name="offerType">
+                                                    <% productData.forEach(element => {  %>
+                                                        <option value="<%= element._id %>"><%= element.name %></option>
+                                                    <% }); %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- card end// -->
-                        
-                        <!-- card end// -->
-                        
-                        <!-- card end// -->
                     </div>
-                   
-                </div>
-                
-            </form>
+                </form>
             </section>
+            
             <footer class="main-footer font-xs">
                 <div class="row pb-30 pt-15">
                     <div class="col-sm-6">
@@ -420,6 +423,51 @@ document.getElementById('couponMinAmount').addEventListener('input', function() 
 
         
     
+        </script>
+
+        <script>
+
+            const selectElements = document.getElementById('offerType');
+            selectElements.addEventListener('change', handleChange);
+            
+            function handleChange(event) {
+
+                // const productObjectId = event.target.closest('tr').querySelector('.productObjectId').innerText;
+                // const orderId = event.target.closest('tr').querySelector('.orderId').innerText;
+                const selectedValue = event.target.value;
+
+                // console.log(productObjectId);
+                console.log(selectedValue);
+                console.log(typeof(selectedValue))
+                if (selectedValue === 'Product') {
+                    console.log('kkkkkkkkkdsddddddddddddddddddddddkkkkkkkkk');
+                    
+                    var productsDiv = document.getElementById("productsDiv");
+                    productsDiv.hidden = false;
+
+                    var categoryDiv = document.getElementById("category");
+                    categoryDiv.hidden = true;
+                } else if (selectedValue === 'Category') {
+                    console.log('kkkkkkkkkkkkkkkkkk');
+                    
+                    var categoryDiv = document.getElementById("category");
+                    categoryDiv.hidden = false;
+
+                    var productsDiv = document.getElementById("productsDiv");
+                    productsDiv.hidden = true;
+                }   
+
+
+                // axios.post('/orderStatusChange', { selectedValue, productObjectId,orderId })
+                //     .then(function(response) {
+                //         console.log(response.data);
+                //     })
+                //     .catch(function(error) {
+                //         console.error('Error:', error);
+                //     });
+            }
+
+
         </script>
         
         <!-- Main Script -->

@@ -315,7 +315,7 @@
                                                 <td>$<%= product.productId.price %>.00</td>
                                                 <td><%= product.quantity%></td>
                                                 <% if(product.reason){%>
-                                                    <td> <a  class="text-danger"  onclick="acceptReturn('<%= order._id%>','<%= product._id%>')">Return Requested</a></td>
+                                                    <td> <a  class="text-danger"  onclick="acceptReturn('<%= order._id%>','<%= product._id%>','<%= product.orderedPrice*product.quantity %>')">Return Requested</a></td>
                                                 
                                                 <%  }else{%>
                                                     <td hidden class="productObjectId" ><%= product._id %></td>
@@ -467,7 +467,7 @@
 
         </script>
         <script>
-        function acceptReturn(orderId,productObjectId){
+        function acceptReturn(orderId,productObjectId,returnAmount){
             const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
                 confirmButton: "btn btn-success",
@@ -491,7 +491,7 @@
                 icon: "success"
                 });
 
-                axios.post('/acceptReturn',{status:'accepted',orderId,productObjectId})
+                axios.post('/acceptReturn',{status:'accepted',orderId,productObjectId,returnAmount})
                 .then(function(response) {  
                     
                             
