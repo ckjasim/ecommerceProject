@@ -410,13 +410,29 @@
                                                         <img src="/productImage/<%= element.img[0] %>" width="270" height="303" alt="product" />
                                                     </a>
                                                     <div class="product-content">
-                                                        <h4 class="title">
+                                                        <h4 class="font-weight-bold text-danger">
                                                             <a href="product-details.html"><%= element.name %></a>
                                                         </h4>
                                                         <p><%= element.description %></p>
-                                                        <div class="price">
-                                                            <span class="sale-price">$<%= element.price %></span>
-                                                        </div>
+                                
+                                                        <% if(offerProducts.some(offerProduct => offerProduct._id.toString() === element._id.toString())) { %>
+                                                            <% const offerProduct = offerProducts.find(offerProduct => offerProduct._id.toString() === element._id.toString()); %>
+                                                            <% const offer = offerData.find(offer => offer.product.toString() === offerProduct._id.toString()); %>
+                                                            <% if(offer) { %>
+                                                                <div class="price">
+                                                                    <% const offerAmount = element.price * offer.percentage / 100; %>
+                                                                    <span class="sale-price text-dark">$<%= element.price - offerAmount %></span>
+                                                                    <span class="old-price">$<%= element.price %>.00</span>
+                                                                    <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
+                                                                </div>
+                                                                
+                                                            <% } %>
+                                                        <% } else { %>
+                                                            <div class="price">
+                                                                <span class="sale-price text-dark ">$<%= element.price %></span>
+                                                            </div>
+                                                        <% } %>
+                                
                                                     </div>
                                                     <ul class="product-meta">
                                                         <li>
@@ -437,6 +453,7 @@
                                         <% } %>
                                     <% }); %>
                                 </div>
+                                
                                 
                                 
                             </div>
