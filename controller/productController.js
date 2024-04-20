@@ -256,25 +256,28 @@ const deleteProductImage = async (req, res) => {
 const loadUserProduct=async (req,res)=>{
     try {
         const productData = await productSchema.find().populate('categoryId');
-const categoryData = await categorySchema.find();
-const offerData = await offerSchema.find();
-
-console.log('Offer Data:', offerData);
-
-const offerProducts = offerData.map(offer => {
-    const offerProductId = new mongoose.Types.ObjectId(offer.product);
-    return productData.find(product => product._id.equals(offerProductId));
-});
-
-const offerCategories = offerData.map(offer => {
-    const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
-    return categoryData.find(category => category._id.equals(offerCategoryId));
-});
-
-console.log('Offer Products:', offerProducts);
-console.log('Offer Categories:', offerCategories);
-
-res.render('products', { productData, offerProducts, offerCategories, offerData });
+        const categoryData = await categorySchema.find();
+        const offerData = await offerSchema.find();
+        
+        
+        
+        // Mapping offer products and categories
+        const offerProducts = offerData.map(offer => {
+            const offerProductId = new mongoose.Types.ObjectId(offer.product);
+            return productData.find(product => product._id.equals(offerProductId));
+        });
+        
+        const offerCategories = offerData.map(offer => {
+            const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
+            return categoryData.find(category => category._id.equals(offerCategoryId));
+        });
+        
+        console.log('Offer Products:', offerProducts);
+        console.log('Offer Categories:', offerCategories);
+        console.log('Offer Data:', offerData);
+        
+        res.render('products', { productData, offerProducts, offerCategories, offerData  });
+        
 
     } catch (error) {
         console.log(error.message)
