@@ -259,9 +259,8 @@ const loadUserProduct=async (req,res)=>{
         const categoryData = await categorySchema.find();
         const offerData = await offerSchema.find();
         
+        console.log('Offer Data:', offerData);
         
-        
-        // Mapping offer products and categories
         const offerProducts = offerData.map(offer => {
             const offerProductId = new mongoose.Types.ObjectId(offer.product);
             return productData.find(product => product._id.equals(offerProductId));
@@ -274,9 +273,8 @@ const loadUserProduct=async (req,res)=>{
         
         console.log('Offer Products:', offerProducts);
         console.log('Offer Categories:', offerCategories);
-        console.log('Offer Data:', offerData);
         
-        res.render('products', { productData, offerProducts, offerCategories, offerData  });
+        res.render('products', { productData, offerProducts, offerCategories, offerData });
         
 
     } catch (error) {
