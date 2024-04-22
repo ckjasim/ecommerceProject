@@ -290,10 +290,34 @@
                             <h4 class="product-name">
                                 <%=productData.name%>
                             </h4>
-                            <div class="price">
-                                <span class="sale-price">$<%=productData.price%></span>
-                                <span class="old-price">$290.00</span>
-                            </div>
+
+                            
+                                                        
+                                                        <% if (offerProduct) { %>
+                                                                <div class="price">
+                                                                    <% const offerAmount = productData.price * offerProduct.percentage / 100; %>
+                                                                    <span class="sale-price  text-dark">$<%= productData.price - offerAmount %></span>
+                                                                    <span class="old-price">$<%= productData.price %>.00</span>
+                                                                    <span class="product-content fw-bold text-success ms-2 mt-2 "><%= offerProduct.percentage %>% off</span>
+                                                                </div>
+                                                            
+                                                        <% } else if (offerCategory) { %>
+                                                            
+                                                                <div class="price">
+                                                                    <% const offerAmount = productData.price * offerCategory.percentage / 100; %>
+                                                                    <span class="sale-price text-dark">$<%= productData.price - offerAmount %></span>
+                                                                    <span class="old-price">$<%= productData.price %>.00</span>
+                                                                    <span class="product-content text-success ms-2 mb-1 "><%= offerCategory.percentage %>% off</span>
+                                                                </div>
+                                                          
+                                                        <% } else { %>
+                                                            <div class="price">
+                                                                <span class="sale-price text-dark ">$<%= productData.price %></span>
+                                                            </div>
+                                                        <% } %>
+
+
+                            
                             <div class="review-wrapper">
                                 <div class="review-star">
                                     <div class="star" style="width: 80%"></div>
@@ -348,11 +372,7 @@
                                  
                             <div class="product-meta" id="productContainer">
 
-                                        <div class="product-quantity d-inline-flex">
-                                            <button type="button" class="sub">-</button>
-                                            <input type="text" id="quantityInput" value="1" />
-                                            <button type="button" class="add">+</button>
-                                        </div>
+                                        
                                         <div class="meta-action">
                                             <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>')">Add To Cart</button>
                                         </div>
@@ -1513,37 +1533,14 @@
 
     <!-- <script src="../../node_modules/axios/dist/axios.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const addButton = document.querySelector('.add');
-            const quantityInput = document.getElementById('quantityInput');
-            const quantity = document.getElementById('quantity')
-            
 
-    
-            addButton.addEventListener('click', function() {
-                let currentValue = parseInt(quantityInput.value);
-                let inStock = parseInt(quantity.value);
-                console.log(inStock)
-
-                if (currentValue > Math.min(4, inStock)) {
-                    addButton.disabled = true;
-                }
-            else {
-              
-              quantityInput.value = currentValue;
-          }
-          
-            });
-        });
-    </script>
    
 
 <script>
     const productId = document.getElementById('productId').value
-    const quantity = document.getElementById('quantityInput').value;
+   
     console.log(productId)
-    axios.post('/updateProductDetails',{productId,quantity})
+    axios.post('/updateProductDetails',{productId})
             .then(function(response) {
                 console.log(response.data);
                 const {alreadyCart,inStock,productData} =response.data
@@ -1570,17 +1567,12 @@
             else{
 
                     productHTML += `
-                    <div class="product-quantity d-inline-flex">
-                                            <button type="button" class="sub">-</button>
-                                            <input type="text" id="quantityInput" value="1" />
-                                            <button type="button" class="add">+</button>
-                                        </div>
+
                                         <div class="meta-action">
                                             <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('${productData._id}')">Add To Cart</button>
                                         </div>
                                         
                                         
-                                        <input type="text" id="quantity" value="${productData.quantity}" hidden />
                                         <input type="text" id="productId" value="${productData._id}" hidden />
 
                                         <div class="meta-action">
@@ -1602,10 +1594,9 @@
     
 <script>
     function addToCart(productId) {
-        const quantity = document.getElementById('quantityInput').value;
               
         console.log(productId)
-        axios.post('/loadCart', { quantity,productId })
+        axios.post('/loadCart', { productId })
             .then(function(response) {
                 console.log(response.data);
                 const {session} =response.data

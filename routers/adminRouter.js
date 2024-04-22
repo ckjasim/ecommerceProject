@@ -7,6 +7,7 @@ const orderController=require('../controller/orderController')
 const couponController=require('../controller/couponController')
 const walletController=require('../controller/walletController')
 const offerController=require('../controller/offerController')
+const salesController=require('../controller/salesController')
 
 
 const adminConfig=require('../middleware/adminAuthentification')
@@ -57,6 +58,7 @@ adminRoute.get('/addOffer',adminConfig.isLogin,offerController.loadAddOffer)
 adminRoute.post('/addOffer',adminConfig.isLogin,offerController.addOffer)
 
 
+adminRoute.get('/loadSalesReport',adminConfig.isLogin,salesController.loadSalesReport)
 
 
 

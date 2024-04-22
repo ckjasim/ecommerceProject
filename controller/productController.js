@@ -259,7 +259,7 @@ const loadUserProduct = async (req, res) => {
         const categoryData = await categorySchema.find();
         const offerData = await offerSchema.find();
 
-        console.log('Offer Data:', offerData);
+
 
         const offerProducts = offerData.map(offer => {
         const offerProductId = new mongoose.Types.ObjectId(offer.product);
@@ -273,8 +273,7 @@ const loadUserProduct = async (req, res) => {
         }).filter(category => category !== undefined);
         
 
-        console.log('Offer Products:', offerProducts);
-        console.log('Offer Categories:', offerCategories);
+     
 
         res.render('products', { productData, offerProducts, offerCategories, offerData });
 
@@ -292,7 +291,24 @@ const loadUserProductDetail=async (req,res)=>{
         const relatedProducts= await productSchema.find().populate('categoryId')
         const userId=req.session.user_id
         const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:userId});
-        res.render('productDetail',{productData,alreadyCart,relatedProducts})
+
+        const offerData = await offerSchema.find();
+
+        const offerProduct = offerData.find((offer) => {
+            const offerProductId = new mongoose.Types.ObjectId(offer.product);
+            return offerProductId.equals(productId);
+        });
+
+        const offerCategory = offerData.find((offer) => {
+            const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
+            return offerCategoryId.equals(productData.categoryId._id);
+        });
+        console.log('pr',offerProduct)
+        console.log('ct',offerCategory)
+    
+
+
+        res.render('productDetail',{productData,alreadyCart,relatedProducts,offerProduct,offerCategory})
     } catch (error) {
         console.log(error.message)
     }

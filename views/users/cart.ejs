@@ -257,30 +257,63 @@
                   </td>
                   <td class="product-info">
                     <h6 class="name">
-                      <a href="product-details.html"
-                        ><%= element.productId.name %></a
-                      >
+                      <a href="product-details.html"><%= element.productId.name %></a>
                     </h6>
-                    <div class="product-prices">
-                      <span class="old-price">$35.90</span>
-                      <span class="sale-price"
-                        >$<%= element.productId.price %></span
-                      >
-                    </div>
+                    
+
+
+                    <% const productOffer = offerProducts.find(offerProduct => offerProduct.productId._id.toString() === element.productId._id.toString()); %>
+                    <% const categoryOffer = offerCategories.find(offerCategory => offerCategory.productId.categoryId._id.toString() === element.productId.categoryId._id.toString()); %>
+                    
+                    <% if (productOffer) { %>
+                        <% const offer = offerData.find(offer => offer.product === productOffer.productId._id.toString()); %>
+
+                        <% if(offer) { %>
+                            <div class="product-prices">
+                                <% const offerAmount = element.productId.price * offer.percentage / 100; %>
+                                <span class="sale-price text-dark productAmount" >$<%= element.productId.price - offerAmount %></span>
+                                <span class="old-price">$<%= element.productId.price %>.00</span>
+                                <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
+                            </div>
+                        <% } %>
+                    <% } else if (categoryOffer) { %>
+
+                        <% const offer = offerData.find(offer => offer.category === categoryOffer.productId.categoryId._id.toString()); %>
+                        
+                        <% if(offer) { %>
+
+                            <div class="product-prices">
+                                <% const offerAmount = element.productId.price * offer.percentage / 100; %>
+                                <span class="sale-price text-dark productAmount">$<%= element.productId.price - offerAmount %></span>
+                                <span class="old-price">$<%= element.productId.price %>.00</span>
+                                <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
+                            </div>
+                        <% } %>
+                    <% } else { %>
+                        <div class="product-prices">
+                            <span class="sale-price text-dark productAmount " >$<%= element.productId.price %></span>
+                        </div>
+                    <% } %>
+
+                    
                     <div class="product-size-color">
                       <p>Size <span><%= element.productId.size %></span></p>
                       <p>Color <span><%= element.productId.color %></span></p>
                     </div>
                   </td>
+                  
+                  
+                  
                   <td class="quantity">
                     <div class="product-quantity d-inline-flex">
+
                       <button type="button"  class="sub">-</button>
                       <input
                         type="text"
                         class="quantityInput"
                         id="checkoutQuantity<%= element.productId._id %>"
                         data-product-id="<%= element.productId._id %>"
-                        value="<%= element.quantity %>"
+                        value="1"
                         min="0"
                       max="5"
                       />
@@ -289,12 +322,39 @@
                       <button type="button" class="add" id="addButton">+</button>
 
                     </div>
+                    <span id="quantityError" style="color: rgb(188, 5, 5);"></span>
+
                     <input type="text" id="quantity<%= element.productId._id %>" value="<%=element.productId.quantity%>" hidden />
                   </td>
 
-                  <td class="product-total-price">
-                    <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.totalAmount %></span>
-                  </td>
+                  
+                  
+                  <% if (productOffer) { %>
+                      <% const offer = offerData.find(offer => offer.product === productOffer.productId._id.toString()); %>
+
+                      <% if(offer) { %>
+                        <td class="product-total-price">
+                          <% const offerAmount = element.productId.price * offer.percentage / 100; %>
+
+                          <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price -offerAmount  %></span>
+                        </td>
+                      <% } %>
+                  <% } else if (categoryOffer) { %>
+
+                      <% const offer = offerData.find(offer => offer.category === categoryOffer.productId.categoryId._id.toString()); %>
+                      
+                      <% if(offer) { %>
+                        <% const offerAmount = element.productId.price * offer.percentage / 100; %>
+
+                        <td class="product-total-price">
+                          <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price-offerAmount %></span>
+                        </td>
+                      <% } %>
+                  <% } else { %>
+                    <td class="product-total-price">
+                      <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price %></span>
+                    </td>
+                  <% } %>
                   <td class="product-action">
                     <button class="remove" onclick="deleteCartProduct('<%= element.productId._id %>')">
                       <i class="pe-7s-trash"></i>
@@ -333,28 +393,7 @@
           </div>
           <div class="col-lg-4">
             <!-- Cart Shipping Start -->
-            <div class="cart-shipping">
-              <div class="cart-title">
-                <h4 class="title">Coupon Code</h4>
-                <p>Enter your coupon code if you have one.</p>
-              </div>
-              <div class="cart-form">
-                <form action="#">
-                  <div class="single-form">
-                    <input
-                      class="form-control"
-                      type="text"
-                      placeholder="Enter your coupon code.."
-                    />
-                  </div>
-                  <div class="single-form">
-                    <button class="btn btn-dark btn-hover-primary">
-                      Apply Coupon
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
+          
             <!-- Cart Shipping End -->
           </div>
           <div class="col-lg-4">
@@ -366,51 +405,22 @@
               <div class="cart-total-table">
                 <table class="table">
                   <tbody>
-                    <tr>
+                    <!-- <tr>
                       <td>
                         <p class="value">Subtotal</p>
                       </td>
                       <td>
                       
-                        <p class="price" id="subTotal">£<%= cartTotal %></p>
+                        <p class="price" id="subTotal">£<%= %></p>
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                        <p class="value">Shipping</p>
-                      </td>
-                      <td>
-                        <ul class="shipping-list">
-                          <li class="radio">
-                            <input
-                              type="radio"
-                              name="shipping"
-                              id="radio1"
-                              checked=""
-                            />
-                            <label for="radio1"><span></span> Flat Rate</label>
-                          </li>
-                          <li class="radio">
-                            <input type="radio" name="shipping" id="radio2" />
-                            <label for="radio2"
-                              ><span></span> Free Shipping</label
-                            >
-                          </li>
-                          <li class="radio">
-                            <input type="radio" name="shipping" id="radio3" />
-                            <label for="radio3"
-                              ><span></span> Local Pickup</label
-                            >
-                          </li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
+                    
+                    <tr> -->
                       <td>
                         <p class="value">Total</p>
                       </td>
                       <td>
-                        <p class="price" id="cartTotal">£<%= cartTotal %>.00</p>
+                        <p class="price" id="cartTotal">£<%= %>.00</p>
                       </td>
                     </tr>
                   </tbody>
@@ -628,6 +638,8 @@
     <!-- JS
     ============================================ -->
     <!-- <script src="../../node_modules/axios/dist/axios.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- <script>
       function enableAddButton() {
@@ -653,17 +665,43 @@
       enableAddButton();
   </script> -->
   
+  <script>
+    setInitialCartTotal();
+    function setInitialCartTotal() {
+        let totalAmount = 0;
+        const productAmounts = document.querySelectorAll('.productAmount');
+        productAmounts.forEach(function(amountElement) {
+            totalAmount += parseFloat(amountElement.innerText.replace('$', ''));
+        });
+        const cartTotalElement = document.getElementById('cartTotal');
+        cartTotalElement.innerHTML = `$${totalAmount.toFixed(2)}`;
+    }
+  </script> 
+  <!-- <script>
+    let subtotal = 0;
+    const productPrices = document.querySelectorAll('.old-price');
+    const qtyInputs = document.querySelectorAll('.quantityInput');
+    
+    productPrices.forEach(function(amountElement, index) {
+        const price = parseFloat(amountElement.innerText.replace('$', ''));
+        const quantity = parseInt(qtyInputs[index].value); 
+        subtotal += price * quantity;
+    });
+
+    const subTotalElement = document.getElementById('subTotal');
+    subTotalElement.innerHTML = `$${subtotal.toFixed(2)}`;
+</script> -->
+
   
   <script>
-    
-    const quantityInputs = document.querySelectorAll('.quantityInput');
+const quantityInputs = document.querySelectorAll('.quantityInput');
 
 quantityInputs.forEach(function(input) {
-    const addButton = input.parentElement.querySelector('.add'); 
+    const addButton = input.parentElement.querySelector('.add');
     const productId = input.dataset.productId;
-    
-    addButton.addEventListener('click', function() { 
-        limitQuantity(productId, parseInt(input.value), addButton); 
+
+    addButton.addEventListener('click', function() {
+        limitQuantity(productId, parseInt(input.value), addButton);
     });
 });
 
@@ -672,16 +710,19 @@ function limitQuantity(productId, cartQuantity, addButton) {
         .then(function(response) {
             const { inStock } = response.data;
             console.log(inStock);
-            const quantityInput = document.getElementById(`checkoutQuantity${productId}`);
-            let currentValue = parseInt(quantityInput.value);
 
-            if (currentValue < Math.min(5, inStock)) {
-                currentValue++;
-                quantityInput.value = currentValue;
-            }
+            let currentValue = cartQuantity;
 
-            if (currentValue >= Math.min(5, inStock)) {
+            if (currentValue < Math.min(4, inStock)) {
+                
+                if (currentValue > Math.min(4, inStock)) {
+                  currentValue++;
+                    currentValue = Math.min(4, inStock); 
+                }
+            } else {
                 addButton.disabled = true;
+                var quantityError = document.getElementById('quantityError');
+                quantityError.textContent ='Max limit';
             }
 
             console.log(response.data);
@@ -691,12 +732,13 @@ function limitQuantity(productId, cartQuantity, addButton) {
         });
 }
 
+
   </script>
 
 <script>
 
-     document.addEventListener('DOMContentLoaded', function() {
-        const quantityInputs = document.querySelectorAll('.quantityInput');
+document.addEventListener('DOMContentLoaded', function() {
+    const quantityInputs = document.querySelectorAll('.quantityInput');
 
     quantityInputs.forEach(function(input) {
         const productId = input.dataset.productId;
@@ -704,27 +746,34 @@ function limitQuantity(productId, cartQuantity, addButton) {
         const subButton = input.parentElement.querySelector('.sub');
 
         addButton.addEventListener('click', function() {
-            updateCart(productId, parseInt(input.value));
+            const productAmountElement = input.closest('tr').querySelector('.productAmount');
+            const productAmount = parseFloat(productAmountElement.innerText.replace('$', ''));
+            updateCart(productId, parseInt(input.value), productAmount);
         });
 
         subButton.addEventListener('click', function() {
-            updateCart(productId, parseInt(input.value));
+            const productAmountElement = input.closest('tr').querySelector('.productAmount');
+            const productAmount = parseFloat(productAmountElement.innerText.replace('$', ''));
+            updateCart(productId, parseInt(input.value), productAmount);
         });
 
         input.addEventListener('change', function() {
-            updateCart(productId, parseInt(input.value));
+            const productAmountElement = input.closest('tr').querySelector('.productAmount');
+            const productAmount = parseFloat(productAmountElement.innerText.replace('$', ''));
+            updateCart(productId, parseInt(input.value), productAmount);
         });
     });
 
-    function updateCart(productId, cartQuantity) {
+    function updateCart(productId, cartQuantity, productAmount) {
         console.log("Updating cart with quantity:", cartQuantity, "for product ID:", productId);
-        axios.post('/updateQuantity', { cartQuantity,productId })
-            .then(function(response) {  
-                const {cartTotal,productTotalPrice} =response.data
-                document.getElementById('subTotal').innerHTML=`$${cartTotal}`
-                document.getElementById('cartTotal').innerHTML=`$${cartTotal}`
-                
-                document.getElementById(`totalPrice${productId}`).innerHTML=`$${productTotalPrice}`
+
+
+        axios.post('/updateQuantity', { cartQuantity, productId, productAmount })
+            .then(function(response) {
+                const { cartTotal, productTotalPrice } = response.data;
+                // document.getElementById('subTotal').innerHTML = `$${cartTotal}`;
+                document.getElementById('cartTotal').innerHTML = `$${cartTotal.toFixed(2)}`;
+                document.getElementById(`totalPrice${productId}`).innerHTML = `$${productTotalPrice.toFixed(2)}`;
                 console.log(cartTotal);
                 console.log(response.data);
             })
@@ -732,23 +781,42 @@ function limitQuantity(productId, cartQuantity, addButton) {
                 console.error('Error:', error);
             })
     }
-  });
+});
 
-  async function deleteCartProduct(productId) {
+
+async function deleteCartProduct(productId) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+            });
+            axios.post('/deleteCartProduct', { productId })
+                .then(function(response) {  
+                    const element = document.getElementById(`cartRefresh${productId}`)
+                    element.remove();
+                    window.location.reload();
+                    
+                    console.log(response.data);
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                });
+        }
+    });
+}
+
   
-  axios.post('/deleteCartProduct', { productId })
   
-    .then(function(response) {  
-      const element = document.getElementById(`cartRefresh${productId}`)
-      element.remove();
-      window.location.reload();
-                
-     console.log(response.data);
-     })
-     .catch(function(error) {
-       console.error('Error:', error);
-       })
-      }
 
 </script>
 

@@ -1,6 +1,9 @@
 const cartSchema = require('../model/cartData')
 const productSchema = require('../model/productData')
 const addressSchema = require('../model/addressData')
+const offerSchema = require('../model/offerData')
+
+const mongoose = require('mongoose');
 
 
 const loadCart = async (req, res) => {
@@ -15,9 +18,7 @@ const loadCart = async (req, res) => {
         
         const cartDetails = await cartSchema.findOne({ userId: req.session.user_id })
         const productId = req.body.productId;
-        const quantity = req.body.quantity;
-        
-        req.flash('quantity',quantity)
+        let quantity=1
         
         console.log('--------')
         const productData = await productSchema.findOne({ _id: req.body.productId })
@@ -72,14 +73,40 @@ const loadCart = async (req, res) => {
 
 const viewCart =async(req,res)=>{
     try {
-        
+        let quantity = 1
         quantity=req.flash('quantity').toString()
         
-        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId')
+        const cartDetails = await cartSchema.findOne({ userId: req.session.user_id })
+        .populate({
+            path: 'products.productId',
+            populate: {
+                path: 'categoryId' 
+            }
+        })
+        .populate('userId');
+        
         if(cartDetails){
+            const offerData = await offerSchema.find();
 
-            const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
-            res.render('cart',{cartDetails,cartTotal})
+            const offerProducts = offerData.map(offer => {
+                const offerProductId = new mongoose.Types.ObjectId(offer.product);
+                return cartDetails.products.find(product => product.productId.equals(offerProductId));
+            }).filter(product => product !== undefined);
+            
+
+
+        const offerCategories = offerData.map(offer => {
+            const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
+            return cartDetails.products.find(product => product.productId.categoryId._id.equals(offerCategoryId));
+        }).filter(product => product !== undefined);
+
+        console.log('jjjjjjj',quantity)
+        
+        
+
+            // const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
+
+            res.render('cart', { cartDetails, offerProducts, offerCategories, offerData, quantity: 1 });
         }else{
             res.render('emptyCart')
         }
@@ -117,7 +144,8 @@ const updateProductDetails =async(req,res)=>{
 
 const updateQuantity = async (req, res) => {
     try {
-        const { cartQuantity, productId } = req.body;
+        const { cartQuantity, productId,productAmount } = req.body;
+        console.log('sssdssssddsds',productAmount)
         
         const cartData = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId');
         const productData = cartData.products.find((product) => {
@@ -125,7 +153,7 @@ const updateQuantity = async (req, res) => {
         });
 
         productData.quantity = cartQuantity;
-        productData.totalAmount = productData.productId.price * cartQuantity;
+        productData.totalAmount = productAmount * cartQuantity;
         await cartData.save();
 
         const cartTotal = cartData.products.reduce((total, product) => total + product.totalAmount, 0);

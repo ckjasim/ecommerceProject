@@ -468,61 +468,61 @@
         </script>
         <script>
         function acceptReturn(orderId,productObjectId,returnAmount){
-            const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: "btn btn-success",
-                cancelButton: "btn btn-danger"
-            },
-            buttonsStyling: false
-            });
-            swalWithBootstrapButtons.fire({
-            title: "Return Requested",
-            // text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Accept",
-            cancelButtonText: "Reject!",
-            reverseButtons: true
-            }).then((result) => {
-            if (result.isConfirmed) {
-                swalWithBootstrapButtons.fire({
-                title: "Return accepted",
-                // text: "Your file has been deleted.",
-                icon: "success"
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
                 });
-
-                axios.post('/acceptReturn',{status:'accepted',orderId,productObjectId,returnAmount})
-                .then(function(response) {  
-                    
-                            
-                console.log(response.data);
-                })
-                .catch(function(error) {
-                console.error('Error:', error);
-                })
-                
-
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
                 swalWithBootstrapButtons.fire({
-                title: "Return rejected",
-                // text: "Your imaginary file is safe :)",
-                icon: "error"
-                });
-                axios.post('/acceptReturn',{status:'rejected',orderId,productObjectId})
-                .then(function(response) {  
+                title: "Return Requested",
+                // text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Accept",
+                cancelButtonText: "Reject!",
+                reverseButtons: true
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                    title: "Return accepted",
+                    // text: "Your file has been deleted.",
+                    icon: "success"
+                    });
+
+                    axios.post('/acceptReturn',{status:'accepted',orderId,productObjectId,returnAmount})
+                    .then(function(response) {  
+                        
+                                
+                    console.log(response.data);
+                    })
+                    .catch(function(error) {
+                    console.error('Error:', error);
+                    })
                     
-                            
-                console.log(response.data);
-                })
-                .catch(function(error) {
-                console.error('Error:', error);
-                }) 
-            }
-            });
-                    }
+
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire({
+                    title: "Return rejected",
+                    // text: "Your imaginary file is safe :)",
+                    icon: "error"
+                    });
+                    axios.post('/acceptReturn',{status:'rejected',orderId,productObjectId})
+                    .then(function(response) {  
+                        
+                                
+                    console.log(response.data);
+                    })
+                    .catch(function(error) {
+                    console.error('Error:', error);
+                    }) 
+                }
+                });
+                        }
                
         </script>
 
