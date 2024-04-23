@@ -96,9 +96,7 @@ const addProducts=async (req,res)=>{
             description:req.body.description,
             createdAt:new Date(),
             productStatus:true,
-            img:req.files.map(file=>file.filename),
-            
-
+            img:req.files.map(file=>file.filename)
         })
 
         await productData.save()
@@ -355,6 +353,34 @@ const sort =async (req,res)=>{
     }
 }
 
+const searchProduct = async (req, res) => {
+    try {
+        console.log(req.body.searchValue);
+        if (req.body.searchValue) {
+            const searchValue = req.body.searchValue.trim();
+            const content = new RegExp(searchValue, 'i'); 
+            const productData = await productSchema.find({
+                $and: [
+                    {
+                        $or: [
+                            { name: { $regex: content } },
+                            { description: { $regex: content } }
+                        ]
+                    },
+                    { is_listed: true }
+                ]
+            }).populate('categoryId');
+            res.send({ status: 'success', message: 'sorted successfully', productData });
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ status: 'error', message: 'Internal server error' });
+    }
+};
+
+
+
+
 
 module.exports={
     loadProducts,
@@ -366,7 +392,8 @@ module.exports={
     deleteProductImage,
     sort,
     loadUserProduct,
-    loadUserProductDetail
+    loadUserProductDetail,
+    searchProduct
     // deleteImage
 
 }

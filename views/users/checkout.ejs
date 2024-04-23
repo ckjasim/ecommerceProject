@@ -381,7 +381,7 @@
                                                    
                                                 </td>
                                                 <td class="Product-price">
-                                                    <p>$<%= element.totalAmount %>.00</p>
+                                                    <p>$<%= element.totalAmount.toFixed(2) %></p>
                                                 </td>
                                             </tr>
                                         <% }); %>
@@ -392,8 +392,8 @@
                                             <td class="Product-name">
                                                 <p>Subtotal</p>
                                             </td>
-                                            <td class="Product-price">
-                                                <p >$<%= cartTotal %>.00</p>
+                                            <td class="Product-price subTotal">
+                                                <p >$<%= cartTotal.toFixed(2) %></p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -430,7 +430,7 @@
                                                 <p>Total</p>
                                             </td>
                                             <td class="total-price cartTotal">
-                                                <p>$<%= cartTotal %>.00</p>
+                                                <p>$<%= cartTotal.toFixed(2) %></p>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -673,10 +673,11 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     
     <script>
+        
         function applyCoupon(){
             console.log('wer')
             const couponCode=document.getElementById('couponCode').value 
-            const totalPriceElement = document.querySelector('.Product-price p');
+            const totalPriceElement = document.querySelector('.subTotal p');
             const subTotal = parseFloat(totalPriceElement.textContent.trim().substring(1));
             console.log(subTotal)
             console.log(couponCode)
@@ -686,9 +687,9 @@
                 const {couponDiscount,cartTotal,message}=res.data
                 if(couponDiscount && cartTotal){
                     const couponDiscountElement = document.querySelector('.couponDiscount p');
-                    couponDiscountElement.innerHTML=`$ ${couponDiscount}`
+                    couponDiscountElement.innerHTML=`$ ${couponDiscount.toFixed(2)}`
                     const cartTotalElement = document.querySelector('.cartTotal p');
-                    cartTotalElement.innerHTML=`$ ${cartTotal}`
+                    cartTotalElement.innerHTML=`$ ${cartTotal.toFixed(2)}`
                 }else{
                     console.log(message)
                     var couponError = document.getElementById('couponError');
@@ -706,105 +707,106 @@
       function placeOrder() {
        console.log('222222222222222222222')
        console.log('4444444')
-const selectedAddress = document.querySelector('input[name="shippingAddress"]:checked').value;
-const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
-const totalPriceElement = document.querySelector('.cartTotal p');
-const cartTotal = parseFloat(totalPriceElement.textContent.trim().substring(1));
-console.log('ddddddddddd',cartTotal)
+        const selectedAddress = document.querySelector('input[name="shippingAddress"]:checked').value;
+        const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
+        const totalPriceElement = document.querySelector('.cartTotal p');
+        
+        const cartTotal = parseFloat(totalPriceElement.textContent.trim().substring(1));
+        console.log('ddddddddddd',cartTotal)
 
-console.log("Selected shipping address:", selectedAddress);
-console.log("Selected payment option:", selectedPaymentOption);
+        console.log("Selected shipping address:", selectedAddress);
+        console.log("Selected payment option:", selectedPaymentOption);
 
-if (selectedPaymentOption === "RazorPay") {
-    console.log('suiiii');
+        if (selectedPaymentOption === "RazorPay") {
+            console.log('suiiii');
 
-    event.preventDefault();
+            event.preventDefault();
 
-    axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal })
-    .then(function (response) {
-        console.log(response.data);
-        if (response.data.session==false) {
-                        console.log('1111');  
-                        window.location='/notLogin'
+            axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal })
+            .then(function (response) {
+                console.log(response.data);
+                if (response.data.session==false) {
+                                console.log('1111');  
+                                window.location='/notLogin'
 
+                            } else {
+                                console.log(response.data.response)
+                                if(response.data.response){
+                                    const productContainer = document.getElementById('outOfStock');
+                                    let productHTML = '';
+                                    productHTML += `
+                                <p class="text-danger">currently unavailable</p>
+                                    `;
+                                productContainer.innerHTML = productHTML;   
+                                    console.log('xxxxxxxxxxxxxxxxxxxxxx')
+
+
+                                }else{
+                const { order, KEY_ID, cartTotal } = response.data;
+                console.log(KEY_ID);
+                console.log(order.id);
+
+                if (response.data) {
+                    if (response.data.session === false) {
+                        console.log('1111');
+                        window.location = '/notLogin';
                     } else {
-                        console.log(response.data.response)
-                        if(response.data.response){
-                            const productContainer = document.getElementById('outOfStock');
-                            let productHTML = '';
-                            productHTML += `
-                           <p class="text-danger">currently unavailable</p>
-                             `;
-                           productContainer.innerHTML = productHTML;   
-                            console.log('xxxxxxxxxxxxxxxxxxxxxx')
+                        console.log('else');
+                        var options = {
+                            "key": KEY_ID,
+                            "amount": order.amount,
+                            "currency": "INR",
+                            "name": "prinDecor",
+                            "description": "Test Transaction",
+                            "image": "assets/images/favicon.png",
+                            "order_id": order.id,
+                            "handler": function (response) {
+                                console.log('ready', response.razorpay_signature);
+                                console.log(response.razorpay_payment_id);
+                                
+                                axios.post('/checkout', {
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature 
+                                })
+                                .then(function (response) {
+                                    console.log(response.data);
+                                    
+                                })
+                                .catch(function (error) {
+                                    console.error('Error:', error);
+                                });
+                                window.location='/viewOrder'
+                            },
+                            "prefill": {
+                                "name": "Gaurav Kumar",
+                                "email": "gaurav.kumar@example.com",
+                                "contact": "9000090000"
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function (response) {
+                            // alert(response.error.code);
+                            alert(response.error.description);
+                            // alert(response.error.source);
+                            // alert(response.error.step);
+                            // alert(response.error.reason);
+                            // alert(response.error.metadata.order_id);
+                            // alert(response.error.metadata.payment_id);
 
-
-                        }else{
-        const { order, KEY_ID, cartTotal } = response.data;
-        console.log(KEY_ID);
-        console.log(order.id);
-
-        if (response.data) {
-            if (response.data.session === false) {
-                console.log('1111');
-                window.location = '/notLogin';
-            } else {
-                console.log('else');
-                var options = {
-                    "key": KEY_ID,
-                    "amount": order.amount,
-                    "currency": "INR",
-                    "name": "prinDecor",
-                    "description": "Test Transaction",
-                    "image": "assets/images/favicon.png",
-                    "order_id": order.id,
-                    "handler": function (response) {
-                        console.log('ready', response.razorpay_signature);
-                        console.log(response.razorpay_payment_id);
-                        
-                        axios.post('/checkout', {
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature 
-                        })
-                        .then(function (response) {
-                            console.log(response.data);
-                            
-                        })
-                        .catch(function (error) {
-                            console.error('Error:', error);
                         });
-                        window.location='/viewOrder'
-                    },
-                    "prefill": {
-                        "name": "Gaurav Kumar",
-                        "email": "gaurav.kumar@example.com",
-                        "contact": "9000090000"
-                    },
-                    "notes": {
-                        "address": "Razorpay Corporate Office"
-                    },
-                    "theme": {
-                        "color": "#3399cc"
+                        
+                        rzp1.open();
                     }
-                };
-                var rzp1 = new Razorpay(options);
-                rzp1.on('payment.failed', function (response) {
-                    // alert(response.error.code);
-                    alert(response.error.description);
-                    // alert(response.error.source);
-                    // alert(response.error.step);
-                    // alert(response.error.reason);
-                    // alert(response.error.metadata.order_id);
-                    // alert(response.error.metadata.payment_id);
-
-                });
-                
-                rzp1.open();
+                }
             }
         }
-    }
-}
     })
     .catch(function (error) {
         console.error('Error:', error);

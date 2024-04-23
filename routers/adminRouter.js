@@ -52,6 +52,10 @@ adminRoute.post('/acceptReturn',adminConfig.isLogin,walletController.acceptRetur
 adminRoute.get('/coupons',adminConfig.isLogin,couponController.loadCoupon)
 adminRoute.get('/newCoupon',adminConfig.isLogin,couponController.loadNewCoupon)
 adminRoute.post('/newCoupon',adminConfig.isLogin,couponController.addCoupon)
+adminRoute.get('/editCoupon',adminConfig.isLogin,couponController.loadEditCoupon)
+
+adminRoute.post('/editCoupon',couponController.editCoupon)
+
 
 adminRoute.get('/offers',adminConfig.isLogin,offerController.loadOffer)
 adminRoute.get('/addOffer',adminConfig.isLogin,offerController.loadAddOffer)

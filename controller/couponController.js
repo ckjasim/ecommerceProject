@@ -46,6 +46,45 @@ res.redirect('/newCoupon')
   }
 };
 
+const loadEditCoupon=async (req,res)=>{
+  try {
+      
+      
+      const couponData = await couponSchema.findOne({_id:req.query._id})
+      
+     
+     return res.render('editCoupon',{couponData})
+     
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
+
+const editCoupon =async (req,res)=>{
+  try {
+      console.log('dffsd');
+      console.log(req.body.id)
+      const { code, name, description, percentage, minAmount, date } = req.body;
+
+      const updateCoupon={
+        code: code.toUpperCase(),
+        name: name,
+        description: description,
+        percentage: percentage,
+        minAmount: minAmount,
+        expiredAt: date,
+       
+      }
+      
+      await couponSchema.findByIdAndUpdate({_id:req.body.id},{$set:updateCoupon})
+      res.redirect('/coupons')
+      
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
 //--------------------------user----------------------------
 
 
@@ -103,5 +142,7 @@ module.exports = {
   loadCoupon,
   loadNewCoupon,
   addCoupon,
-  couponValidate
+  couponValidate,
+  editCoupon,
+  loadEditCoupon
 };

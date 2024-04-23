@@ -21,9 +21,22 @@ const loadCart = async (req, res) => {
         let quantity=1
         
         console.log('--------')
-        const productData = await productSchema.findOne({ _id: req.body.productId })
+        const productData = await productSchema.findOne({ _id: req.body.productId }).populate('offerId')
+        
+        
         console.log('--sssss------')
-        const total=quantity*productData.price
+        // const offerData = productData.offerId.find((offer) => {
+        //     const offerProductId = new mongoose.Types.ObjectId(offer.product);
+
+        //     return offerProductId.equals(productId);
+        // });
+        // console.log(offerData)
+        // if(offerData){
+        //     console.log('offer nd')
+        // }else{
+
+            const total=quantity*productData.price
+        // }
 
         const productToAdd = [{
             productId: productId,

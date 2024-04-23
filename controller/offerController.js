@@ -2,6 +2,8 @@ const categorySchema= require('../model/categoryData')
 const productSchema= require('../model/productData')
 const offerSchema= require('../model/offerData')
 
+const mongoose = require('mongoose');
+
 const loadOffer = async (req, res) => {
     try {
         
@@ -39,19 +41,48 @@ console.log(offerTypeName)
 // }else if(offerTypeName==='Category'){
 //     const offerApply=offerType
 // }
+const offerDetails = await offerSchema.findOne({
+    $or: [
+      { product: offerType },
+      { category: offerType }
+    ]
+  });
 
+if(offerDetails){
+    await offerSchema.findByIdAndUpdate({_id:offerDetails._id},
+    {
+        name: name,
+        description: description,
+        percentage: percentage,
+        expiredAt: date,
+        offerType:offerTypeName,
+        product: offerTypeName === 'Product' ? offerType : undefined,
+        category: offerTypeName === 'Category' ? offerType : undefined
+    })
+}else {
+    const offerData = new offerSchema({
+        name: name,
+        description: description,
+        percentage: percentage,
+        expiredAt: date,
+        offerType:offerTypeName,
+        product: offerTypeName === 'Product' ? offerType : undefined,
+        category: offerTypeName === 'Category' ? offerType : undefined
+    });
+     await offerData.save()
+}
 
-const offerData = new offerSchema({
-    name: name,
-    description: description,
-    percentage: percentage,
-    expiredAt: date,
-    offerType:offerTypeName,
-    product: offerTypeName === 'Product' ? offerType : undefined,
-    category: offerTypeName === 'Category' ? offerType : undefined
-});
-
- await offerData.save()
+if(offerTypeName === 'Product'){
+    const offerData= await offerSchema.findOne({product:offerType})
+    // const offerProductId = new mongoose.Types.ObjectId(offerType);
+    await productSchema.findByIdAndUpdate({_id:offerType},{offerId:offerData._id})
+    console.log('eeeeeeeee')
+}
+if(offerTypeName === 'Category'){
+    const offerData= await offerSchema.findOne({category:offerType})
+    await categorySchema.findByIdAndUpdate({_id:offerType},{offerId:offerData._id})
+    console.log('ddddddddddddddddddd')
+}
 
  res.redirect('/addOffer')
 

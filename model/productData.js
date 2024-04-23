@@ -13,6 +13,7 @@ const productSchema = new mongoose.Schema({
     createdAt:{type:Date,required:true}, 
     is_listed:{type:Boolean,default:true},
     categoryId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'category'},
+    offerId:{type:mongoose.Schema.Types.ObjectId,ref:'offer'},
    
 })
 

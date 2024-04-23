@@ -149,13 +149,11 @@
 
                             <div class="dropdown-menu dropdown-search">
                                 <!-- Header Search Start -->
-                                <div class="header-search">
-                                    <form action="#">
-                                        <input type="text" placeholder="Enter your search key ... " />
-                                        <button>
-                                            <i class="pe-7s-search"></i>
-                                        </button>
-                                    </form>
+                                <div class="header-search" id="searchProduct">
+                    
+                                    <input type="text" placeholder="Enter your search key ... " />
+                                    <button onclick="searchProduct()"><i class="pe-7s-search"></i></button>
+                                
                                 </div>
                                 <!-- Header Search End -->
                             </div>
@@ -241,11 +239,11 @@
         <div class="header-mobile-bottom">
             <div class="container">
                 <!-- Header Search Start -->
-                <div class="header-search">
-                    <form action="#">
+                <div class="header-search" id="searchProduct">
+                    
                         <input type="text" placeholder="Enter your search key ... " />
-                        <button><i class="pe-7s-search"></i></button>
-                    </form>
+                        <button onclick="searchProduct()"><i class="pe-7s-search"></i></button>
+                    
                 </div>
                 <!-- Header Search End -->
             </div>
@@ -1266,6 +1264,71 @@
 
         }
     </script>
+
+
+<!---------------------------------------- search -------------------->
+<script>
+    function searchProduct(){
+
+        const inputElement = document.querySelector('.header-search input[type="text"]');
+        const searchValue = inputElement.value;
+        console.log(searchValue);
+
+            axios.post('/searchProduct',{searchValue})
+            .then(function(response) {
+                const { productData } = response.data;
+        // const productContainer = document.querySelector('.product-container');
+        const productContainer = document.getElementById('productContainer');
+        let productHTML = '';
+
+        productData.forEach(element => {
+            if (element.is_listed === true) {
+                productHTML += `
+                    <div class="col-lg-3 col-sm-6">
+                        <!-- Single Product Start -->
+                        <div class="single-product">
+                            <a href="/loadProductDetail/${element._id}">
+                                <img src="/productImage/${element.img[0]}" width="270" height="303" alt="product" />
+                            </a>
+                            <div class="product-content">
+                                <h4 class="title">
+                                    <a href="product-details.html">${element.name}</a>
+                                </h4>
+                                <p>${element.description}</p>
+                                <div class="price">
+                                    <span class="sale-price">$${element.price}</span>
+                                </div>
+                            </div>
+                            <ul class="product-meta">
+                                <li>
+                                    <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#">
+                                        <i class="pe-7s-search"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                </li>
+                                <li>
+                                    <a class="action" href="#"><i class="pe-7s-like"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Single Product End -->
+                    </div>
+                `;
+            }
+        });
+        // productContainer.style.display = 'none';
+        productContainer.innerHTML = productHTML;
+            })
+    .catch(function(error) {
+        console.error('Error:', error);
+    });
+        }
+
+
+
+</script>
     
 
     <!-- Bootstrap JS -->
