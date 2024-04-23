@@ -667,7 +667,7 @@
       enableAddButton();
   </script> -->
   
-  <script>
+  <!-- <script>
     setInitialCartTotal();
     function setInitialCartTotal() {
         let totalAmount = 0;
@@ -678,7 +678,7 @@
         const cartTotalElement = document.getElementById('cartTotal');
         cartTotalElement.innerHTML = `$${totalAmount.toFixed(2)}`;
     }
-  </script> 
+  </script>  -->
   <!-- <script>
     let subtotal = 0;
     const productPrices = document.querySelectorAll('.old-price');
@@ -740,6 +740,8 @@ function limitQuantity(productId, cartQuantity, addButton) {
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
+    setInitialCartTotal(); // Call the function to set the initial cart total
+
     const quantityInputs = document.querySelectorAll('.quantityInput');
 
     quantityInputs.forEach(function(input) {
@@ -764,11 +766,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const productAmount = parseFloat(productAmountElement.innerText.replace('$', ''));
             updateCart(productId, parseInt(input.value), productAmount);
         });
+
+       
+        const productAmountElement = input.closest('tr').querySelector('.productAmount');
+        const productAmount = parseFloat(productAmountElement.innerText.replace('$', ''));
+        updateCart(productId, parseInt(input.value), productAmount);
     });
 
     function updateCart(productId, cartQuantity, productAmount) {
         console.log("Updating cart with quantity:", cartQuantity, "for product ID:", productId);
-
 
         axios.post('/updateQuantity', { cartQuantity, productId, productAmount })
             .then(function(response) {
@@ -782,6 +788,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(function(error) {
                 console.error('Error:', error);
             })
+    }
+
+    function setInitialCartTotal() {
+        let totalAmount = 0;
+        const productAmounts = document.querySelectorAll('.productAmount');
+        productAmounts.forEach(function(amountElement) {
+            totalAmount += parseFloat(amountElement.innerText.replace('$', ''));
+        });
+        const cartTotalElement = document.getElementById('cartTotal');
+        cartTotalElement.innerHTML = `$${totalAmount.toFixed(2)}`;
     }
 });
 

@@ -322,9 +322,9 @@
                                                                 </div>
                                                                 <div class="info">
                                                                 <h6 class="mb-0"><%= productDetails.name %></h6>
-                                                                <h6 class="mb-0">Rs.<%= order.orderedPrice %>.00</h6>
+                                                                <h6 class="mb-0">Rs.<%= order.orderedPrice %></h6>
                                                                 <h6 class="mb-0">QTY:<%= order.quantity%></h6>
-                                                                <h6 class="mb-0">Total Rs.<%= order.orderedPrice*order.quantity %>.00</h6>
+                                                                <h6 class="mb-0">Total Rs.<%= order.orderedPrice*order.quantity %></h6>
                                                             <!-- <h6 class="mb-0">neme</h6> -->
                                                             </div>
                                                         <% } %>
@@ -346,14 +346,14 @@
                                         </div>
                                         <% }%>
         
-                                        <div class="col-lg-4 col-sm-3 col-4 col-status">
+                                        <div class="col-lg-3 col-sm-3 col-4 col-status">
                                             <h6 class="mb-0">Shipped on March 16,2024</h6>  
                                             <h6 class="mb-0">Your item has been <%= order.orderStatus %></h6>  
                                           
 
                                         </div>
-                                        <div class="col-lg-1 col-sm-2 col-4 col-date">
-                                             <span class="badge rounded-pill alert-success">cod</span>
+                                        <div class="col-lg-2 col-sm-2 col-4 col-date">
+                                             <span class="badge rounded-pill alert-success"><%= orderDetails.paymentOption %></span>
                                         </div>
                                                                        
 

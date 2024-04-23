@@ -251,7 +251,7 @@ const viewOrder=async (req,res)=>{
                 const productToAdd = {
                     productId: productItem._id,
                     quantity: cartProduct.quantity,
-                    orderedPrice: productItem.price,
+                    orderedPrice: cartProduct.totalAmount/cartProduct.quantity,
                     totalAmount: cartTotal,
                     deliveryDate: new Date(),
                     shippingDate: new Date(),
