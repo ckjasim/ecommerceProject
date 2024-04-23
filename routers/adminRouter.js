@@ -63,6 +63,7 @@ adminRoute.post('/addOffer',adminConfig.isLogin,offerController.addOffer)
 
 
 adminRoute.get('/loadSalesReport',adminConfig.isLogin,salesController.loadSalesReport)
+adminRoute.post('/filterSalesReport',adminConfig.isLogin,salesController.filterSalesReport)
 
 
 

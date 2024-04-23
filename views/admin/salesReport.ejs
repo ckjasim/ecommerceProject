@@ -221,14 +221,16 @@
                                 <input type="text" placeholder="Search..." class="form-control" />
                             </div> -->
                             <div class="col-lg-2 col-md-3 col-6">
-                                <select class="form-select">
-                                    <option>All</option>
-                                    <option>Daily</option>
-                                    <option>Weekly</option>
-                                    <option>Monthly</option>
-                                    <option>Yearly</option>
-                                    <option>Custom</option>
-                                </select>
+                                <div class="custom_select">
+                                    <select id="sort" class="form-select select-nice">
+                                        <option>All</option>
+                                        <option>Daily</option>
+                                        <option>Weekly</option>
+                                        <option>Monthly</option>
+                                        <option>Yearly</option>
+                                        <option>Custom</option>
+                                    </select>
+                                </div>
                             </div>
                            
                         </div>
@@ -251,7 +253,7 @@
                                        
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="productContainer">
 
                                     <% if(orderData){%>
                                         <%   orderData.forEach(order => {%>
@@ -322,6 +324,7 @@
                 </div>
             </footer>
         </main>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
        
         <script>
             document.getElementById('downloadPdfBtn').addEventListener('click', function() {
@@ -340,6 +343,47 @@
               // Save the PDF
               doc.save('table.pdf');
             });
+            </script>
+
+            <!--    -------------------sort -->
+
+
+            <script>
+                const selectElement = document.getElementById('sort');
+                selectElement.addEventListener('change', handleChange);
+            
+                function handleChange(event) {
+                    const selectedValue = event.target.value;
+                    console.log(selectedValue);
+            
+                    axios.post('/filterSalesReport', { selectedValue })
+                        .then(function(response) {
+                            const { filter } = response.data;
+                            console.log(filter);
+                            const productContainer = document.getElementById('productContainer');
+                            let productHTML = '';
+            
+                            filter.forEach(order => {
+                                const expirationDate = new Date(order.orderedAt);
+                                productHTML += `
+                                    <tr>
+                                        <td>prinDecorFRGDSDS</td>
+                                        <td>${order.userId.fName}</td>
+                                        <td>${expirationDate.getDate()}/${expirationDate.getMonth() + 1}/${expirationDate.getFullYear()}</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>${order.products[0].totalAmount}</td>
+                                        <td>${order.paymentOption}</td>
+                                    </tr>
+                                `;
+                            });
+            
+                            productContainer.innerHTML = productHTML;
+                        })
+                        .catch(function(error) {
+                            console.error('Error:', error);
+                        });
+                }
             </script>
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
