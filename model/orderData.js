@@ -17,6 +17,8 @@ const orderSchema = new mongoose.Schema({
     addressId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'address'},
     paymentOption:{type:String,required:true},
     orderedAt:{type:Date,required:true},
+    couponDiscount:{type:Number},
+    offerDiscount:{type:Number},
     orderedAddress:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'address'},
 })
 

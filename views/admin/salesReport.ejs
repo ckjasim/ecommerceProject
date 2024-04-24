@@ -270,12 +270,20 @@
                                             <span><%= expirationDate.getMonth() + 1 %>/</span>
                                             <span><%= expirationDate.getFullYear() %></span> 
                                         </td>
-                                        
+                                        <% const orderTotal = order.products.reduce((total, product) => {
+                                            return total + product.totalAmount;
+                                        }, 0)%>
+                                        <% const orderActualTotal = order.products.reduce((total, product) => {
+                                            return total + product.totalAmount;
+                                        }, 0)%>
                                         <td>0</td>
                                         <td>
                                            0
                                         </td>
-                                        <td><%= order.products[0].totalAmount %></td>
+                                        
+                                        
+                                        <td><%= orderTotal %></td>
+
                                         <td><%= order.paymentOption %></td>
                                        
                                     </tr>

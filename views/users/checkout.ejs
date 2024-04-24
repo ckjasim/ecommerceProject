@@ -128,7 +128,7 @@
                             </li>
                             <li><a href="/loadShop">Shop</a></li>
                             <li>
-                                <a href="#">Products</a>
+                                <a href="/loadProduct">Products</a>
                             </li>
                             <li>
                                 <a href="#">About us</a>
@@ -439,11 +439,11 @@
             
                             <div class="checkout-payment">
                                 <ul>
-                                    <li>
+                                    <li>    
                                         <div class="single-payment">
                                             <div class="payment-radio radio">
-                                                <input type="radio" name="paymentOption" id="bank" value="wallet">
-                                                <label for="bank"><span></span> Wallet</label>
+                                                <input type="radio" name="paymentOption" id="bank" value="Wallet">
+                                                <label for="bank"><span></span> Wallet<P id="walletError"></P></label>
                                                 
                                             </div>
                                         </div>
@@ -712,6 +712,10 @@
        console.log('4444444')
         const selectedAddress = document.querySelector('input[name="shippingAddress"]:checked').value;
         const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked').value;
+       
+        const couponDiscountText = document.querySelector('.couponDiscount p').textContent;
+        const couponDiscount = couponDiscountText.replace('$', '').replace('.00', '');
+
         const totalPriceElement = document.querySelector('.cartTotal p');
         
         const cartTotal = parseFloat(totalPriceElement.textContent.trim().substring(1));
@@ -719,13 +723,14 @@
 
         console.log("Selected shipping address:", selectedAddress);
         console.log("Selected payment option:", selectedPaymentOption);
+        console.log("Selected coupon:", couponDiscount);
 
         if (selectedPaymentOption === "RazorPay") {
             console.log('suiiii');
 
             event.preventDefault();
 
-            axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal })
+            axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount })
             .then(function (response) {
                 console.log(response.data);
                 if (response.data.session==false) {
@@ -820,7 +825,7 @@
             event.preventDefault();
 
 
-        axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal})
+        axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount})
         .then(function(response) {  
         console.log(response.data);
         if(response.data){
@@ -850,9 +855,51 @@
         .catch(function(error) {
         console.error('Error:', error);
         })
-        } else {
-            
-        }
+        } else if (selectedPaymentOption==="Wallet") {
+            event.preventDefault();
+console.log('klklklklklkllk')
+
+        axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount})
+        .then(function(response) {  
+        console.log(response.data);
+        if(response.data){
+                    if (response.data.session==false) {
+                        console.log('1111');  
+                        window.location='/notLogin'
+
+                    } else {
+                        console.log(response.data)
+                        console.log(response.data.wallet)
+                        if(response.data.wallet==='null'){
+                            const productContainer = document.getElementById('walletError');
+                            let productHTML = '';
+                            productHTML += `
+                           <p class="text-danger">No wallet found</p>
+                             `;
+                           productContainer.innerHTML = productHTML;   
+                            console.log('xxxxxxxxxxxxxxxxxxxxxx')
+
+
+                        }else if(response.data.wallet==='noMoney'){
+                            const productContainer = document.getElementById('walletError');
+                            let productHTML = '';
+                            productHTML += `
+                           <p class="text-danger">Not enough money in wallet</p>
+                             `;
+                           productContainer.innerHTML = productHTML;   
+                            console.log('xxxxxxxxxxxxxxxxxxxxxx')
+
+                        }else{
+                            window.location='/viewOrder'
+                        }
+                    }
+                   
+                }
+        })
+        .catch(function(error) {
+        console.error('Error:', error);
+        })
+        } 
         
     }
 
