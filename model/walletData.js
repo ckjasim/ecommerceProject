@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 
 const walletSchema = new mongoose.Schema({
-    walletAmount:{type:String,required:true},
+    walletAmount:{type:Number,required:true},
     userId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'users'},
 })
 

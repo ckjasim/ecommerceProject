@@ -88,6 +88,7 @@ userRoute.post('/loadEditAddress',profileController.editAddress)
 userRoute.get('/deleteAddress',userConfig.isLogin,accessUser,profileController.deleteAddress)
 userRoute.get('/deleteCheckoutAddress',userConfig.isLogin,accessUser,profileController.deleteCheckoutAddress)
 userRoute.post('/changePassword',userConfig.isLogin,accessUser,profileController.changePassword)
+userRoute.get('/generateReferral',userConfig.isLogin,accessUser,profileController.generateReferral)
 
 
 userRoute.get('/loadProduct',productController.loadUserProduct)

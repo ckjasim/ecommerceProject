@@ -2,6 +2,7 @@
 const nodemailer=require('nodemailer')
 const otpSchema = require('../model/otpData')
 const userSchema = require('../model/userData')
+const walletSchema = require('../model/walletData')
 
 
 
@@ -115,6 +116,36 @@ const verifyMail=async(req,res)=>{
             req.session.user_id=userDetails._id
             console.log(req.session)
             console.log('123455')
+            const userId = await userSchema.findOne({referralCode:req.session.referral})
+            console.log(userId)
+            if (userId) {
+
+              const wallet=  await walletSchema.findOne({userId: userId._id});
+              if(wallet){
+                const walletData =  await walletSchema.findOneAndUpdate(
+                    { userId: userId._id},
+                    { $inc: { walletAmount: 501 } },
+                    { new: true }
+                );
+                console.log(walletData)
+            }else{
+
+                const walletData=new walletSchema({
+                    walletAmount:501,
+                    userId:userId._id
+                })
+                await walletData.save()
+            }
+                const walletData=new walletSchema({
+                    walletAmount:301,
+                    userId:req.session.user_id
+                })
+                await walletData.save()
+            }
+              
+              
+            
+
             res.redirect('/userHome')
         }else{
             return res.render('otpVerification',{message:"invalid Otp"})

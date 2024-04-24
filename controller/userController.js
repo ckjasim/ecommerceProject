@@ -200,13 +200,16 @@ const submit = async (req,res)=>{
             is_block:false,
             isAdmin:0
         })
+        console.log('jjjjjjjjjjjjjjjjj ref jjjjjjjjjjjjjjjjjjjjjjjjj',req.query.ref)
         req.session.userData=newUser
         req.session.email=newUser.email
+        req.session.referral=req.query.ref
+        
         console.log("1")
         console.log(req.session.email)
         if(newUser){
             console.log("2");
-            otpController.sendVerifyMail(req.body.name,req.session.email)
+            otpController.sendVerifyMail(req.session.email)
 
             res.render('otpVerification',{messsage:'Please check your email and Verify your OTP'})
             

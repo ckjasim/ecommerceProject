@@ -226,6 +226,45 @@ const changePassword=async (req,res)=>{
 }
 
 
+const generateReferral = async (req, res) => {
+    try {
+
+        const userData = await userSchema.findOne({_id:req.session.user_id})
+        if(userData.referralCode){
+            const referralCode = userData.referralCode 
+            const baseUrl = 'http://localhost:3000/register';
+            const referralLink = baseUrl + '?ref=' + referralCode;
+
+            res.json({referralLink});
+        }else{
+
+            console.log('22222222222222222222222222');
+            const userId = req.session.user_id;
+    
+            const baseUrl = 'http://localhost:3000/register';
+            const referralCode = generateReferralCode(userId);
+            const referralLink = baseUrl + '?ref=' + referralCode;
+    
+            const userData = await userSchema.updateOne(
+                { _id: req.session.user_id }, 
+                { $set: { referralCode: referralCode } }, 
+                { upsert: true } 
+            );
+            console.log(referralLink);
+            res.json({ referralLink });
+        }
+    } catch (error) {
+        console.error('Error generating referral link:', error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+function generateReferralCode(userId) {
+    return userId + '_' + Math.random().toString(36).substring(2, 8);
+}
+
+
+
 
 module.exports={
     loadProfile,
@@ -236,5 +275,6 @@ module.exports={
     editAddress,
     deleteAddress,
     deleteCheckoutAddress,
-    changePassword
+    changePassword,
+    generateReferral
 }
