@@ -1,4 +1,5 @@
 const userSchema =require('../model/userData')
+const orderSchema =require('../model/orderData')
 
 
 const adminLogin=(req,res)=>{
@@ -10,8 +11,9 @@ const adminLogin=(req,res)=>{
     
 }
 
-const adminHome=(req,res)=>{
-    res.render('index')
+const adminHome= async (req,res)=>{
+    const orderData= await orderSchema.find().populate('userId')
+    res.render('index',{orderData})
 }
 
 const loadUsers=async (req,res)=>{

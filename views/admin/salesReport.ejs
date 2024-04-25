@@ -14,7 +14,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg" />
         <!-- Template CSS -->
         <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
-        <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.7.570/build/pdf.min.js"></script>    
+        <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.7.570/build/pdf.min.js"></script>  
     </head>
 
     <body>
@@ -259,7 +259,7 @@
                     </header>
                     <!-- card-header end// -->
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="downloadPdf">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -294,13 +294,74 @@
                                     </tr>
                                     <% }); %>
                                     <% } %>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <% const orderCount = orderData.length %>  
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Total order count</td>
+                                        <td><%= orderCount %></td> 
+                                    </tr>
+                                    <tr>
+                                        <% const allOrderTotals = [];%>
+
+                                        <% orderData.forEach(order => {%>
+                                            <% const orderTotal = order.products.reduce((total, product) => {%>
+                                                <%  return total + product.totalAmount;%>
+                                                <%  }, 0);%>
+                                                <% allOrderTotals.push(orderTotal);%>
+                                                <% });%>
+
+                                        <% const totalSum = allOrderTotals.reduce((total, orderTotal) => {%>
+                                            <%  return total + orderTotal;%>
+                                            <% }, 0);%>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Total order Amount</td>
+                                        <td><%= totalSum.toFixed(2) %></td> 
+                                    </tr>
+                                    <tr>
+                                        <% const couponDiscount = orderData.reduce((total, coupon) => {%>
+                                            <%  return total + coupon.couponDiscount;%>
+                                            <% }, 0);%>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Total coupon discount</td>
+                                        <td><%= couponDiscount.toFixed(2) %></td> 
+                                    </tr>
+                                    <tr>
+                                        <% const offerDiscount = orderData.reduce((total, coupon) => {%>
+                                            <%  return total + coupon.offerDiscount;%>
+                                            <% }, 0);%>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Total offer discount</td>
+                                        <td><%= offerDiscount.toFixed(2) %></td> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
+                       
                         <!-- table-responsive end -->
+                        
                         <div>
-                            <a href="#" id="downloadPdfBtn" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Download Pdf</a>
-                            <a href="#" id="downloadExcelBtn" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Download Excel</a>
+                            <a href="#" id="downloadPdfBtn" class="btn btn-primary" onclick="convertToPDF()"><i class="text-muted material-icons md-post_add"></i>Download Pdf</a>
+                            <a href="#" id="downloadExcelBtn" class="btn btn-primary" onclick="convertToExcel()"><i class="text-muted material-icons md-post_add"></i>Download Excel</a>
                         </div>
                     </div>
                     
@@ -336,27 +397,42 @@
                 </div>
             </footer>
         </main>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
        
-        <script>
-            document.getElementById('downloadPdfBtn').addEventListener('click', function() {
-              // Create jsPDF instance
-              var doc = new jsPDF();
-              
-              // Get table HTML
-              var table = document.getElementById('myTable');
-              
-              // Convert table to data URL
-              var tableDataURL = table.toDataURL('image/png');
-              
-              // Add image of table to PDF
-              doc.addImage(tableDataURL, 'PNG', 10, 10, 180, 0);
-              
-              // Save the PDF
-              doc.save('table.pdf');
-            });
-            </script>
+    
 
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+   
+        <script>
+            function convertToExcel() {
+            
+            const table = document.getElementById('downloadPdf').querySelector('table');
+            const wb = XLSX.utils.table_to_book(table);
+            const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+            const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+            saveAs(blob, 'table_data.xlsx');
+            }
+            function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+            }
+        </script>
+        
+        <script>
+        function convertToPDF() {
+            const element = document.getElementById('downloadPdf');
+            setTimeout(() => {
+            html2pdf()
+                .from(element)
+                .save();
+            }, 1000);
+        }
+        </script>
             <!-- ----------------------CUSTOM-------------------- -->
 
             <script>

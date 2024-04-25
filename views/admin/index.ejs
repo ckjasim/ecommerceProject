@@ -428,22 +428,15 @@
                         <div class="row align-items-center">
                             <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
                                 <div class="custom_select">
-                                    <select class="form-select select-nice">
-                                        <option selected>All Categories</option>
-                                        <option>Women's Clothing</option>
-                                        <option>Men's Clothing</option>
-                                        <option>Cellphones</option>
-                                        <option>Computer & Office</option>
-                                        <option>Consumer Electronics</option>
-                                        <option>Jewelry & Accessories</option>
-                                        <option>Home & Garden</option>
-                                        <option>Luggage & Bags</option>
-                                        <option>Shoes</option>
-                                        <option>Mother & Kids</option>
+                                    <select id="filter" class="form-select select-nice">
+                                        <option selected>Latest Orders</option>
+                                        <option>Best selling product</option>
+                                        <option>Best selling category</option>
+                                        
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-2 col-6">
+                            <!-- <div class="col-md-2 col-6">
                                 <input type="date" value="02.05.2021" class="form-control" />
                             </div>
                             <div class="col-md-2 col-6">
@@ -456,7 +449,7 @@
                                         <option>Refund</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </header>
                     <div class="card-body">
@@ -480,7 +473,9 @@
                                             <th class="align-middle" scope="col">View Details</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="productContainer">
+                                        <% if(orderData){ %>
+                                            <% orderData.forEach(order => { %>
                                         <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
@@ -489,18 +484,29 @@
                                                 </div>
                                             </td>
                                             <td><a href="#" class="fw-bold">#SK2540</a></td>
-                                            <td>Neal Matthews</td>
-                                            <td>07 Oct, 2021</td>
-                                            <td>$400</td>
+                                            <td><%= order.userId.fName %></td>
+                                            <td>
+                                                <% const expirationDate = new Date(order.orderedAt); %>
+                                            <span><%= expirationDate.getDate() %>/</span>
+                                            <span><%= expirationDate.getMonth() + 1 %>/</span>
+                                            <span><%= expirationDate.getFullYear() %></span>
+                                            </td>
+                                            
+                                                <% const orderTotal = order.products.reduce((total, product) => { %>
+                                                    <%  return total + product.totalAmount; %>
+                                                    <% }, 0) %>
+                                            <td><%= orderTotal.toFixed(2) %></td>
                                             <td>
                                                 <span class="badge badge-pill badge-soft-success">Paid</span>
                                             </td>
-                                            <td><i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard</td>
+                                            <td><i class="material-icons md-payment font-xxl text-muted mr-5"></i><%= order.paymentOption %></td>
                                             <td>
                                                 <a href="#" class="btn btn-xs"> View details</a>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <% }); %>
+                                        <% } %>
+                                        <!-- <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" id="transactionCheck03" />
@@ -594,7 +600,7 @@
                                             <td>
                                                 <a href="#" class="btn btn-xs"> View details</a>
                                             </td>
-                                        </tr>
+                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
@@ -634,6 +640,48 @@
         </main>
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+        <script>
+            const selectElement = document.getElementById('filter');
+            selectElement.addEventListener('change', handleChange);
+        
+            function handleChange(event) {
+                const selectedValue = event.target.value;
+                console.log(selectedValue);
+
+                    axios.post('/filterAdminDashboard', { selectedValue })
+                        .then(function(response) {
+                            const { filter } = response.data;
+                            console.log(filter);
+                            const productContainer = document.getElementById('productContainer');
+                            let productHTML = '';
+            
+                            filter.forEach(order => {
+                                const expirationDate = new Date(order.orderedAt);
+                                productHTML += `
+                                    <tr>
+                                        <td>prinDecorFRGDSDS</td>
+                                        <td>${order.userId.fName}</td>
+                                        <td>${expirationDate.getDate()}/${expirationDate.getMonth() + 1}/${expirationDate.getFullYear()}</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>${order.products[0].totalAmount}</td>
+                                        <td>${order.paymentOption}</td>
+                                    </tr>
+                                `;
+                            });
+            
+                            productContainer.innerHTML = productHTML;
+                        })
+                        .catch(function(error) {
+                            console.error('Error:', error);
+                        });
+                
+        
+            }
+        </script>
         <script src="assets/js/vendors/select2.min.js"></script>
         <script src="assets/js/vendors/perfect-scrollbar.js"></script>
         <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
