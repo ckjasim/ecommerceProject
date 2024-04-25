@@ -319,7 +319,7 @@
                                                         <div class="info"><%= product.productId.name %></div>
                                                     </a>
                                                 </td>
-                                                <td>$<%= product.productId.price %>.00</td>
+                                                <td>$<%= product.orderedPrice.toFixed(2) %></td>
                                                 <td><%= product.quantity%></td>
                                                 <% if(product.reason){%>
                                                     <td> <a  class="text-danger"  onclick="acceptReturn('<%= order._id%>','<%= product._id%>','<%= product.orderedPrice*product.quantity %>')">Return Requested</a></td>
@@ -340,7 +340,7 @@
                                                         </div>
                                                     </td>
                                                     <% } %>
-                                                <td class="text-end">$<%= product.orderedPrice*product.quantity %>.00</td>
+                                                <td class="text-end">$<%= product.orderedPrice*product.quantity.toFixed(2) %></td>
                                             </tr>
                                             <% }) %>
                                             
@@ -349,7 +349,7 @@
                                                     <article class="float-end">
                                                         <dl class="dlist">
                                                             <dt>Subtotal:</dt>
-                                                            <dd>$<%= order.products.reduce((Total, amount) => Total + amount.orderedPrice*amount.quantity, 0) %>.00</dd>
+                                                            <dd>$<%= order.products.reduce((Total, amount) => Total + amount.orderedPrice*amount.quantity, 0).toFixed(2)  %></dd>
                                                         </dl>
                                                         <dl class="dlist">
                                                             <dt>Shipping cost:</dt>
@@ -357,7 +357,7 @@
                                                         </dl>
                                                         <dl class="dlist">
                                                             <dt>Grand total:</dt>
-                                                            <dd><b class="h5">$<%= order.products.reduce((Total, amount) => Total + amount.orderedPrice*amount.quantity, 0) %>.00</b></dd>
+                                                            <dd><b class="h5">$<%= order.products.reduce((Total, amount) => Total + amount.orderedPrice*amount.quantity, 0).toFixed(2)  %></b></dd>
                                                         </dl>
                                                         <dl class="dlist">
                                                             <dt class="text-muted">Status:</dt>

@@ -14,7 +14,7 @@ const loadSalesReport = async (req, res) => {
 }
 const filterSalesReport = async (req, res) => {
   try {
-    const selectedValue=req.body.selectedValue
+    const {selectedValue,startDateValue,endDateValue}=req.body
 
      console.log(selectedValue)
      
@@ -89,8 +89,20 @@ const filterSalesReport = async (req, res) => {
              res.send({ status: 'success', message: 'sorted successfully', filter});
              break;
          case "Custom":
-             sort = await productSchema.find().collation({ locale: 'en', strength: 1 }).sort({ 'name': -1 });
-             res.send({ status: 'success', message: 'sorted successfully', sort});
+            // const currentDate4 = new Date();
+            // const startDateValue = new Date(currentDate2.getFullYear(), currentDate2.getMonth(), 1);
+            // const endDateValue = new Date(currentDate2.getFullYear(), currentDate2.getMonth() + 1, 0);
+            
+             query = {
+                orderedAt: {
+                    $gte: startDateValue,
+                    $lte: endDateValue
+                }
+            };
+            
+             filter = await orderSchema.find(query).populate('userId');
+            
+               res.send({ status: 'success', message: 'sorted successfully', filter});
              break;
          default:
              

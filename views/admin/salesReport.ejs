@@ -232,6 +232,28 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="col-md-2 col-6">                                
+                            </div>
+                            <div class="col-md-2 col-6">                                
+                            </div>
+
+                            <div class="col-md-2 col-6" id="startDate" hidden>
+                                <h6>Start date</h6>
+
+                                <input type="date" value="02.05.2021" class="form-control" required />
+                            </div>
+                            <div class="col-md-2 col-6"  id="endDate" hidden>
+                                <h6>End date</h6>
+
+                                <input type="date" value="02.05.2021" class="form-control" required />
+                            </div>
+                            <div class="col-md-2 col-6"  id="customGenerate" hidden>
+                                <br>
+
+                                <a href="#" onclick="customGenerate()" class="btn btn-primary">Generate</a>
+                                    
+                                </div>
                            
                         </div>
                     </header>
@@ -241,66 +263,48 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        
                                         <th>Order ID</th>
                                         <th>Billing Name</th>
                                         <th>Date</th>
-                                        <th>Offer Deduction </th>
+                                        <th>Offer Deduction</th>
                                         <th>Coupon Deduction</th>
-                                      
                                         <th>Total</th>
                                         <th>Payment Method</th>
-                                       
                                     </tr>
                                 </thead>
                                 <tbody id="productContainer">
-
-                                    <% if(orderData){%>
-                                        <%   orderData.forEach(order => {%>
-                                            
-                                            
+                                    <% if(orderData){ %>
+                                    <% orderData.forEach(order => { %>
                                     <tr>
-                                        <td>
-                                            prinDecorFRGDSDS
-                                        </td>
+                                        <td>prinDecorFRGDSDS</td>
                                         <td><%= order.userId.fName %></td>
                                         <td>
                                             <% const expirationDate = new Date(order.orderedAt); %>
-                                            <span><%= expirationDate.getDate() %>/</span> 
+                                            <span><%= expirationDate.getDate() %>/</span>
                                             <span><%= expirationDate.getMonth() + 1 %>/</span>
-                                            <span><%= expirationDate.getFullYear() %></span> 
+                                            <span><%= expirationDate.getFullYear() %></span>
                                         </td>
-                                        <% const orderTotal = order.products.reduce((total, product) => {
-                                            return total + product.totalAmount;
-                                        }, 0)%>
-                                        <% const orderActualTotal = order.products.reduce((total, product) => {
-                                            return total + product.totalAmount;
-                                        }, 0)%>
-                                        <td>0</td>
-                                        <td>
-                                           0
-                                        </td>
-                                        
-                                        
-                                        <td><%= orderTotal %></td>
-
+                                        <td><%= order.offerDiscount.toFixed(2) %></td>
+                                        <td><%= order.couponDiscount.toFixed(2) %></td>
+                                        <% const orderTotal = order.products.reduce((total, product) => { %>
+                                            <%  return total + product.totalAmount; %>
+                                            <% }, 0) %>
+                                        <td><%= orderTotal.toFixed(2) %></td>
                                         <td><%= order.paymentOption %></td>
-                                       
                                     </tr>
-                                    <%  });%>
+                                    <% }); %>
                                     <% } %>
-                                   
                                 </tbody>
                             </table>
                         </div>
-                        
-                        <!-- table-responsive//end -->
+                        <!-- table-responsive end -->
                         <div>
                             <a href="#" id="downloadPdfBtn" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Download Pdf</a>
-                            <a href="" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Download Excel</a>
+                            <a href="#" id="downloadExcelBtn" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Download Excel</a>
                         </div>
                     </div>
-                    <!-- card-body end// -->
+                    
+                    <!-- card-body end -->
                 </div>
                 <div class="pagination-area mt-30 mb-50">
                     <nav aria-label="Page navigation example">
@@ -353,7 +357,56 @@
             });
             </script>
 
-            <!--    -------------------sort -->
+            <!-- ----------------------CUSTOM-------------------- -->
+
+            <script>
+                function customGenerate() {
+                    
+                    const startDateElement = document.getElementById('startDate');
+                    const startDateValue = startDateElement.querySelector('input[type="date"]').value;
+                    console.log('Start Date:', startDateValue);
+                    const endDateElement = document.getElementById('endDate');
+                    const endDateValue = endDateElement.querySelector('input[type="date"]').value;
+                    console.log('Start Date:', endDateValue);
+
+
+                    const selectedValue='Custom'
+                
+                    axios.post('/filterSalesReport', { selectedValue,startDateValue ,endDateValue})
+                            .then(function(response) {
+                                const { filter } = response.data;
+                                console.log(filter);
+
+                                const productContainer = document.getElementById('productContainer');
+                                productContainer.hidden = false; 
+
+                                let productHTML = '';
+                
+                                filter.forEach(order => {
+                                    const expirationDate = new Date(order.orderedAt);
+                                    productHTML += `
+                                        <tr>
+                                            <td>prinDecorFRGDSDS</td>
+                                            <td>${order.userId.fName}</td>
+                                            <td>${expirationDate.getDate()}/${expirationDate.getMonth() + 1}/${expirationDate.getFullYear()}</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>${order.products[0].totalAmount}</td>
+                                            <td>${order.paymentOption}</td>
+                                        </tr>
+                                    `;
+                                });
+                
+                                productContainer.innerHTML = productHTML;
+                            })
+                            .catch(function(error) {
+                                console.error('Error:', error);
+                            });
+                }
+            </script>
+
+
+        <!-- ---- -------------------FILTER -- -->
 
 
             <script>
@@ -363,34 +416,52 @@
                 function handleChange(event) {
                     const selectedValue = event.target.value;
                     console.log(selectedValue);
-            
-                    axios.post('/filterSalesReport', { selectedValue })
-                        .then(function(response) {
-                            const { filter } = response.data;
-                            console.log(filter);
-                            const productContainer = document.getElementById('productContainer');
-                            let productHTML = '';
-            
-                            filter.forEach(order => {
-                                const expirationDate = new Date(order.orderedAt);
-                                productHTML += `
-                                    <tr>
-                                        <td>prinDecorFRGDSDS</td>
-                                        <td>${order.userId.fName}</td>
-                                        <td>${expirationDate.getDate()}/${expirationDate.getMonth() + 1}/${expirationDate.getFullYear()}</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>${order.products[0].totalAmount}</td>
-                                        <td>${order.paymentOption}</td>
-                                    </tr>
-                                `;
+
+                    if(selectedValue==='Custom'){
+                        const startDate= document.getElementById('startDate')
+                        const endDate= document.getElementById('endDate')
+                        const customGenerate= document.getElementById('customGenerate')
+                        const productContainer = document.getElementById('productContainer');
+                                       
+
+
+                        console.log('custom')
+                        startDate.hidden = false;
+                        endDate.hidden = false;
+                        customGenerate.hidden = false;
+                        productContainer.hidden = true;                        
+
+                    }else{
+
+                        axios.post('/filterSalesReport', { selectedValue })
+                            .then(function(response) {
+                                const { filter } = response.data;
+                                console.log(filter);
+                                const productContainer = document.getElementById('productContainer');
+                                let productHTML = '';
+                
+                                filter.forEach(order => {
+                                    const expirationDate = new Date(order.orderedAt);
+                                    productHTML += `
+                                        <tr>
+                                            <td>prinDecorFRGDSDS</td>
+                                            <td>${order.userId.fName}</td>
+                                            <td>${expirationDate.getDate()}/${expirationDate.getMonth() + 1}/${expirationDate.getFullYear()}</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>${order.products[0].totalAmount}</td>
+                                            <td>${order.paymentOption}</td>
+                                        </tr>
+                                    `;
+                                });
+                
+                                productContainer.innerHTML = productHTML;
+                            })
+                            .catch(function(error) {
+                                console.error('Error:', error);
                             });
+                    }
             
-                            productContainer.innerHTML = productHTML;
-                        })
-                        .catch(function(error) {
-                            console.error('Error:', error);
-                        });
                 }
             </script>
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>

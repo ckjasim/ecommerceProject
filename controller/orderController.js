@@ -105,6 +105,7 @@ const loadOrder=async (req,res)=>{
     console.log(selectedPaymentOption)
     console.log('88888888888888888888888888888', razorpay_signature);
     console.log('88888888888888888888888888888', couponDiscount);
+    console.log('6666666666666666666666666666', cartTotal);
     // const signature = razorpay_signature;
     
 
@@ -212,7 +213,7 @@ const viewOrder=async (req,res)=>{
         const couponDiscount=req.flash('couponDiscount').toString()
        
         console.log('-------')
-        console.log(couponDiscount)
+        console.log(cartTotal)
         console.log('-------')
        
         
@@ -242,7 +243,7 @@ const viewOrder=async (req,res)=>{
             const actualPrice = cartData.products.reduce((total, product) => {
                 return total + product.productId.price;
             }, 0);
-            const offerDiscount =actualPrice- cartTotal
+            const offerDiscount =actualPrice- cartTotal-couponDiscount
 
             
         console.log('-------')
