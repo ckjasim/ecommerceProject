@@ -430,8 +430,8 @@
                                 <div class="custom_select">
                                     <select id="filter" class="form-select select-nice">
                                         <option selected>Latest Orders</option>
-                                        <option>Best selling product</option>
-                                        <option>Best selling category</option>
+                                        <option>Best selling products</option>
+                                        <option>Best selling categories</option>
                                         
                                     </select>
                                 </div>
@@ -454,7 +454,7 @@
                     </header>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="productContainer">
                                 <table class="table align-middle table-nowrap mb-0">
                                     <thead class="table-light">
                                         <tr>
@@ -473,7 +473,7 @@
                                             <th class="align-middle" scope="col">View Details</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="productContainer">
+                                    <tbody >
                                         <% if(orderData){ %>
                                             <% orderData.forEach(order => { %>
                                         <tr>
@@ -653,33 +653,45 @@
 
                     axios.post('/filterAdminDashboard', { selectedValue })
                         .then(function(response) {
-                            const { filter } = response.data;
-                            console.log(filter);
-                            const productContainer = document.getElementById('productContainer');
-                            let productHTML = '';
-            
-                            filter.forEach(order => {
-                                const expirationDate = new Date(order.orderedAt);
-                                productHTML += `
-                                    <tr>
-                                        <td>prinDecorFRGDSDS</td>
-                                        <td>${order.userId.fName}</td>
-                                        <td>${expirationDate.getDate()}/${expirationDate.getMonth() + 1}/${expirationDate.getFullYear()}</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>${order.products[0].totalAmount}</td>
-                                        <td>${order.paymentOption}</td>
-                                    </tr>
-                                `;
-                            });
-            
-                            productContainer.innerHTML = productHTML;
+                            const { orderData } = response.data;
+                        console.log(orderData);
+                        const productContainer = document.getElementById('productContainer');
+                        let productHTML = '';
+
+                        productHTML += `
+                            <table class="table align-middle table-nowrap mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="align-middle" scope="col">Position</th>
+                                    <th class="align-middle" scope="col">Product name</th>
+                                    <th class="align-middle" scope="col">Total number of sales</th>                                         
+                                </tr>
+                            </thead>
+                            <tbody>
+                        `;
+
+                        orderData.forEach((order, index) => {
+                            const position = index + 1;
+                            productHTML += `
+                                <tr>
+                                    <td>${position}</td>
+                                    <td>${order._id}</td>
+                                    <td>${order.count}</td>
+                                </tr>
+                            `;
+                        });
+
+                        productHTML += `
+                            </tbody>
+                            </table>
+                        `;
+
+                        productContainer.innerHTML = productHTML;
+
                         })
                         .catch(function(error) {
                             console.error('Error:', error);
                         });
-                
-        
             }
         </script>
         <script src="assets/js/vendors/select2.min.js"></script>
