@@ -43,24 +43,35 @@ const   acceptReturn= async (req,res)=>{
         updatedOrder.reason = undefined;
         await orderDetails.save()
 
-        const walletDetails= await walletSchema.findOne({userId:req.session.user_id})
-        console.log(walletDetails)
-        if(walletDetails){
-            console.log('jjjsssssssssssgggggggiimm')
+        const walletDetails = await walletSchema.findOne({ userId: req.session.user_id });
 
-            const walletTotal = Number(walletDetails.walletAmount)+Number(returnAmount)
-            console.log(walletTotal)
-            console.log(typeof(walletTotal))
-            walletDetails.walletAmount=walletTotal
+            if (walletDetails) {
+                const walletTotal = Number(walletDetails.walletAmount) + Number(returnAmount);
 
-           await walletDetails.save()
-        }else{
+                const newWallet = {
+                    amount: returnAmount,
+                    description: "Return Product",
+                    status: "credit"
+                };
+
+                walletDetails.wallets.push(newWallet);
+                walletDetails.walletAmount = walletTotal;
+
+                await walletDetails.save();
+            }
+            else{
             console.log('jjjsssshhhhhhhhhhhhhhhssiimm')
-
+            const wallets=[]
+            const newWallet={
+                amount:returnAmount,
+                description:"Return Product",
+                status:"credit"
+            }
+            wallets.push(newWallet)
             const walletData=new walletSchema({
                 walletAmount:returnAmount,
+                wallets:wallets,
                 userId:req.session.user_id
-            
             })
             await walletData.save()
 

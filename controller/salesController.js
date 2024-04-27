@@ -125,7 +125,7 @@ const filterAdminDashboard = async (req, res) => {
      
      switch (selectedValue) {
          case "Best selling products":
-            let orderData = await orderSchema.aggregate([
+            const orderData = await orderSchema.aggregate([
                 {
                     $lookup: {
                         from: "products",
@@ -146,20 +146,12 @@ const filterAdminDashboard = async (req, res) => {
                         count: -1 
                     }
                 },
-                { $limit: 10 },
-                {
-                    $addFields: {
-                        position: { $toInt: "$$ROOT.count" }
-                    }
-                }
+                { $limit: 10 }
             ]);
-            
-            console.log('jhjhjhjhjjjjjjjjjjjjjjjjjjjjj',{orderData})
-
             res.send({ status: 'success', message: 'sorted successfully', orderData});
              break;
          case "Best selling categories":
-             orderData = await orderSchema.aggregate([
+            const orderDataByCategory = await orderSchema.aggregate([
                 {
                     $lookup: {
                         from: "products",
@@ -168,32 +160,39 @@ const filterAdminDashboard = async (req, res) => {
                         as: "products"
                     }
                 },
-                { $unwind: "$products" },
-                { 
+                {
+                    $unwind: "$products"
+                },
+                {
+                    $lookup: {
+                        from: "categories",
+                        localField: "products.categoryId",
+                        foreignField: "_id",
+                        as: "category"
+                    }
+                },
+                {
+                    $unwind: "$category"
+                },
+                {
                     $group: {
-                        _id: "$products.name",
+                        _id: "$category.name",
                         count: { $sum: 1 } 
                     }
                 },
                 {
                     $sort: {
-                        count: -1 
+                        count: -1
                     }
                 },
-                { $limit: 10 },
-                {
-                    $addFields: {
-                        position: { $toInt: "$$ROOT.count" }
-                    }
-                }
             ]);
             
-            console.log('jhjhjhjhjjjjjjjjjjjjjjjjjjjjj',{orderData})
-
-            res.send({ status: 'success', message: 'sorted successfully', orderData});
-             break;
-
             
+            
+            console.log('jhjhjhjhjjjjjjjjjjjjjjjjjjjjj',{orderDataByCategory})
+
+            res.send({ status: 'success', message: 'sorted successfully', orderDataByCategory});
+             break;
          default:
              
              break;

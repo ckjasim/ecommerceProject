@@ -178,6 +178,8 @@ console.log('lllllllllllllllllllllllllllllllllllllllkkkkkkkkkkk')
             res.send({ status: 'failed', message: 'Order not place',wallet});
             }else{
                 walletData.walletAmount=walletData.walletAmount-cartTotal
+                walletData.description="Product purchase"
+                walletData.status="Product purchase"
                 walletData.save()
         res.send({ status: 'success', message: 'Order place'});
 

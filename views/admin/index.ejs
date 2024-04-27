@@ -651,14 +651,19 @@
                 const selectedValue = event.target.value;
                 console.log(selectedValue);
 
+                if(selectedValue==='Latest Orders'){
+                    window.location.reload()
+                }
+
                     axios.post('/filterAdminDashboard', { selectedValue })
                         .then(function(response) {
-                            const { orderData } = response.data;
+                            const { orderData ,orderDataByCategory} = response.data;
                         console.log(orderData);
+                        
                         const productContainer = document.getElementById('productContainer');
                         let productHTML = '';
-
-                        productHTML += `
+                            if(orderData){
+                                productHTML += `
                             <table class="table align-middle table-nowrap mb-0">
                             <thead class="table-light">
                                 <tr>
@@ -685,6 +690,38 @@
                             </tbody>
                             </table>
                         `;
+                            }
+
+                        if(orderDataByCategory){
+                            productHTML += `
+                            <table class="table align-middle table-nowrap mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="align-middle" scope="col">Position</th>
+                                    <th class="align-middle" scope="col">Category name</th>
+                                    <th class="align-middle" scope="col">Total number of sales</th>                                         
+                                </tr>
+                            </thead>
+                            <tbody>
+                        `;
+
+                        orderDataByCategory.forEach((order, index) => {
+                            const position = index + 1;
+                            productHTML += `
+                                <tr>
+                                    <td>${position}</td>
+                                    <td>${order._id}</td>
+                                    <td>${order.count}</td>
+                                </tr>
+                            `;
+                        });
+
+                        productHTML += `
+                            </tbody>
+                            </table>
+                        `;
+                        }
+
 
                         productContainer.innerHTML = productHTML;
 

@@ -122,29 +122,48 @@ const verifyMail=async(req,res)=>{
 
               const wallet=  await walletSchema.findOne({userId: userId._id});
               if(wallet){
-                const walletData =  await walletSchema.findOneAndUpdate(
-                    { userId: userId._id},
-                    { $inc: { walletAmount: 501 } },
+                const walletData = await walletSchema.findOneAndUpdate(
+                    { userId: userId._id },
+                    { 
+                        $inc: { walletAmount: 501 },
+                        $push: { wallets: { amount: 501, description: "Referral amount", status: "credit" } }
+                    },
                     { new: true }
                 );
+                
+                
                 console.log(walletData)
             }else{
-
+                const wallets=[]
+                const newWallet={
+                    amount:501,
+                    description:"Referral amount",
+                    status:"credit"
+                }
+                wallets.push(newWallet)
                 const walletData=new walletSchema({
                     walletAmount:501,
-                    userId:userId._id
+                    wallets:wallets,
+                    userId:req.session.user_id
                 })
                 await walletData.save()
+
             }
+
+                const wallets=[]
+                const newWallet={
+                    amount:301,
+                    description:"Welcome amount",
+                    status:"credit"
+                }
+                wallets.push(newWallet)
                 const walletData=new walletSchema({
                     walletAmount:301,
+                    wallets:wallets,
                     userId:req.session.user_id
                 })
                 await walletData.save()
             }
-              
-              
-            
 
             res.redirect('/userHome')
         }else{
@@ -152,9 +171,6 @@ const verifyMail=async(req,res)=>{
         }
         }
         
-        
-
-
         // const updateInfo=await userSchema.updateOne({_id:req.query.id},{$set:{is_verified:1}})
         
     } catch (error) {
