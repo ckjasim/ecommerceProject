@@ -51,7 +51,8 @@ const   acceptReturn= async (req,res)=>{
                 const newWallet = {
                     amount: returnAmount,
                     description: "Return Product",
-                    status: "credit"
+                    status: "credit",
+                    date:new Date()
                 };
 
                 walletDetails.wallets.push(newWallet);
@@ -65,7 +66,8 @@ const   acceptReturn= async (req,res)=>{
             const newWallet={
                 amount:returnAmount,
                 description:"Return Product",
-                status:"credit"
+                status:"credit",
+                date:new Date()
             }
             wallets.push(newWallet)
             const walletData=new walletSchema({

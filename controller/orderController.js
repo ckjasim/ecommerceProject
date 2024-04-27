@@ -158,8 +158,6 @@ const loadOrder=async (req,res)=>{
     }else if(selectedPaymentOption === 'Cash on Delivery'){
         res.send({ status: 'success', message: 'Order place'});
     }else if(selectedPaymentOption === 'Wallet'){
-console.log('lllllllllllllllllllllllllllllllllllllllkkkkkkkkkkk')
-
 
         const walletData = await walletSchema.findOne({userId:req.session.user_id})
         console.log(walletData)
@@ -177,10 +175,23 @@ console.log('lllllllllllllllllllllllllllllllllllllllkkkkkkkkkkk')
                 const wallet='noMoney'
             res.send({ status: 'failed', message: 'Order not place',wallet});
             }else{
-                walletData.walletAmount=walletData.walletAmount-cartTotal
-                walletData.description="Product purchase"
-                walletData.status="Product purchase"
-                walletData.save()
+                const updatedWalletData = await walletSchema.findOneAndUpdate(
+                    { userId: req.session.user_id },
+                    { 
+                        $inc: { walletAmount: -cartTotal },
+                        $push: { 
+                            wallets: {
+                                amount:cartTotal,
+                                description: "Product purchase",
+                                status: "debit",
+                                date:new Date()
+                                
+                            }
+                        }
+                    },
+                    { new: true }
+                );
+                
         res.send({ status: 'success', message: 'Order place'});
 
             }

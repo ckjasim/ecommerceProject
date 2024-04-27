@@ -6,6 +6,7 @@ const walletSchema = new mongoose.Schema({
         amount:{type:Number,required:true},
         description:{type:String,required:true},
         status:{type:String,required:true},
+        date:{type:Date,required:true},
     }],
     
     userId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'users'},

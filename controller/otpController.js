@@ -126,7 +126,7 @@ const verifyMail=async(req,res)=>{
                     { userId: userId._id },
                     { 
                         $inc: { walletAmount: 501 },
-                        $push: { wallets: { amount: 501, description: "Referral amount", status: "credit" } }
+                        $push: { wallets: { amount: 501, description: "Referral amount", status: "credit",date:new Date() } }
                     },
                     { new: true }
                 );
@@ -138,7 +138,8 @@ const verifyMail=async(req,res)=>{
                 const newWallet={
                     amount:501,
                     description:"Referral amount",
-                    status:"credit"
+                    status:"credit",
+                    date:new Date()
                 }
                 wallets.push(newWallet)
                 const walletData=new walletSchema({
@@ -154,7 +155,8 @@ const verifyMail=async(req,res)=>{
                 const newWallet={
                     amount:301,
                     description:"Welcome amount",
-                    status:"credit"
+                    status:"credit",
+                    date:new Date()
                 }
                 wallets.push(newWallet)
                 const walletData=new walletSchema({
