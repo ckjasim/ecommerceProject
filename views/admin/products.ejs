@@ -400,12 +400,16 @@
                         tag.innerText = 'Unlist';
                         tag.style.background = 'green';
                         tag.style.color = 'white';
+
                     } else if (tag.innerText === 'Unlist') {
                         tag.innerText = 'List';
                         tag.style.background = 'red';
                         tag.style.color = 'white';
+
+                       
                     }
                     console.log(data);
+                    
                 } catch (error) {
                     console.error('Error fetching:', error);
                 }

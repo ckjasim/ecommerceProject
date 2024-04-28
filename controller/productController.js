@@ -132,8 +132,9 @@ const unlistProduct =async (req,res)=>{
         //     await productSchema.updateOne({name:req.query.name},{is_listed:true})
             
             
-        //     res.redirect('/products')
+            // res.redirect('/products')
         // }
+        // res.json();
     } catch (error) {
         console.log(error.message)
     }

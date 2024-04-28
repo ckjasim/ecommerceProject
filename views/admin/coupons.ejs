@@ -14,6 +14,19 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg" />
         <!-- Template CSS -->
         <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+
+        <style>
+            .btn-toggle {
+            background-color: red;
+            color: white;
+            }
+
+            .btn-toggle.listed {
+                background-color: green;
+            }
+
+        </style>
+
     </head>
 
     <body>
@@ -229,17 +242,7 @@
                                     <option>Automobile</option>
                                 </select> -->
                             </div>
-                            <div class="col-md-2 col-6">
-                                <input type="date" value="02.05.2021" class="form-control" />
-                            </div>
-                            <div class="col-md-2 col-6">
-                                <select class="form-select">
-                                    <option selected>Status</option>
-                                    <option>Active</option>
-                                    <option>Disabled</option>
-                                    <option>Show all</option>
-                                </select>
-                            </div>
+                           
                         </div>
                     </header>
                     <!-- card-header end// -->
@@ -278,7 +281,7 @@
                     <% if(couponData){%>
                         <% couponData.forEach(element => {%>
 
-                    <div class="card-body">
+                    <div class="card-body"  id="couponRefresh<%= element._id %>">
                         <article class="itemlist">
                             <div class="row align-items-center">
                             
@@ -296,18 +299,28 @@
                                 <div class="col-lg-1 col-sm-2 col-4 col-date">
                                     <span><%= element.minAmount %></span>
                                 </div>
-                                <div class="col-lg-1 col-sm-2 col-4 col-date">
-                                    <span class="badge rounded-pill alert-success">Active</span>
-                                </div>
+                                <% const currentDate = new Date() %>
+                                <%if(element.expiredAt > currentDate){%>
+
+                                    <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                        <span class="badge rounded-pill alert-success">Active</span>
+                                    </div>
+                                    <% }else{%>
+                                        <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                            <span class="badge rounded-pill alert-danger">Expired</span>
+                                        </div>
+                                        <%  }%>
                                 <div class="col-lg-1 col-sm-2 col-4 col-date">
                                     <a href="editCoupon?_id=<%= element._id %>" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-
                                 </div>
-                                <div class="col-lg-1 col-sm-2 col-4 col-action text-end">
-
-                                    <button class="btn btn-sm font-sm rounded text-white btn-danger " onclick="listProduct(this,'<%= %>') "> Unlist </button>                    
-                                      
+                                <div class="col-lg-1 col-sm-2 col-4 col-action ">
+                                    
+                                    <a class="menu-link">
+                                        <i class="icon material-icons md-delete text-danger"  onclick="deleteCouponProduct('<%= element._id %>')"></i>
+                                    </a>
                                 </div>
+                                
+                                
                             </div>
                             <!-- row .// -->
                         </article>
@@ -351,7 +364,9 @@
                 </div>
             </footer>
         </main>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <!-- <script>
         function listProduct(tag,productId){
             if(tag.innerText=='List'){
@@ -367,28 +382,52 @@
             fetch(`/unList?productId=${productId}`)
         }</script> -->
         <script>
-            async function listProduct(tag, productId) {
-                try {
-                    const response = await fetch(`/unList?productId=${productId}`);
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch: ${response.statusText}`);
-                    }
-                    const data = await response.json();
-                    if (tag.innerText === 'List') {
-                        tag.innerText = 'Unlist';
-                        tag.style.background = 'green';
-                        tag.style.color = 'white';
-                    } else if (tag.innerText === 'Unlist') {
-                        tag.innerText = 'List';
-                        tag.style.background = 'red';
-                        tag.style.color = 'white';
-                    }
-                    console.log(data);
-                } catch (error) {
-                    console.error('Error fetching:', error);
-                }
-            }
-        </script>
+
+      
+async function deleteCouponProduct(couponId) {
+  console.log('kkkkkk')
+  Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  console.log('kkkkkk')
+
+  if (result.isConfirmed) {
+  console.log('kkkkkk')
+
+    Swal.fire({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success"
+    });
+    axios.post('/deleteCoupon', { couponId })
+    .then(function(response) {  
+        console.log('kkkkkkkkkkkkkkk')
+        const element = document.getElementById(`couponRefresh${couponId}`);
+        console.log(element)
+        element.remove();
+        window.location.reload();
+        console.log(response.data);
+    })
+    .catch(function(error) {
+        console.error('Error:', error);
+    });
+
+  }
+});
+     
+}
+
+        
+    </script>
+        
+        
+        
         
         
 

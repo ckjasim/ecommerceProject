@@ -53,8 +53,8 @@ adminRoute.get('/coupons',adminConfig.isLogin,couponController.loadCoupon)
 adminRoute.get('/newCoupon',adminConfig.isLogin,couponController.loadNewCoupon)
 adminRoute.post('/newCoupon',adminConfig.isLogin,couponController.addCoupon)
 adminRoute.get('/editCoupon',adminConfig.isLogin,couponController.loadEditCoupon)
-
 adminRoute.post('/editCoupon',couponController.editCoupon)
+adminRoute.post('/deleteCoupon',adminConfig.isLogin,couponController.deleteCoupon)
 
 
 adminRoute.get('/offers',adminConfig.isLogin,offerController.loadOffer)

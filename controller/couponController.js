@@ -24,25 +24,38 @@ const loadNewCoupon = async (req, res) => {
 };
 const addCoupon = async (req, res) => {
   try {
+
     const { name, description, percentage, minAmount, date } = req.body;
     console.log("kkk111");
     console.log(name)
     console.log(description)
-
-      const randomCode = Math.floor(Math.random() * 90000) + 10000;
-      const couponCode=name + randomCode;
-
+    let couponExists = true;
+    let couponCode;
+    
+    while (couponExists) {
+        const randomCode = Math.floor(Math.random() * 90000) + 10000;
+        couponCode = name + randomCode;
+    
+        const regex = new RegExp("^" + couponCode + "$", "i");
+        const result = await couponSchema.findOne({ code: regex });
+    
+        if (!result) {
+            couponExists = false;
+        }
+    }
+    
     const couponData = new couponSchema({
-      code: couponCode.toUpperCase(),
-      name: name,
-      description: description,
-      percentage: percentage,
-      minAmount: minAmount,
-      expiredAt: date,
-     
+        code: couponCode.toUpperCase(),
+        name: name,
+        description: description,
+        percentage: percentage,
+        minAmount: minAmount,
+        expiredAt: date,
+        status:true
     });
+    
     await couponData.save();
-res.redirect('/newCoupon')
+    res.redirect('/newCoupon');
 
   } catch (error) {
     console.log(error.message);
@@ -70,19 +83,51 @@ const editCoupon =async (req,res)=>{
       console.log(req.body.id)
       const { code, name, description, percentage, minAmount, date } = req.body;
 
-      const updateCoupon={
-        code: code.toUpperCase(),
-        name: name,
-        description: description,
-        percentage: percentage,
-        minAmount: minAmount,
-        expiredAt: date,
-       
+      let couponExists = true;
+      let updatedCode = code.toUpperCase();
+      
+      while (couponExists) {
+          const regex = new RegExp("^" + updatedCode + "$", "i");
+          const result = await couponSchema.findOne({ code: regex });
+      
+          if (result) {
+              const randomCode = Math.floor(Math.random() * 90000) + 10000;
+              updatedCode = name + randomCode;
+          } else {
+              couponExists = false;
+          }
       }
       
-      await couponSchema.findByIdAndUpdate({_id:req.body.id},{$set:updateCoupon})
-      res.redirect('/coupons')
+      const updateCoupon = {
+          code: updatedCode,
+          name: name,
+          description: description,
+          percentage: percentage,
+          minAmount: minAmount,
+          expiredAt: date,
+          status:true
+      };
       
+      await couponSchema.findByIdAndUpdate({ _id: req.body.id }, { $set: updateCoupon });
+      res.redirect('/coupons');
+      
+      
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
+const deleteCoupon=async (req,res)=>{
+  try {
+      
+      const {couponId} =req.body
+   console.log('fdfdfddd')
+   console.log(couponId)
+
+    const couponData= await couponSchema.findOneAndDelete({_id:couponId})
+
+    res.send({message:"deleted"})
+
   } catch (error) {
       console.log(error.message)
   }
@@ -141,11 +186,13 @@ const couponValidate = async (req, res) => {
 
 
 
+
 module.exports = {
   loadCoupon,
   loadNewCoupon,
   addCoupon,
   couponValidate,
   editCoupon,
-  loadEditCoupon
+  loadEditCoupon,
+  deleteCoupon
 };
