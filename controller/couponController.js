@@ -24,13 +24,16 @@ const loadNewCoupon = async (req, res) => {
 };
 const addCoupon = async (req, res) => {
   try {
-    const { code, name, description, percentage, minAmount, date } = req.body;
+    const { name, description, percentage, minAmount, date } = req.body;
     console.log("kkk111");
-    console.log(code)
     console.log(name)
     console.log(description)
+
+      const randomCode = Math.floor(Math.random() * 90000) + 10000;
+      const couponCode=name + randomCode;
+
     const couponData = new couponSchema({
-      code: code.toUpperCase(),
+      code: couponCode.toUpperCase(),
       name: name,
       description: description,
       percentage: percentage,

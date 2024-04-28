@@ -333,18 +333,7 @@
                                             </a>
                                         </div>
                                         
-                                        <% if(orderDetails&&orderDetails.addressId){%>
-                                        <div class="col-lg-2 col-sm-2 col-4 col-price">
-
-                                                
-                                            <h6 class="mb-0"><%= orderDetails.addressId.address %></h6>     
-                                            <h6 class="mb-0"><%= orderDetails.addressId.city %></h6> 
-                                            <h6 class="mb-0"><%= orderDetails.addressId.district %></h6> 
-                                            <h6 class="mb-0"><%= orderDetails.addressId.state %></h6> 
-                                            <h6 class="mb-0"><%= orderDetails.addressId.pincode %></h6> 
-
-                                        </div>
-                                        <% }%>
+                                        
         
                                         <div class="col-lg-3 col-sm-3 col-4 col-status">
                                             <h6 class="mb-0">Shipped on March 16,2024</h6>  
@@ -453,15 +442,59 @@
 
                     <!-- end card -->
                     
-                </div>
-            
-            
+                    <div class="col-xl-10">
+                        <div class=" border shadow mb-3" style="border-radius: 0 !important;">
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center py-3 align-items-center">
+                               
+                               <div class="col-md-8 d-flex justify-content-center mt-3 align-items-center">
+                                <div class="col-lg-4 col-sm-3 col-4 col-status">
+                                    <% if(orderDetails&&orderDetails.addressId){%>
+                                        <div class="col-lg-12 col-sm-2 col-4 col-price">
+                                            <h4 class="mb-5 ">Delivery Address</h4>
+                                            
+                                            <h6 class="mb-0"><%= orderDetails.addressId.address %></h6>     
+                                            <h6 class="mb-0"><%= orderDetails.addressId.city %></h6> 
+                                            <h6 class="mb-0"><%= orderDetails.addressId.district %></h6> 
+                                            <h6 class="mb-0"><%= orderDetails.addressId.state %></h6> 
+                                            <h6 class="mb-0"><%= orderDetails.addressId.pincode %></h6> 
+    
+                                        </div>
+                                        <% }%>
 
-                
+                                    </div>
+                                    <div class="col-lg-12 col-sm-2 col-4 col-price">
+                                        <h6>Invoice Number:78563 </h6>
+                                        <h6>Invoice Date:17/02/2023 </h6>
+                                        <a href="/" class="btn btn-sm btn-hover-primary
+                                        text-success rounded font-sm mt-15" >download Invoice </a>
+                                    </div>
+                                </div>				  
+                                     
+                              <div>
+                            <!-- Modal Trigger Link -->
+                          
+                            <!-- Modal -->
+                            
+    
+    
+    
+    
+    
+    
+                              </div>
+                              
+                               </div>
+                               
+                            </div>
+                        </div>
+                        
+                        </div>
+                    </div>                
+                </div>
             </div>
         </div>
-    
-          </div>
+     </div>
 
 
 
