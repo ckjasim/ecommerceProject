@@ -90,8 +90,42 @@ if(offerTypeName === 'Category'){
         console.log(error.message);
     }
 }
+
+const editOffer=async (req,res)=>{
+    try {
+        const categoryData = await categorySchema.find()
+        
+        const offerData = await offerSchema.findOne({_id:req.query._id})
+        const productData = await productSchema.find()
+        
+       
+       return res.render('editOffer',{offerData,categoryData,productData})
+       
+    } catch (error) {
+        console.log(error.message)
+    }
+  }
+
+  const deleteOffer=async (req,res)=>{
+    try {
+        
+        const {offerId} =req.body
+     console.log('fdfdfddd')
+     console.log(offerId)
+  
+      const couponData= await offerSchema.findOneAndDelete({_id:offerId})
+  
+      res.send({message:"deleted"})
+  
+    } catch (error) {
+        console.log(error.message)
+    }
+  }
+  
 module.exports={
     loadOffer,
     loadAddOffer,
-    addOffer
+    addOffer,
+    editOffer,
+    deleteOffer
 }

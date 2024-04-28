@@ -60,6 +60,8 @@ adminRoute.post('/deleteCoupon',adminConfig.isLogin,couponController.deleteCoupo
 adminRoute.get('/offers',adminConfig.isLogin,offerController.loadOffer)
 adminRoute.get('/addOffer',adminConfig.isLogin,offerController.loadAddOffer)
 adminRoute.post('/addOffer',adminConfig.isLogin,offerController.addOffer)
+adminRoute.get('/editOffer',adminConfig.isLogin,offerController.editOffer)
+adminRoute.post('/deleteOffer',offerController.deleteOffer)
 
 
 adminRoute.get('/loadSalesReport',adminConfig.isLogin,salesController.loadSalesReport)
