@@ -204,8 +204,57 @@ const filterAdminDashboard = async (req, res) => {
  }
 }
 
+const chart = async (req, res) => {
+    try {
+       
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1; 
+        
+        const monthlyPipeline = [
+            {
+                $match: {
+                    orderedAt: {
+                        $gte: new Date(currentYear, 0, 1), 
+                        $lte: new Date(currentYear, currentMonth, 0) 
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: { month: { $month: "$orderedAt" } },
+                    count: { $sum: 1 }
+                }
+            }
+        ];
+        
+        const yearlyPipeline = [
+            {
+                $group: {
+                    _id: { year: { $year: "$orderedAt" } },
+                    count: { $sum: 1 }
+                }
+            }
+        ];
+
+        const monthlyResults = await orderSchema.aggregate(monthlyPipeline);
+        const yearlyResults = await orderSchema.aggregate(yearlyPipeline);
+
+        console.log(monthlyResults);
+        console.log(yearlyResults);
+        
+            res.send({ status: 'success', message: 'charted', monthlyResults,yearlyResults});
+              
+       
+  
+   } catch (error) {
+       console.log(error.message)
+   }
+  }
+
 module.exports={
   loadSalesReport,
   filterSalesReport,
-  filterAdminDashboard
+  filterAdminDashboard,
+  chart
 }

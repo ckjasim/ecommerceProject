@@ -14,10 +14,17 @@
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg" />
         <!-- Template CSS -->
         <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
     </head>
 
     <body>
         
+       
+        
+         
         <div class="screen-overlay"></div>
         <aside class="navbar-aside" id="offcanvas_aside">
             <div class="aside-top">
@@ -269,8 +276,10 @@
                         <div class="card mb-4">
                             <article class="card-body">
                                 <h5 class="card-title">Sale statistics</h5>
-                                <canvas id="myChart" data-order-data="<%= JSON.stringify(orderData) %>" height="120px"></canvas>
-
+                                <!-- <canvas id="myChart" data-order-data="<%= JSON.stringify(orderData) %>" ></canvas> -->
+                                <canvas id="myChart" height="120px"></canvas>
+                                <!-- <canvas id="myChart2" height="120px"></canvas> -->
+                                
                             </article>
                         </div>
                         <div class="row">
@@ -507,101 +516,7 @@
                                         </tr>
                                         <% }); %>
                                         <% } %>
-                                        <!-- <tr>
-                                            <td class="text-center">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="transactionCheck03" />
-                                                    <label class="form-check-label" for="transactionCheck03"></label>
-                                                </div>
-                                            </td>
-                                            <td><a href="#" class="fw-bold">#SK2541</a></td>
-                                            <td>Jamal Burnett</td>
-                                            <td>07 Oct, 2021</td>
-                                            <td>$380</td>
-                                            <td>
-                                                <span class="badge badge-pill badge-soft-danger">Chargeback</span>
-                                            </td>
-                                            <td><i class="material-icons md-payment font-xxl text-muted mr-5"></i> Visa</td>
-                                            <td>
-                                                <a href="#" class="btn btn-xs"> View details</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="transactionCheck04" />
-                                                    <label class="form-check-label" for="transactionCheck04"></label>
-                                                </div>
-                                            </td>
-                                            <td><a href="#" class="fw-bold">#SK2542</a></td>
-                                            <td>Juan Mitchell</td>
-                                            <td>06 Oct, 2021</td>
-                                            <td>$384</td>
-                                            <td>
-                                                <span class="badge badge-pill badge-soft-success">Paid</span>
-                                            </td>
-                                            <td><i class="material-icons md-payment font-xxl text-muted mr-5"></i> Paypal</td>
-                                            <td>
-                                                <a href="#" class="btn btn-xs"> View details</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="transactionCheck05" />
-                                                    <label class="form-check-label" for="transactionCheck05"></label>
-                                                </div>
-                                            </td>
-                                            <td><a href="#" class="fw-bold">#SK2543</a></td>
-                                            <td>Barry Dick</td>
-                                            <td>05 Oct, 2021</td>
-                                            <td>$412</td>
-                                            <td>
-                                                <span class="badge badge-pill badge-soft-success">Paid</span>
-                                            </td>
-                                            <td><i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard</td>
-                                            <td>
-                                                <a href="#" class="btn btn-xs"> View details</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="transactionCheck06" />
-                                                    <label class="form-check-label" for="transactionCheck06"></label>
-                                                </div>
-                                            </td>
-                                            <td><a href="#" class="fw-bold">#SK2544</a></td>
-                                            <td>Ronald Taylor</td>
-                                            <td>04 Oct, 2021</td>
-                                            <td>$404</td>
-                                            <td>
-                                                <span class="badge badge-pill badge-soft-warning">Refund</span>
-                                            </td>
-                                            <td><i class="material-icons md-payment font-xxl text-muted mr-5"></i> Visa</td>
-                                            <td>
-                                                <a href="#" class="btn btn-xs"> View details</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="transactionCheck07" />
-                                                    <label class="form-check-label" for="transactionCheck07"></label>
-                                                </div>
-                                            </td>
-                                            <td><a href="#" class="fw-bold">#SK2545</a></td>
-                                            <td>Jacob Hunter</td>
-                                            <td>04 Oct, 2021</td>
-                                            <td>$392</td>
-                                            <td>
-                                                <span class="badge badge-pill badge-soft-success">Paid</span>
-                                            </td>
-                                            <td><i class="material-icons md-payment font-xxl text-muted mr-5"></i> Paypal</td>
-                                            <td>
-                                                <a href="#" class="btn btn-xs"> View details</a>
-                                            </td>
-                                        </tr> -->
+                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -642,6 +557,115 @@
         <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+        <script>
+            axios.post('/chart')
+            .then(function(response){
+                console.log(response)
+                const {yearlyResults,monthlyResults}=response.data
+                console.log(yearlyResults)
+                console.log(monthlyResults)
+                
+           })
+           .catch(function(error) {
+            console.error('Error:', error);
+            });
+
+            (function ($) {
+                "use strict";
+                /* Sale statistics Chart */
+                if ($('#myChart').length) {
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                            datasets: [{
+                                    label: 'Yearly',
+                                    tension: 0.3,
+                                    fill: true,
+                                    backgroundColor: 'rgba(44, 120, 220, 0.2)',
+                                    borderColor: 'rgba(44, 120, 220)',
+                                    data: [18, 17, 4, 3, 2, 20, 25, 31, 25, 22, 20, 9]
+                                },
+                                {
+                                    label: 'Monthly',
+                                    tension: 0.3,
+                                    fill: true,
+                                    backgroundColor: 'rgba(4, 209, 130, 0.2)',
+                                    borderColor: 'rgb(4, 209, 130)',
+                                    data: [40, 20, 17, 9, 23, 35, 39, 30, 34, 25, 27, 17]
+                                },
+                                
+                            ]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        usePointStyle: true,
+                                    },
+                                }
+                            }
+                        }
+                    });
+                } //End if
+    
+                /* Sale statistics Chart 2 */
+                if ($('#myChart2').length) {
+                    var ctx2 = document.getElementById("myChart2").getContext('2d');
+                    var myChart = new Chart(ctx2, {
+                        type: 'bar',
+                        data: {
+                            labels: ["900", "1200", "1400", "1600"],
+                            datasets: [{
+                                    label: "US",
+                                    backgroundColor: "#5897fb",
+                                    barThickness: 10,
+                                    data: [233, 321, 783, 900]
+                                },
+                                {
+                                    label: "Europe",
+                                    backgroundColor: "#7bcf86",
+                                    barThickness: 10,
+                                    data: [408, 547, 675, 734]
+                                },
+                                {
+                                    label: "Asian",
+                                    backgroundColor: "#ff9076",
+                                    barThickness: 10,
+                                    data: [208, 447, 575, 634]
+                                },
+                                {
+                                    label: "Africa",
+                                    backgroundColor: "#d595e5",
+                                    barThickness: 10,
+                                    data: [123, 345, 122, 302]
+                                },
+                            ]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        usePointStyle: true,
+                                    },
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                } //End if
+    
+            })(jQuery);
+        </script>
+
 
 
         <script>
@@ -732,6 +756,12 @@
                         });
             }
         </script>
+
+
+
+
+
+
         <script src="assets/js/vendors/select2.min.js"></script>
         <script src="assets/js/vendors/perfect-scrollbar.js"></script>
         <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>

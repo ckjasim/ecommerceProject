@@ -68,6 +68,7 @@ adminRoute.get('/loadSalesReport',adminConfig.isLogin,salesController.loadSalesR
 adminRoute.post('/filterSalesReport',adminConfig.isLogin,salesController.filterSalesReport)
 
 adminRoute.post('/filterAdminDashboard',adminConfig.isLogin,salesController.filterAdminDashboard)
+adminRoute.post('/chart',adminConfig.isLogin,salesController.chart)
 
 
 
