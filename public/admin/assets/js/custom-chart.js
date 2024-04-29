@@ -4,6 +4,8 @@
     /*Sale statistics Chart*/
     if ($('#myChart').length) {
         var ctx = document.getElementById('myChart').getContext('2d');
+        // var orderDataString = document.getAttribute('data-order-data');
+        // var orderData = JSON.parse(orderDataString);
         var chart = new Chart(ctx, {
             // The type of chart we want to create
             type: 'line',

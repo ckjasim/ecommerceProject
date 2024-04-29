@@ -5,6 +5,9 @@ const productSchema = require('../model/productData')
 const walletSchema = require('../model/walletData')  
 const Razorpay = require('razorpay')  
 const crypto = require('crypto')  
+const fs=require('fs')
+
+var easyinvoice = require('easyinvoice');
 
 //---------------------ADMIN-----------------------------
 
@@ -100,19 +103,26 @@ const loadOrder=async (req,res)=>{
             res.send({ status: 'success', message: 'Out of stock',response});
         } else {
     console.log('4444444')
-    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature,cartTotal,couponDiscount } = req.body;
+    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature,cartTotal,couponDiscount ,payment} = req.body;
     console.log('aaaaaalllll');
     console.log(selectedPaymentOption)
-    console.log('88888888888888888888888888888', razorpay_signature);
+    console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu',payment)
+    // console.log('88888888888888888888888888888', razorpay_signature);
     console.log('88888888888888888888888888888', couponDiscount);
     console.log('6666666666666666666666666666', cartTotal);
     // const signature = razorpay_signature;
     
 
     req.flash('selectedAddress', selectedAddress);
+    
     req.flash('selectedPaymentOption', selectedPaymentOption);
     req.flash('cartTotal', cartTotal);
     req.flash('couponDiscount', couponDiscount);
+
+        req.session.payment=payment
+    
+        console.log(req.session)
+
     // req.flash('razorpay_signature', razorpay_signature);
     
     if (selectedPaymentOption === 'RazorPay') {
@@ -141,7 +151,7 @@ const loadOrder=async (req,res)=>{
             res.send({ status: 'success', order });
             
         }
-        res.send({ status: 'success', message: 'Order place'});
+        // res.send({ status: 'success', message: 'Order place'});
             // console.log("Ordsig:", razorpay_signature);
     
             // // Generating signature
@@ -216,6 +226,12 @@ const loadOrder=async (req,res)=>{
     }
 
 }
+
+
+
+
+
+
 const viewOrder=async (req,res)=>{
     try {
 
@@ -224,6 +240,8 @@ const viewOrder=async (req,res)=>{
         const selectedPaymentOption=req.flash('selectedPaymentOption').toString()
         const cartTotal=req.flash('cartTotal').toString()
         const couponDiscount=req.flash('couponDiscount').toString()
+        // const payment=req.session.payment
+        console.log('lllllllllllllllll',req.session)
        
         console.log('-------')
         console.log(cartTotal)
@@ -263,14 +281,20 @@ const viewOrder=async (req,res)=>{
 
             console.log('offerDiscount',offerDiscount)
             console.log('-------')
+            let paymentOption
 
-           
+           if(payment==="failed"){
+             paymentOption ='failed'
+            }else{
+             paymentOption =selectedPaymentOption
+
+           }
 
             const orderData = new orderSchema({
                 products: productDetails,
                 userId: req.session.user_id,
                 addressId: selectedAddress, 
-                paymentOption: selectedPaymentOption,
+                paymentOption: paymentOption,
                 couponDiscount:couponDiscount, 
                 offerDiscount:offerDiscount, 
                 orderedAt: new Date(),
@@ -316,6 +340,9 @@ const viewOrder=async (req,res)=>{
         console.log(error.message);
     }
 }
+
+
+
 
 
 const orderDetails=async (req,res)=>{
@@ -372,6 +399,77 @@ const cancelOrder=async (req,res)=>{
     }
 }
 
+const downloadInvoice = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+        const orderData = await orderSchema.findOne({ _id: orderId }).populate('userId').populate('addressId').populate('products.productId');
+
+        const products = [];
+
+        orderData.products.forEach((product) => {
+            products.push({
+                quantity:product.quantity ,
+                description: product.productId.name,
+                taxRate: 6, 
+                price: product.orderedPrice
+            });
+        });
+
+        const formatDate = (date) => {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return date.toLocaleDateString('en-IN', options);
+        };
+
+        var data = {
+            apiKey: "free",
+            mode: "development", 
+            images: {
+                logo: "https://public.budgetinvoice.com/img/logo_en_original.png",
+
+            },
+            sender: {
+                company: "prinDecor",
+                address: "Bangaluru",
+                zip: "1234 AB",
+                city: "madiwala",
+                country: "India"
+            },
+            client: {
+                company: orderData.userId.fName,
+                address: orderData.addressId.address,
+                zip: orderData.addressId.pincode,
+                city: orderData.addressId.city,
+                country: "India"
+            },
+            information: {
+                number: "2021.0001",
+                date: formatDate(new Date()),
+            },
+
+            products: products,
+
+            // bottomNotice: "Kindly pay your invoice within 15 days.",
+
+            settings: {
+                currency: "INR", 
+            },
+        
+
+        };
+        
+
+        const result = await easyinvoice.createInvoice(data);
+        const pdfBuffer = Buffer.from(result.pdf, 'base64');
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="invoice.pdf"');
+        res.send(pdfBuffer);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ error: 'Internal Server Error' });
+    }
+}
+
 
 
 
@@ -382,6 +480,7 @@ module.exports={
     viewOrder,
     orderDetails,
     cancelOrder,
-    orderStatusChange   
+    orderStatusChange,
+    downloadInvoice   
     
 }

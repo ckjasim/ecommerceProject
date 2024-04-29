@@ -778,22 +778,14 @@
                             "image": "assets/images/favicon.png",
                             "order_id": order.id,
                             "handler": function (response) {
-                                console.log('ready', response.razorpay_signature);
-                                console.log(response.razorpay_payment_id);
+                            
+
+                                    console.log('ready', response.razorpay_signature);
+                                    console.log(response.razorpay_payment_id);
+                                    window.location='/viewOrder'
                                 
-                                axios.post('/checkout', {
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_signature: response.razorpay_signature 
-                                })
-                                .then(function (response) {
-                                    console.log(response.data);
-                                    
-                                })
-                                .catch(function (error) {
-                                    console.error('Error:', error);
-                                });
-                                window.location='/viewOrder'
+                                
+                       
                             },
                             "prefill": {
                                 "name": "Gaurav Kumar",
@@ -810,12 +802,22 @@
                         var rzp1 = new Razorpay(options);
                         rzp1.on('payment.failed', function (response) {
                             // alert(response.error.code);
-                            alert(response.error.description);
+                            // alert(response.error.description);
                             // alert(response.error.source);
                             // alert(response.error.step);
                             // alert(response.error.reason);
                             // alert(response.error.metadata.order_id);
                             // alert(response.error.metadata.payment_id);
+                            
+                            const payment='failed'
+                                axios.post('/checkout', {payment})
+                                .then(function (response) {
+                                    console.log(response.data);  
+                                })
+                                .catch(function (error) {
+                                    console.error('Error:', error);
+                                });
+                                window.location='/viewOrder'
 
                         });
                         

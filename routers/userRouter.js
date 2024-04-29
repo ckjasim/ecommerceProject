@@ -75,6 +75,7 @@ userRoute.post('/checkout',orderController.loadOrder)
 userRoute.get('/viewOrder',userConfig.isLogin,accessUser,orderController.viewOrder)
 userRoute.get('/orderDetails',userConfig.isLogin,accessUser,orderController.orderDetails)
 userRoute.post('/cancelOrder',userConfig.isLogin,accessUser,orderController.cancelOrder)
+userRoute.post('/downloadInvoice',userConfig.isLogin,accessUser,orderController.downloadInvoice)
 
 
 //profile
