@@ -30,7 +30,7 @@ const filterSalesReport = async (req, res) => {
         query = {
              orderedAt: {
                  $gte: yesterdayDate,
-                 $lte: currentDate
+                 $lte: currentDate 
              }
          };
          
@@ -104,9 +104,7 @@ const filterSalesReport = async (req, res) => {
             
                res.send({ status: 'success', message: 'sorted successfully', filter});
              break;
-         default:
-             
-             break;
+
      }
      
 
@@ -204,9 +202,9 @@ const filterAdminDashboard = async (req, res) => {
  }
 }
 
+
 const chart = async (req, res) => {
     try {
-       
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear();
         const currentMonth = currentDate.getMonth() + 1; 
@@ -234,23 +232,55 @@ const chart = async (req, res) => {
                     _id: { year: { $year: "$orderedAt" } },
                     count: { $sum: 1 }
                 }
+            },
+            {
+                $sort: { "_id.year": -1 } 
+            },
+            {
+                $limit: 12 
             }
         ];
 
         const monthlyResults = await orderSchema.aggregate(monthlyPipeline);
         const yearlyResults = await orderSchema.aggregate(yearlyPipeline);
 
-        console.log(monthlyResults);
-        console.log(yearlyResults);
-        
-            res.send({ status: 'success', message: 'charted', monthlyResults,yearlyResults});
+        const monthlyCount = Array(12).fill(0);
+        const month = Array.from({ length: 12 }, (_, i) => i + 1);
+        const yearlyCount = Array(12).fill(0);
+        const year = Array.from({ length: 12 }, (_, i) => currentYear - i); 
+
+        monthlyResults.forEach(result => {
+            const monthIndex = result._id.month - 1;
+            monthlyCount[monthIndex] = result.count;
+        });
+
+   
+        yearlyResults.forEach(result => {
+            const yearIndex = currentYear - result._id.year; 
+            yearlyCount[yearIndex] = result.count;
+        });
+
+        console.log(monthlyCount)
+
+        console.log(yearlyCount)
+   
+
+        res.send({ 
+            status: 'success', 
+            message: 'charted', 
+            monthlyCount, 
+            month, 
+            yearlyCount, 
+            year
+        });
               
-       
-  
    } catch (error) {
-       console.log(error.message)
+       console.log(error.message);
+       res.status(500).send({ status: 'error', message: error.message });
    }
-  }
+}
+
+
 
 module.exports={
   loadSalesReport,
