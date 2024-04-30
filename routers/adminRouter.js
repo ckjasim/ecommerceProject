@@ -19,7 +19,6 @@ const adminRoute = express()
 adminRoute.set('views','./views/admin')
 
 
-
 adminRoute.get('/admin',adminConfig.isLogout,adminController.adminLogin)
 adminRoute.post('/admin',adminController.adminloginSubmit)
 adminRoute.get('/adminHome',adminConfig.isLogin,adminController.adminHome)

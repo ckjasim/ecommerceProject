@@ -103,10 +103,10 @@ const loadOrder=async (req,res)=>{
             res.send({ status: 'success', message: 'Out of stock',response});
         } else {
     console.log('4444444')
-    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature,cartTotal,couponDiscount ,payment} = req.body;
+    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature,cartTotal,couponDiscount } = req.body;
     console.log('aaaaaalllll');
     console.log(selectedPaymentOption)
-    console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu',payment)
+
     // console.log('88888888888888888888888888888', razorpay_signature);
     console.log('88888888888888888888888888888', couponDiscount);
     console.log('6666666666666666666666666666', cartTotal);
@@ -119,9 +119,6 @@ const loadOrder=async (req,res)=>{
     req.flash('cartTotal', cartTotal);
     req.flash('couponDiscount', couponDiscount);
 
-        req.session.payment=payment
-    
-        console.log(req.session)
 
     // req.flash('razorpay_signature', razorpay_signature);
     
@@ -166,6 +163,8 @@ const loadOrder=async (req,res)=>{
             // }
        
     }else if(selectedPaymentOption === 'Cash on Delivery'){
+        res.send({ status: 'success', message: 'Order place'});
+    }else if(payment === 'failed'){
         res.send({ status: 'success', message: 'Order place'});
     }else if(selectedPaymentOption === 'Wallet'){
 
@@ -227,8 +226,15 @@ const loadOrder=async (req,res)=>{
 
 }
 
+const paymentFailed=async (req,res)=>{
+    try {
+        req.session.payment='failed'
 
-
+        res.send({ status: 'success', message: 'Order place'});
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 
 
@@ -247,7 +253,15 @@ const viewOrder=async (req,res)=>{
         console.log(cartTotal)
         console.log('-------')
        
-        
+        let paymentOption
+        const payment=req.session.payment
+       if(payment==="failed"){
+        console.log('kkkkk ddddd')
+         paymentOption ='failed'
+        }else{
+         paymentOption =selectedPaymentOption
+
+       }
        
 
         const cartData = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId');
@@ -281,14 +295,8 @@ const viewOrder=async (req,res)=>{
 
             console.log('offerDiscount',offerDiscount)
             console.log('-------')
-            let paymentOption
-
-           if(payment==="failed"){
-             paymentOption ='failed'
-            }else{
-             paymentOption =selectedPaymentOption
-
-           }
+           
+           console.log(selectedAddress)
 
             const orderData = new orderSchema({
                 products: productDetails,
@@ -302,10 +310,7 @@ const viewOrder=async (req,res)=>{
             });   
 
             await orderData.save();
-
-
-           
-
+            
             cartData.products.forEach(async (cartProduct) => {
                 const productItem = cartProduct.productId; 
                 console.log(cartProduct.quantity);
@@ -340,10 +345,6 @@ const viewOrder=async (req,res)=>{
         console.log(error.message);
     }
 }
-
-
-
-
 
 const orderDetails=async (req,res)=>{
     try {
@@ -481,6 +482,7 @@ module.exports={
     orderDetails,
     cancelOrder,
     orderStatusChange,
-    downloadInvoice   
+    downloadInvoice,
+    paymentFailed   
     
 }

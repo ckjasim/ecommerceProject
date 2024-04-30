@@ -782,6 +782,7 @@
 
                                     console.log('ready', response.razorpay_signature);
                                     console.log(response.razorpay_payment_id);
+
                                     window.location='/viewOrder'
                                 
                                 
@@ -800,7 +801,7 @@
                             }
                         };
                         var rzp1 = new Razorpay(options);
-                        rzp1.on('payment.failed', function (response) {
+                        rzp1.on('payment.failed', function(response){
                             // alert(response.error.code);
                             // alert(response.error.description);
                             // alert(response.error.source);
@@ -809,15 +810,16 @@
                             // alert(response.error.metadata.order_id);
                             // alert(response.error.metadata.payment_id);
                             
-                            const payment='failed'
-                                axios.post('/checkout', {payment})
-                                .then(function (response) {
-                                    console.log(response.data);  
+                                
+                                axios.post('/paymentFailed')
+                                .then(function (response){
+                                console.log(response.data)
                                 })
-                                .catch(function (error) {
-                                    console.error('Error:', error);
+                                .catch(function (error){
+                                 console.error('Error:', error)
                                 });
-                                window.location='/viewOrder'
+
+                                window.location = '/viewOrder'
 
                         });
                         
