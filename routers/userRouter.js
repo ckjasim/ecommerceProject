@@ -72,6 +72,8 @@ userRoute.post('/deleteCartProduct',cartController.deleteCartProduct)
 userRoute.get('/checkout',userConfig.isLogin,accessUser,cartController.checkout)
 userRoute.post('/checkout',orderController.loadOrder)
 userRoute.post('/paymentFailed',orderController.paymentFailed)
+userRoute.post('/payAgain',orderController.payAgain)
+// userRoute.post('/paymentSuccess',orderController.paymentSuccess)
 
 userRoute.get('/viewOrder',userConfig.isLogin,accessUser,orderController.viewOrder)
 userRoute.get('/orderDetails',userConfig.isLogin,accessUser,orderController.orderDetails)

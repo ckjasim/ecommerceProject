@@ -448,7 +448,7 @@
                                 <div class="row d-flex justify-content-center py-3 align-items-center">
                                
                                <div class="col-md-8 d-flex justify-content-center mt-3 align-items-center">
-                                <div class="col-lg-4 col-sm-3 col-4 col-status">
+                                <div class="col-lg-3 col-sm-3 col-4 col-status">
                                     <% if(orderDetails&&orderDetails.addressId){%>
                                         <div class="col-lg-12 col-sm-2 col-4 col-price">
                                             <h4 class="mb-5 ">Delivery Address</h4>
@@ -463,12 +463,29 @@
                                         <% }%>
 
                                     </div>
-                                    <div class="col-lg-12 col-sm-2 col-4 col-price">
+                                    <div class="col-lg-3 col-sm-2 col-4 col-price">
                                         <h6>Invoice Number:78563 </h6>
                                         <h6>Invoice Date:17/02/2023 </h6>
                                         <a  class="btn btn-sm btn-hover-primary
                                         text-success rounded font-sm mt-15" onclick="downloadInvoice('<%= orderDetails._id %>')">download Invoice</a>
                                     </div>
+                                   <% if(orderDetails.paymentOption==='failed'){%> 
+
+                                        <div class="col-lg-3 col-sm-2 col-4 col-price">
+                                            <h6>Payment failed</h6>
+                                            
+                                            <a  class="btn btn-sm btn-hover-primary
+                                            text-danger rounded font-sm mt-15" onclick="payAgain('<%= orderDetails._id %>')">Pay Now</a>
+                                        </div>
+                                        <%} %>
+                                        <div class="col-lg-3 col-sm-2 col-4 col-price">
+                                            <h3>Total Amount</h3>
+                                            <% const totalAmount=orderDetails.products.reduce((total,product)=>{%>
+                                                <%    return  total+product.totalAmount%>
+                                                <% },0)%>
+                                                <h3 class="text-success text-end" >Rs.<%= totalAmount%></h3>
+
+                                        </div> 
                                 </div>				  
                                      
                               <div>
@@ -689,6 +706,8 @@
     <script src="assets/js/plugins/popper.min.js"></script>
     <script src="assets/js/plugins/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 
 
 
@@ -715,6 +734,79 @@
                 console.error('Error:', error);
             });
     }
+    function payAgain(orderId) {
+        axios.post('/payAgain', { orderId })
+            .then(response => {
+                const { order, KEY_ID, cartTotal } = response.data;
+                console.log(KEY_ID);
+                console.log(order.id);
+
+               
+                        console.log('else');
+                        var options = {
+                            "key": KEY_ID,
+                            "amount": order.amount,
+                            "currency": "INR",
+                            "name": "prinDecor",
+                            "description": "Test Transaction",
+                            "image": "assets/images/favicon.png",
+                            "order_id": order.id,
+                            "handler": function (response) {
+                            alert('Payment Success');
+
+                                    console.log('ready', response.razorpay_signature);
+                                    console.log(response.razorpay_payment_id);
+
+                                    window.location.reload()
+                                
+                                
+                       
+                            },
+                            "prefill": {
+                                "name": "Gaurav Kumar",
+                                "email": "gaurav.kumar@example.com",
+                                "contact": "9000090000"
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function(response){
+                            // alert(response.error.code);
+                            // alert(response.error.description);
+                            // alert(response.error.source);
+                            // alert(response.error.step);
+                            // alert(response.error.reason);
+                            // alert(response.error.metadata.order_id);
+                            // alert(response.error.metadata.payment_id);
+                            
+                                
+                                // axios.post('/paymentFailed')
+                                // .then(function (response){
+                                // console.log(response.data)
+                                // })
+                                // .catch(function (error){
+                                //  console.error('Error:', error)
+                                // });
+
+                                // window.location = '/viewOrder'
+
+                        });
+                        
+                        rzp1.open();
+               
+    })
+     
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+
 </script>
 
 

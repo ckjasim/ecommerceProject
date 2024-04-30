@@ -471,7 +471,64 @@ const downloadInvoice = async (req, res) => {
     }
 }
 
+const payAgain=async (req,res)=>{
+    try {
+        const KEY_ID = process.env.KEY_ID;
+        const YOUR_SECRET = process.env.YOUR_SECRET;
 
+        const orderId=req.body.orderId
+        console.log(orderId)
+
+        { const orderData = await orderSchema.findOne({ _id:orderId })
+
+        const totalAmount=orderData.products.reduce((total,product)=>{
+          return  total+product.totalAmount
+        },0)
+        console.log('jjjj',totalAmount)
+
+        var instance = new Razorpay({ key_id: KEY_ID, key_secret: YOUR_SECRET });
+    
+            const order = await instance.orders.create({
+                amount: totalAmount * 100,
+                currency: "INR",
+                receipt: "receipt#1",
+                notes: {
+                    key1: "value3",
+                    key2: "value2"
+                }
+            });
+    
+            console.log("Order created:", order);
+            console.log("Order iddd:", order.id);
+    
+
+            res.send({ status: 'success', order });
+            
+        }
+
+         await orderSchema.findOneAndUpdate({ _id:orderId },{paymentOption:"Razorpay"})
+
+        
+        res.send({ status: 'success', message: 'payment  successfull',});
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const paymentSuccess=async (req,res)=>{
+    try {
+        
+            
+      
+
+       
+        
+       
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 
 module.exports={
@@ -483,6 +540,8 @@ module.exports={
     cancelOrder,
     orderStatusChange,
     downloadInvoice,
-    paymentFailed   
+    paymentFailed,
+    payAgain,
+    paymentSuccess   
     
 }
