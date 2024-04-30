@@ -247,11 +247,11 @@
                     <div class="card-header">
                        
                             <div class="row align-items-center">
-                                <div class="col-lg col-sm-2 col-4 col-price"> <h6 class="mb-0">Offer Name</h6></div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Product/category Name</h6></div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Percentage</h6></div>
+                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Offer Name</h6></div>
+                                <!-- <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Product/category Name</h6></div> -->
+                                <div class="col-lg-3 col-sm-2 col-4 col-price"> <h6 class="mb-0">Percentage</h6></div>
                                 <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Offer Type</h6></div>
-                                <div class="col-lg-1 col-sm-2 col-4 col-status">
+                                <div class="col-lg-2 col-sm-2 col-4 col-status">
                                     <h6 class="mb-0">Expiry Date</h6>
                                 </div>
                                 
@@ -280,7 +280,6 @@
                             <div class="row align-items-center">
                             
                                 <div class="col-lg col-sm-2 col-4 col-price"><span><%= offer.name %></span></div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"><span><%= offer.name %></span></div>
 
                                 <div class="col-lg col-sm-2 col-4 col-status">
                                     <span><%= offer.percentage %></span>
@@ -296,10 +295,9 @@
                                 </div>
                                 
 
-                                <% const currentDate = new Date(); %>
-                                <% const offerExpiredDate = new Date(offerData.expiredAt); %>
-
-                                <% if (offerExpiredDate > currentDate) { %>
+                                <% const currentDate = new Date() %>
+                                <%if(offer.expiredAt > currentDate){%>
+                               
                                     <div class="col-lg-1 col-sm-2 col-4 col-date">
                                         <span class="badge rounded-pill alert-success">Active</span>
                                     </div>

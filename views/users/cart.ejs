@@ -227,223 +227,250 @@
     <!-- Page Banner Section End -->
 
     <!-- Shopping Cart Section Start -->
-    <div class="section section-padding">
-      <div class="container">
-        <div class="cart-wrapper">
-          <!-- Cart Wrapper Start -->
-          <div class="cart-table table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th class="product-thumb">Image</th>
-                  <th class="product-info">product Information</th>
-                  <th class="product-quantity">Quantity</th>
-                  <th class="product-total-price">Total Price</th>
-                  <th class="product-action">Action</th>
-                </tr>
-              </thead>
 
-              <tbody>
-                <% if(cartDetails && cartDetails.products){%>
+    <% if(cartDetails && cartDetails.products.length>0){%>
+      
 
-                  
-                <% cartDetails.products.forEach((element,index) => { %>
-                <tr id="cartRefresh<%= element.productId._id %>">
-                  <td  class="product-thumb">
-                    <img
-                      src="/productImage/<%= element.productId.img[0] %>"
-                      alt=""
-                    />
-                  </td>
-                  <td class="product-info">
-                    <h6 class="name">
-                      <a href="product-details.html"><%= element.productId.name %></a>
-                    </h6>
+      <div class="section section-padding">
+        <div class="container">
+          <div class="cart-wrapper">
+            <!-- Cart Wrapper Start -->
+            <div class="cart-table table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="product-thumb">Image</th>
+                    <th class="product-info">product Information</th>
+                    <th class="product-quantity">Quantity</th>
+                    <th class="product-total-price">Total Price</th>
+                    <th class="product-action">Action</th>
+                  </tr>
+                </thead>
+  
+                <tbody>
+                  <% if(cartDetails && cartDetails.products){%>
+  
                     
-
-
-                    <% const productOffer = offerProducts.find(offerProduct => offerProduct.productId._id.toString() === element.productId._id.toString()); %>
-                    <% const categoryOffer = offerCategories.find(offerCategory => offerCategory.productId.categoryId._id.toString() === element.productId.categoryId._id.toString()); %>
+                  <% cartDetails.products.forEach((element,index) => { %>
+                  <tr id="cartRefresh<%= element.productId._id %>">
+                    <td  class="product-thumb">
+                      <img
+                        src="/productImage/<%= element.productId.img[0] %>"
+                        alt=""
+                      />
+                    </td>
+                    <td class="product-info">
+                      <h6 class="name">
+                        <a href="product-details.html"><%= element.productId.name %></a>
+                      </h6>
+                      
+  
+  
+                      <% const productOffer = offerProducts.find(offerProduct => offerProduct.productId._id.toString() === element.productId._id.toString()); %>
+                      <% const categoryOffer = offerCategories.find(offerCategory => offerCategory.productId.categoryId._id.toString() === element.productId.categoryId._id.toString()); %>
+                      
+                      <% if (productOffer) { %>
+                          <% const offer = offerData.find(offer => offer.product === productOffer.productId._id.toString()); %>
+  
+                          <% if(offer) { %>
+                              <div class="product-prices">
+                                  <% const offerAmount = element.productId.price * offer.percentage / 100; %>
+                                  <span class="sale-price text-dark productAmount" >$<%= element.productId.price - offerAmount %></span>
+                                  <span class="old-price">$<%= element.productId.price %>.00</span>
+                                  <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
+                              </div>
+                          <% } %>
+                      <% } else if (categoryOffer) { %>
+  
+                          <% const offer = offerData.find(offer => offer.category === categoryOffer.productId.categoryId._id.toString()); %>
+                          
+                          <% if(offer) { %>
+  
+                              <div class="product-prices">
+                                  <% const offerAmount = element.productId.price * offer.percentage / 100; %>
+                                  <span class="sale-price text-dark productAmount">$<%= element.productId.price - offerAmount %></span>
+                                  <span class="old-price">$<%= element.productId.price %>.00</span>
+                                  <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
+                              </div>
+                          <% } %>
+                      <% } else { %>
+                          <div class="product-prices">
+                              <span class="sale-price text-dark productAmount " >$<%= element.productId.price %></span>
+                          </div>
+                      <% } %>
+  
+                      
+                      <div class="product-size-color">
+                        <p>Size <span><%= element.productId.size %></span></p>
+                        <p>Color <span><%= element.productId.color %></span></p>
+                      </div>
+                    </td>
+                    
+                    
+                    
+                    <td class="quantity">
+                      <div class="product-quantity d-inline-flex">
+  
+                        <button type="button"  class="sub">-</button>
+                        <input
+                          type="text"
+                          class="quantityInput"
+                          id="checkoutQuantity<%= element.productId._id %>"
+                          data-product-id="<%= element.productId._id %>"
+                          value="1"
+                          min="0"
+                        max="5"
+                        />
+                        
+                      
+                        <button type="button" class="add" id="addButton">+</button>
+  
+                      </div>
+                      <span id="quantityError" style="color: rgb(188, 5, 5);"></span>
+  
+                      <input type="text" id="quantity<%= element.productId._id %>" value="<%=element.productId.quantity%>" hidden />
+                    </td>
+  
+                    
                     
                     <% if (productOffer) { %>
                         <% const offer = offerData.find(offer => offer.product === productOffer.productId._id.toString()); %>
-
+  
                         <% if(offer) { %>
-                            <div class="product-prices">
-                                <% const offerAmount = element.productId.price * offer.percentage / 100; %>
-                                <span class="sale-price text-dark productAmount" >$<%= element.productId.price - offerAmount %></span>
-                                <span class="old-price">$<%= element.productId.price %>.00</span>
-                                <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
-                            </div>
+                          <td class="product-total-price">
+                            <% const offerAmount = element.productId.price * offer.percentage / 100; %>
+  
+                            <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price -offerAmount  %></span>
+                          </td>
                         <% } %>
                     <% } else if (categoryOffer) { %>
-
+  
                         <% const offer = offerData.find(offer => offer.category === categoryOffer.productId.categoryId._id.toString()); %>
                         
                         <% if(offer) { %>
-
-                            <div class="product-prices">
-                                <% const offerAmount = element.productId.price * offer.percentage / 100; %>
-                                <span class="sale-price text-dark productAmount">$<%= element.productId.price - offerAmount %></span>
-                                <span class="old-price">$<%= element.productId.price %>.00</span>
-                                <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
-                            </div>
+                          <% const offerAmount = element.productId.price * offer.percentage / 100; %>
+  
+                          <td class="product-total-price">
+                            <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price-offerAmount %></span>
+                          </td>
                         <% } %>
                     <% } else { %>
-                        <div class="product-prices">
-                            <span class="sale-price text-dark productAmount " >$<%= element.productId.price %></span>
-                        </div>
+                      <td class="product-total-price">
+                        <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price %></span>
+                      </td>
                     <% } %>
-
+                    <td class="product-action">
+                      <button class="remove" onclick="deleteCartProduct('<%= element.productId._id %>')">
+                        <i class="pe-7s-trash"></i>
+                    </button>
                     
-                    <div class="product-size-color">
-                      <p>Size <span><%= element.productId.size %></span></p>
-                      <p>Color <span><%= element.productId.color %></span></p>
-                    </div>
-                  </td>
-                  
-                  
-                  
-                  <td class="quantity">
-                    <div class="product-quantity d-inline-flex">
-
-                      <button type="button"  class="sub">-</button>
-                      <input
-                        type="text"
-                        class="quantityInput"
-                        id="checkoutQuantity<%= element.productId._id %>"
-                        data-product-id="<%= element.productId._id %>"
-                        value="1"
-                        min="0"
-                      max="5"
-                      />
-                      
                     
-                      <button type="button" class="add" id="addButton">+</button>
-
-                    </div>
-                    <span id="quantityError" style="color: rgb(188, 5, 5);"></span>
-
-                    <input type="text" id="quantity<%= element.productId._id %>" value="<%=element.productId.quantity%>" hidden />
-                  </td>
-
-                  
-                  
-                  <% if (productOffer) { %>
-                      <% const offer = offerData.find(offer => offer.product === productOffer.productId._id.toString()); %>
-
-                      <% if(offer) { %>
-                        <td class="product-total-price">
-                          <% const offerAmount = element.productId.price * offer.percentage / 100; %>
-
-                          <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price -offerAmount  %></span>
-                        </td>
-                      <% } %>
-                  <% } else if (categoryOffer) { %>
-
-                      <% const offer = offerData.find(offer => offer.category === categoryOffer.productId.categoryId._id.toString()); %>
-                      
-                      <% if(offer) { %>
-                        <% const offerAmount = element.productId.price * offer.percentage / 100; %>
-
-                        <td class="product-total-price">
-                          <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price-offerAmount %></span>
-                        </td>
-                      <% } %>
-                  <% } else { %>
-                    <td class="product-total-price">
-                      <span class="price" id="totalPrice<%= element.productId._id %>">$<%= element.productId.price %></span>
                     </td>
+                  </tr>
+  
+                  <% }); %>
                   <% } %>
-                  <td class="product-action">
-                    <button class="remove" onclick="deleteCartProduct('<%= element.productId._id %>')">
-                      <i class="pe-7s-trash"></i>
-                  </button>
-                  
-                  
-                  </td>
-                </tr>
-
-                <% }); %>
-                <% } %>
-              </tbody>
-            </table>
-          </div>
-          <!-- Cart Wrapper End -->
-          <!-- Cart btn Start -->
-          <div class="cart-btn">
-            <div class="left-btn">
-              <a
-                href="shop-grid-left-sidebar.html"
-                class="btn btn-dark btn-hover-primary"
-                >Continue Shopping</a
-              >
+                </tbody>
+              </table>
             </div>
-            <div class="right-btn">
-              <a href="#" class="btn btn-outline-dark">Clear Cart</a>
-              <!-- <a href="#" class="btn btn-outline-dark">Update Cart</a> -->
-            </div>
-            
-          </div>
-          <!-- Cart btn Start -->
-        </div>
-        <div class="row">
-          <div class="col-lg-4">
-            <!-- Cart Shipping Start -->
-
-            <!-- Cart Shipping End -->
-          </div>
-          <div class="col-lg-4">
-            <!-- Cart Shipping Start -->
-          
-            <!-- Cart Shipping End -->
-          </div>
-          <div class="col-lg-4">
-            <!-- Cart Totals Start -->
-            <div class="cart-totals">
-              <div class="cart-title">
-                <h4 class="title">Cart totals</h4>
+            <!-- Cart Wrapper End -->
+            <!-- Cart btn Start -->
+            <div class="cart-btn">
+              <div class="left-btn">
+                <a
+                  href="shop-grid-left-sidebar.html"
+                  class="btn btn-dark btn-hover-primary"
+                  >Continue Shopping</a
+                >
               </div>
-              <div class="cart-total-table">
-                <table class="table">
-                  <tbody>
-                    <!-- <tr>
-                      <td>
-                        <p class="value">Subtotal</p>
-                      </td>
-                      <td>
-                      
-                        <p class="price" id="subTotal">£<%= %></p>
-                      </td>
-                    </tr>
-                    
-                    <tr> -->
-                      <td>
-                        <p class="value">Total</p>
-                      </td>
-                      <td>
-                        <p class="price" id="cartTotal">£<%= %>.00</p>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <di v class="cart-btn">
-                <% if (cartDetails.products && cartDetails.products.length > 0) { %>
-                  <a href="/checkout" class="btn btn-dark btn-hover-primary btn-block">Proceed To Checkout</a>
-                <% } else { %>
-                  <button class="btn btn-dark btn-hover-primary btn-block" disabled>Proceed To Checkout</button>
-                <% } %>
+              <div class="right-btn">
+                <a href="#" class="btn btn-outline-dark">Clear Cart</a>
+                <!-- <a href="#" class="btn btn-outline-dark">Update Cart</a> -->
               </div>
               
-
             </div>
-            <!-- Cart Totals End -->
+            <!-- Cart btn Start -->
           </div>
-        </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <!-- Cart Shipping Start -->
+  
+              <!-- Cart Shipping End -->
+            </div>
+            <div class="col-lg-4">
+              <!-- Cart Shipping Start -->
+            
+              <!-- Cart Shipping End -->
+            </div>
+            <div class="col-lg-4">
+              <!-- Cart Totals Start -->
+              <div class="cart-totals">
+                <div class="cart-title">
+                  <h4 class="title">Cart totals</h4>
+                </div>
+                <div class="cart-total-table">
+                  <table class="table">
+                    <tbody>
+                      <!-- <tr>
+                        <td>
+                          <p class="value">Subtotal</p>
+                        </td>
+                        <td>
+                        
+                          <p class="price" id="subTotal">£<%= %></p>
+                        </td>
+                      </tr>
+                      
+                      <tr> -->
+                        <td>
+                          <p class="value">Total</p>
+                        </td>
+                        <td>
+                          <p class="price" id="cartTotal">£<%= %>.00</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+  
+                <div class="cart-btn">
+                  <% if (cartDetails.products && cartDetails.products.length > 0) { %>
+                    <a href="/checkout" class="btn btn-dark btn-hover-primary btn-block">Proceed To Checkout</a>
+                  <% } else { %>
+                    <button class="btn btn-dark btn-hover-primary btn-block" disabled>Proceed To Checkout</button>
+                  <% } %>
+                </div>
+                
+  
+              </div>
+              <!-- Cart Totals End -->
+            </div>
+          </div>
       </div>
-    </div>
+      </div>
+      
+      <% }else{%>
+        <div class="section section-padding">
+          <div class="container">
+              <div class="cart-wrapper">
+                  <!-- empty cart Start -->
+                  <div class="empty-cart text-center">
+                      <h2 class="empty-cart-title">
+                          There are no more items in your cart
+                      </h2>
+                      <div class="empty-cart-img">
+                          <img src="assets/images/cart.png" alt="Cart" />
+                      </div>
+                      <p>Your cart is currently empty!</p>
+                      <a href="/userHome" class="btn btn-primary btn-hover-dark"><i class="fa fa-angle-left"></i> Continue
+                          browsing</a>
+                  </div>
+                  <!-- empty cart End -->
+              </div>
+          </div>
+      </div>  
+
+      <%}%>
     <!-- Shopping Cart Section End -->
 
     <!-- Footer Section Start -->
@@ -643,58 +670,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- <script>
-      function enableAddButton() {
-        console.log('iiiiiiii')
-        var cartDetails =  JSON.stringify(cartDetails) 
-        console.log(cartDetails)
-          console.log('jkjjjjjjjjj  ')
-          
-          const quantityInput = parseInt(document.getElementById('checkoutQuantity')).value;
-          var button = document.getElementById('addButton');
-          cartDetails.products.forEach((element,index) => {
-           
-            
-            if (quantityInput <=  element.inStock) {
-              button.disabled = false;
-          } else {
-              button.disabled = true; 
-          }
-          })
-        
-      }
-  
-      enableAddButton();
-  </script> -->
-  
-  <!-- <script>
-    setInitialCartTotal();
-    function setInitialCartTotal() {
-        let totalAmount = 0;
-        const productAmounts = document.querySelectorAll('.productAmount');
-        productAmounts.forEach(function(amountElement) {
-            totalAmount += parseFloat(amountElement.innerText.replace('$', ''));
-        });
-        const cartTotalElement = document.getElementById('cartTotal');
-        cartTotalElement.innerHTML = `$${totalAmount.toFixed(2)}`;
-    }
-  </script>  -->
-  <!-- <script>
-    let subtotal = 0;
-    const productPrices = document.querySelectorAll('.old-price');
-    const qtyInputs = document.querySelectorAll('.quantityInput');
-    
-    productPrices.forEach(function(amountElement, index) {
-        const price = parseFloat(amountElement.innerText.replace('$', ''));
-        const quantity = parseInt(qtyInputs[index].value); 
-        subtotal += price * quantity;
-    });
 
-    const subTotalElement = document.getElementById('subTotal');
-    subTotalElement.innerHTML = `$${subtotal.toFixed(2)}`;
-</script> -->
-
-  
   <script>
 const quantityInputs = document.querySelectorAll('.quantityInput');
 

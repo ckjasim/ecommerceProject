@@ -220,7 +220,7 @@
                                 <div class="card-body">
                                     <div class="row gx-3">
                                         <div class="col-md-6 mb-3">
-                                            <label for="product_sku" class="form-label">Offer Name</label>
+                                            <label for="couponCode" class="form-label">Offer Name</label>
                                             <input type="text" placeholder="Type here" name="name" class="form-control" id="couponCode" required/>
                                             <span id="codeError" style="color: rgb(188, 5, 5);"></span>
                                         </div>
@@ -234,19 +234,19 @@
                                     </div>
                                     <div class="row gx-3">
                                         <div class="col-md-6 mb-3">
-                                            <label for="product_sku" class="form-label">Percentage</label>
+                                            <label for="couponPercentage" class="form-label">Percentage</label>
                                             <input type="text" placeholder="Type here" name="percentage" class="form-control" id="couponPercentage" required/>
                                             <span id="percentageError" style="color: rgb(188, 5, 5);"></span>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label for="product_sku" class="form-label">Expiry date</label>
+                                            <label for="expiryDate" class="form-label">Expiry date</label>
                                             <input type="date" placeholder="Type here" name="date" class="form-control" required/>
                                             <span style="color: rgb(188, 5, 5);"></span>
                                         </div>
                                     </div>
                                     <div class="row gx-3">
                                         <div class="col-md-6 mb-3">
-                                            <label for="product_sku" class="form-label">Offer Type</label>
+                                            <label for="offerType" class="form-label">Offer Type</label>
                                             <div class="ms-auto text-md-end">
                                                 <select class="form-select d-inline-block" name="offerTypeName" id="offerType">
                                                     <option>select</option>
@@ -256,7 +256,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3" id="category" hidden>
-                                            <label for="product_sku" class="form-label">Categories</label>
+                                            <label for="categorySelect" class="form-label">Categories</label>
                                             <div class="ms-auto text-md-end">
                                                 <select class="form-select" name="offerType" id="categorySelect">
                                                     <% categoryData.forEach(element => {  %>
@@ -266,7 +266,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3" id="productsDiv" hidden>
-                                            <label for="product_sku" class="form-label">Products</label>
+                                            <label for="productSelect" class="form-label">Products</label>
                                             <div class="ms-auto text-md-end">
                                                 <select class="form-select" name="offerType" id="productSelect">
                                                     <% productData.forEach(element => {  %>
@@ -275,8 +275,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -307,120 +305,74 @@
         <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
 
         <script>
-
-function checkValidity() {
-    var codeError = document.getElementById('codeError').textContent;
-    var nameError = document.getElementById('nameError').textContent;
-    var percentageError = document.getElementById('percentageError').textContent;
-    var minAmountError = document.getElementById('minAmountError').textContent;
-    var descriptionError = document.getElementById('descriptionError').textContent;
-
-    var submitButton = document.getElementById('submitButton');
-
-    if (
-        codeError === "" &&
-        nameError === "" &&
-        percentageError === "" &&
-        minAmountError === "" &&
-        descriptionError === ""
-    ) {
-        submitButton.disabled = false;
-    } else {
-        submitButton.disabled = true;
-    }
-}
-
-
-
-function validateCode() {
-    var codeValue = document.getElementById('couponCode').value.trim();
-    var codeError = document.getElementById('codeError');
-    var codePattern = /^[a-zA-Z0-9]+$/;
-
-    if (!codeValue || !codePattern.test(codeValue)) {
-        codeError.textContent = 'Invalid code provided';
-    } else {
-        codeError.textContent = '';
-    }
-}
-
-
-function validateName() {
-    var productQuantity = document.getElementById('couponName').value.trim();
-    var nameError = document.getElementById('nameError');
-    
-    var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
-
-    if (!productQuantity || !namePattern.test(productQuantity)) {
-        nameError.textContent = 'Enter a valid name';
-    } else {
-        nameError.textContent = '';
-    }
-}
-
-function validateDescription() {
-    var productName = document.getElementById('couponDescription').value.trim();
-    var descriptionError = document.getElementById('descriptionError');
-    var namePattern = /^[a-zA-Z0-9]+$/;
-
-    if (!productName || !namePattern.test(productName)) {
-        descriptionError.textContent = 'Invalid description provided';
-    } else {
-        descriptionError.textContent = '';
-    }
-}
-
-function validatePercentage() {
-    var percentageValue = document.getElementById('couponPercentage').value.trim();
-    var percentageError = document.getElementById('percentageError');
-    var percentagePattern = /^100(?:\.0+)?%?$|^\d{0,2}(?:\.\d+)?%?$/;
-
-
-    if (!percentageValue || !percentagePattern.test(percentageValue)) {
-        percentageError.textContent = 'Invalid percentage provided';
-    } else {
-        percentageError.textContent = '';
-    }
-}
-
-function validateMinAmount() {
-    var productQuantity = document.getElementById('couponMinAmount').value.trim();
-    var minAmountError = document.getElementById('minAmountError');
-    var quantityPattern = /^[0-9]\d*$/;
-
-    if (!productQuantity || !quantityPattern.test(productQuantity)) {
-        minAmountError.textContent = 'Enter a valid number';
-    } else {
-        minAmountError.textContent = '';
-    }
-}
-
-// Add event listeners
-document.getElementById('couponCode').addEventListener('input', function() {
-    validateCode();
-});
-
-document.getElementById('couponName').addEventListener('input', function() {
-    validateName();
-});
-
-document.getElementById('couponDescription').addEventListener('input', function() {
-    validateDescription();
-});
-
-document.getElementById('couponPercentage').addEventListener('input', function() {
-    validatePercentage();
-});
-
-document.getElementById('couponMinAmount').addEventListener('input', function() {
-    validateMinAmount();
-});
-
-           
-
+            function checkValidity() {
+                var codeError = document.getElementById('codeError').textContent;
+                var descriptionError = document.getElementById('descriptionError').textContent;
+                var percentageError = document.getElementById('percentageError').textContent;
+                var submitButton = document.getElementById('submitButton');
         
-    
+                if (
+                    codeError === "" &&
+                    descriptionError === "" &&
+                    percentageError === ""
+                ) {
+                    submitButton.disabled = false;
+                } else {
+                    submitButton.disabled = true;
+                }
+            }
+        
+            function validateCode() {
+                var codeValue = document.getElementById('couponCode').value.trim();
+                var codeError = document.getElementById('codeError');
+  
+                var codePattern = /^[a-zA-Z0-9]+$/;
+        
+                if (!codeValue || !codePattern.test(codeValue)) {
+                    codeError.textContent = 'Invalid code provided';
+                } else {
+                    codeError.textContent = '';
+                }
+        
+                checkValidity();
+            }
+        
+            function validateDescription() {
+                var description = document.getElementById('couponDescription').value.trim();
+                var descriptionError = document.getElementById('descriptionError');
+         
+                var descriptionPattern = /^[\w\s',.!?()-]+$/;
+        
+                if (!description || !descriptionPattern.test(description)) {
+                    descriptionError.textContent = 'Invalid description provided';
+                } else {
+                    descriptionError.textContent = '';
+                }
+        
+                checkValidity();
+            }
+        
+            function validatePercentage() {
+                var percentageValue = document.getElementById('couponPercentage').value.trim();
+                var percentageError = document.getElementById('percentageError');
+            
+                var percentagePattern = /^100(?:\.0+)?%?$|^\d{0,2}(?:\.\d+)?%?$/;
+        
+                if (!percentageValue || !percentagePattern.test(percentageValue)) {
+                    percentageError.textContent = 'Invalid percentage provided';
+                } else {
+                    percentageError.textContent = '';
+                }
+        
+                checkValidity();
+            }
+        
+           
+            document.getElementById('couponCode').addEventListener('input', validateCode);
+            document.getElementById('couponDescription').addEventListener('input', validateDescription);
+            document.getElementById('couponPercentage').addEventListener('input', validatePercentage);
         </script>
+        
 
 <script>
     const selectElements = document.getElementById('offerType');

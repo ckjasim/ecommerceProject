@@ -222,53 +222,41 @@
                         <div class="card mb-4">
                            
                             <div class="card-body">
-                                
                                 <div class="row gx-3">
-                                    <!-- <div class="col-md-6 mb-3">
-                                        <label for="product_sku" class="form-label">Coupon Code</label>
-                                        <input type="text" placeholder="Type here" name="code" class="form-control" id="couponCode" required/>
-                                        <span id="codeError" style="color: rgb(188, 5, 5);"></span>
-                                    </div> -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="product_color" class="form-label">Coupon Name</label>
+                                        <label for="couponName" class="form-label">Coupon Name</label>
                                         <input type="text" placeholder="Type here" name="name" class="form-control" id="couponName" required/>
-                                        <span id="nameError" style="color: rgb(188, 5, 5);"></span>
+                                        <span class="error-message" style="color: rgb(188, 5, 5);" id="nameError"></span>
                                     </div>
-                                    
-                                </div>
-                                <div class="card mb-4">
-                                <div class="card-body">
-                                    <div>
-                                        <!-- <label class="form-label">Images</label>
-                                        <input class="form-control" type="file" name="image" multiple/> -->
-                                        <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" name="description" class="form-control" rows="4" id="couponDescription" required></textarea>
-                                    <span id="descriptionError" style="color: rgb(188, 5, 5);"></span>    
-                                </div>
                                 </div>
                                 <div class="row gx-3">
                                     <div class="col-md-6 mb-3">
-                                        <label for="product_sku" class="form-label">Percentage</label>
+                                        <label for="couponDescription" class="form-label">Description</label>
+                                        <textarea placeholder="Type here" name="description" class="form-control" rows="4" id="couponDescription" required></textarea>
+                                        <span class="error-message" style="color: rgb(188, 5, 5);" id="descriptionError"></span>    
+                                    </div>
+                                </div>
+                                <div class="row gx-3">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="couponPercentage" class="form-label">Percentage</label>
                                         <input type="text" placeholder="Type here" name="percentage" class="form-control" id="couponPercentage" required/>
-                                        <span id="percentageError" style="color: rgb(188, 5, 5);"></span>
+                                        <span class="error-message" style="color: rgb(188, 5, 5);" id="percentageError"></span>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="product_color" class="form-label">Min amount</label>
+                                        <label for="couponMinAmount" class="form-label">Min amount</label>
                                         <input type="text" placeholder="Type here" name="minAmount" class="form-control" id="couponMinAmount" required/>
-                                        <span id="minAmountError" style="color: rgb(188, 5, 5);"></span>
+                                        <span class="error-message" style="color: rgb(188, 5, 5);" id="minAmountError"></span>
                                     </div>
-                                    
                                 </div>
                                 <div class="row gx-3">
                                     <div class="col-md-12 mb-3">
-                                        <label for="product_sku" class="form-label">Expiry date</label>
-                                        <input type="date" placeholder="Type here" name="date" class="form-control" required/>
-                                        <span  style="color: rgb(188, 5, 5);"></span>
+                                        <label for="expiryDate" class="form-label">Expiry date</label>
+                                        <input type="date" placeholder="Type here" name="date" class="form-control" id="expiryDate" required/>
+                                        <span style="color: rgb(188, 5, 5);"></span>
                                     </div>
-                                    
                                 </div>
                             </div>
-                        </div>
+                            
                         <!-- card end// -->
                         
                         <!-- card end// -->
@@ -302,118 +290,89 @@
         <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
 
         <script>
-
-function checkValidity() {
-    var codeError = document.getElementById('codeError').textContent;
-    var nameError = document.getElementById('nameError').textContent;
-    var percentageError = document.getElementById('percentageError').textContent;
-    var minAmountError = document.getElementById('minAmountError').textContent;
-    var descriptionError = document.getElementById('descriptionError').textContent;
-    var submitButton = document.getElementById('submitButton');
-
-    if (
-        codeError === "" &&
-        nameError === "" &&
-        percentageError === "" &&
-        minAmountError === "" &&
-        descriptionError === ""
-    ) {
-        submitButton.disabled = false;
-    } else {
-        submitButton.disabled = true;
-    }
-}
-
-
-
-function validateCode() {
-    var codeValue = document.getElementById('couponCode').value.trim();
-    var codeError = document.getElementById('codeError');
-    var codePattern = /^[a-zA-Z0-9]+$/;
-
-    if (!codeValue || !codePattern.test(codeValue)) {
-        codeError.textContent = 'Invalid code provided';
-    } else {
-        codeError.textContent = '';
-    }
-}
-
-
-function validateName() {
-    var productQuantity = document.getElementById('couponName').value.trim();
-    var nameError = document.getElementById('nameError');
-    
-    var namePattern = /^[a-zA-Z][a-zA-Z\s]*$/;
-
-    if (!productQuantity || !namePattern.test(productQuantity)) {
-        nameError.textContent = 'Enter a valid name';
-    } else {
-        nameError.textContent = '';
-    }
-}
-
-function validateDescription() {
-    var productName = document.getElementById('couponDescription').value.trim();
-    var descriptionError = document.getElementById('descriptionError');
-    var namePattern = /^[a-zA-Z0-9]+$/;
-
-    if (!productName || !namePattern.test(productName)) {
-        descriptionError.textContent = 'Invalid description provided';
-    } else {
-        descriptionError.textContent = '';
-    }
-}
-
-function validatePercentage() {
-    var percentageValue = document.getElementById('couponPercentage').value.trim();
-    var percentageError = document.getElementById('percentageError');
-    var percentagePattern = /^100(?:\.0+)?%?$|^\d{0,2}(?:\.\d+)?%?$/;
-
-
-    if (!percentageValue || !percentagePattern.test(percentageValue)) {
-        percentageError.textContent = 'Invalid percentage provided';
-    } else {
-        percentageError.textContent = '';
-    }
-}
-
-function validateMinAmount() {
-    var productQuantity = document.getElementById('couponMinAmount').value.trim();
-    var minAmountError = document.getElementById('minAmountError');
-    var quantityPattern = /^[0-9]\d*$/;
-
-    if (!productQuantity || !quantityPattern.test(productQuantity)) {
-        minAmountError.textContent = 'Enter a valid number';
-    } else {
-        minAmountError.textContent = '';
-    }
-}
-
-// Add event listeners
-document.getElementById('couponCode').addEventListener('input', function() {
-    validateCode();
-});
-
-document.getElementById('couponName').addEventListener('input', function() {
-    validateName();
-});
-
-document.getElementById('couponDescription').addEventListener('input', function() {
-    validateDescription();
-});
-
-document.getElementById('couponPercentage').addEventListener('input', function() {
-    validatePercentage();
-});
-
-document.getElementById('couponMinAmount').addEventListener('input', function() {
-    validateMinAmount();
-});
-
-           
-
+            function checkValidity() {
+                var nameError = document.getElementById('nameError').textContent;
+                var descriptionError = document.getElementById('descriptionError').textContent;
+                var percentageError = document.getElementById('percentageError').textContent;
+                var minAmountError = document.getElementById('minAmountError').textContent;
+                var submitButton = document.getElementById('submitButton');
         
-    
+                if (
+                    nameError === "" &&
+                    descriptionError === "" &&
+                    percentageError === "" &&
+                    minAmountError === ""
+                ) {
+                    submitButton.disabled = false;
+                } else {
+                    submitButton.disabled = true;
+                }
+            }
+        
+            function validateName() {
+                var couponName = document.getElementById('couponName').value.trim();
+                var nameError = document.getElementById('nameError');
+              
+                var namePattern = /^[a-zA-Z\s'-]+$/;
+        
+                if (!couponName || !namePattern.test(couponName)) {
+                    nameError.textContent = 'Enter a valid name';
+                } else {
+                    nameError.textContent = '';
+                }
+        
+                checkValidity();
+            }
+        
+            function validateDescription() {
+                var description = document.getElementById('couponDescription').value.trim();
+                var descriptionError = document.getElementById('descriptionError');
+            
+                var descriptionPattern = /^[\w\s',.!?()-]+$/;
+        
+                if (!description || !descriptionPattern.test(description)) {
+                    descriptionError.textContent = 'Invalid description provided';
+                } else {
+                    descriptionError.textContent = '';
+                }
+        
+                checkValidity();
+            }
+        
+            function validatePercentage() {
+                var percentageValue = document.getElementById('couponPercentage').value.trim();
+                var percentageError = document.getElementById('percentageError');
+
+                var percentagePattern = /^100(?:\.0+)?%?$|^\d{0,2}(?:\.\d+)?%?$/;
+        
+                if (!percentageValue || !percentagePattern.test(percentageValue)) {
+                    percentageError.textContent = 'Invalid percentage provided';
+                } else {
+                    percentageError.textContent = '';
+                }
+        
+                checkValidity();
+            }
+        
+            function validateMinAmount() {
+                var minAmount = document.getElementById('couponMinAmount').value.trim();
+                var minAmountError = document.getElementById('minAmountError');
+     
+                var minAmountPattern = /^[0-9]+(\.[0-9]+)?$/;
+        
+                if (!minAmount || !minAmountPattern.test(minAmount)) {
+                    minAmountError.textContent = 'Enter a valid number';
+                } else {
+                    minAmountError.textContent = '';
+                }
+        
+                checkValidity();
+            }
+
+            document.getElementById('couponName').addEventListener('input', validateName);
+            document.getElementById('couponDescription').addEventListener('input', validateDescription);
+            document.getElementById('couponPercentage').addEventListener('input', validatePercentage);
+            document.getElementById('couponMinAmount').addEventListener('input', validateMinAmount);
         </script>
         
         <!-- Main Script -->

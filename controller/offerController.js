@@ -91,7 +91,7 @@ if(offerTypeName === 'Category'){
     }
 }
 
-const editOffer=async (req,res)=>{
+const loadeditOffer=async (req,res)=>{
     try {
         const categoryData = await categorySchema.find()
         
@@ -106,6 +106,55 @@ const editOffer=async (req,res)=>{
     }
   }
 
+
+  const editOffer=async (req,res)=>{
+    try {
+        
+      const {name,description,date,percentage,offerType,offerTypeName,couponId}=req.body
+console.log(name)
+console.log(description) 
+console.log(percentage) 
+console.log(date)
+console.log(offerType)
+console.log(offerTypeName)
+console.log(couponId)
+
+
+
+
+
+    await offerSchema.findByIdAndUpdate({_id:couponId},
+    {
+        name: name,
+        description: description,
+        percentage: percentage,
+        expiredAt: date,
+        offerType:offerTypeName,
+        product: offerTypeName === 'Product' ? offerType : undefined,
+        category: offerTypeName === 'Category' ? offerType : undefined
+    })
+
+
+
+if(offerTypeName === 'Product'){
+    const offerData= await offerSchema.findOne({product:offerType})
+    // const offerProductId = new mongoose.Types.ObjectId(offerType);
+    await productSchema.findByIdAndUpdate({_id:offerType},{offerId:offerData._id})
+    console.log('eeeeeeeee')
+}
+if(offerTypeName === 'Category'){
+    const offerData= await offerSchema.findOne({category:offerType})
+    await categorySchema.findByIdAndUpdate({_id:offerType},{offerId:offerData._id})
+    console.log('ddddddddddddddddddd')
+}
+
+ res.redirect('/offers')
+  
+    } catch (error) {
+        console.log(error.message)
+    }
+  }
+  
   const deleteOffer=async (req,res)=>{
     try {
         
@@ -127,5 +176,6 @@ module.exports={
     loadAddOffer,
     addOffer,
     editOffer,
-    deleteOffer
+    deleteOffer,
+    loadeditOffer
 }
