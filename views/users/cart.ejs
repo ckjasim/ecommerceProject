@@ -310,26 +310,22 @@
                     
                     <td class="quantity">
                       <div class="product-quantity d-inline-flex">
-  
-                        <button type="button"  class="sub">-</button>
-                        <input
-                          type="text"
-                          class="quantityInput"
-                          id="checkoutQuantity<%= element.productId._id %>"
-                          data-product-id="<%= element.productId._id %>"
-                          value="1"
-                          min="0"
-                        max="5"
-                        />
-                        
-                      
-                        <button type="button" class="add" id="addButton">+</button>
-  
+                          <button type="button" class="sub">-</button>
+                          <input
+                              type="text"
+                              class="quantityInput"
+                              id="checkoutQuantity<%= element.productId._id %>"
+                              data-product-id="<%= element.productId._id %>"
+                              value="1"
+                              min="0"
+                              max="5"
+                          />
+                          <button type="button" class="add">+</button>
                       </div>
-                      <span id="quantityError" style="color: rgb(188, 5, 5);"></span>
-  
+                      <span id="quantityError<%= element.productId._id %>" style="color: rgb(188, 5, 5);"></span>
                       <input type="text" id="quantity<%= element.productId._id %>" value="<%=element.productId.quantity%>" hidden />
-                    </td>
+                  </td>
+                  
   
                     
                     
@@ -671,52 +667,56 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-  <script>
-const quantityInputs = document.querySelectorAll('.quantityInput');
+ <script>
+  const quantityInputs = document.querySelectorAll('.quantityInput');
 
 quantityInputs.forEach(function(input) {
     const addButton = input.parentElement.querySelector('.add');
+    const subtractButton = input.parentElement.querySelector('.sub'); 
     const productId = input.dataset.productId;
+    const quantityError = document.getElementById('quantityError' + productId); 
 
     addButton.addEventListener('click', function() {
-        limitQuantity(productId, parseInt(input.value), addButton);
+        limitQuantity(productId, parseInt(input.value) + 1, addButton, quantityError); 
+    });
+
+    subtractButton.addEventListener('click', function() {
+        limitQuantity(productId, parseInt(input.value) - 1, addButton, quantityError); 
+    });
+
+  
+    input.addEventListener('input', function() {
+        quantityError.textContent = ''; 
     });
 });
 
-function limitQuantity(productId, cartQuantity, addButton) {
+function limitQuantity(productId, cartQuantity, addButton, quantityError) {
     axios.post('/limitQuantity', { productId })
         .then(function(response) {
             const { inStock } = response.data;
-            console.log(inStock);
 
-            let currentValue = cartQuantity;
-
-            if (currentValue < Math.min(4, inStock)) {
-                
-                if (currentValue > Math.min(4, inStock)) {
-                  currentValue++;
-                    currentValue = Math.min(4, inStock); 
-                }
+            if (cartQuantity <= 5 && cartQuantity <= inStock) {
+                addButton.disabled = false; 
+                quantityError.textContent = ''; 
+            } else if (cartQuantity > 5) {
+                addButton.disabled = true; 
+                quantityError.textContent = 'Max limit'; 
             } else {
-                addButton.disabled = true;
-                var quantityError = document.getElementById('quantityError');
-                quantityError.textContent ='Max limit';
+                addButton.disabled = true; 
+                quantityError.textContent = 'Stock unavailable'; 
             }
-
-            console.log(response.data);
         })
         .catch(function(error) {
             console.error('Error:', error);
         });
 }
 
-
-  </script>
+ </script>
 
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
-    setInitialCartTotal(); // Call the function to set the initial cart total
+    setInitialCartTotal();
 
     const quantityInputs = document.querySelectorAll('.quantityInput');
 

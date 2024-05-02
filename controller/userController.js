@@ -1,15 +1,43 @@
 const userSchema = require('../model/userData')
-const productSchema = require('../model/productData')
+const productSchema =require('../model/productData')
+const categorySchema = require('../model/categoryData')
 const cartSchema = require('../model/cartData')
+const offerSchema = require('../model/offerData')
 // const otpSchema = require('../model/otpData')
+
+const mongoose = require('mongoose');
+
 const bcrypt=require('bcrypt')
 
 const nodemailer=require('nodemailer')
 const otpController=require('../controller/otpController')
 
 
-const loadHome=(req,res)=>{
-    res.render('index')
+const loadHome=async (req,res)=>{
+
+    const productData = await productSchema.find().populate('categoryId').limit(3);
+        const categoryData = await categorySchema.find();
+        const offerData = await offerSchema.find();
+
+
+
+        const offerProducts = offerData.map(offer => {
+        const offerProductId = new mongoose.Types.ObjectId(offer.product);
+        return productData.find(product => product._id.equals(offerProductId));
+        }).filter(product => product !== undefined);
+
+
+        const offerCategories = offerData.map(offer => {
+            const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
+            return categoryData.find(category => category._id.equals(offerCategoryId));
+        }).filter(category => category !== undefined);
+        
+
+     
+
+        res.render('index', { productData, offerProducts, offerCategories, offerData });
+
+  
 }
 
 const loadLogin=(req,res)=>{
@@ -28,8 +56,28 @@ const loadRegister =(req,res)=>{
     res.render('register',{message})
 }
 
-const userHome=(req,res)=>{
-    res.render('index')
+const userHome=async(req,res)=>{
+    const productData = await productSchema.find().populate('categoryId').limit(3);
+    const categoryData = await categorySchema.find();
+    const offerData = await offerSchema.find();
+
+
+
+    const offerProducts = offerData.map(offer => {
+    const offerProductId = new mongoose.Types.ObjectId(offer.product);
+    return productData.find(product => product._id.equals(offerProductId));
+    }).filter(product => product !== undefined);
+
+
+    const offerCategories = offerData.map(offer => {
+        const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
+        return categoryData.find(category => category._id.equals(offerCategoryId));
+    }).filter(category => category !== undefined);
+    
+
+ 
+
+    res.render('index', { productData, offerProducts, offerCategories, offerData });
 }
 
 //Login verification
