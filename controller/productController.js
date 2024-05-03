@@ -2,6 +2,7 @@ const productSchema =require('../model/productData')
 const categorySchema = require('../model/categoryData')
 const cartSchema = require('../model/cartData')
 const offerSchema = require('../model/offerData')
+const wishlistSchema = require('../model/wishlistData')
 const path=require('path')
 const mongoose = require('mongoose');
 
@@ -257,9 +258,10 @@ const loadUserProduct = async (req, res) => {
         const productData = await productSchema.find().populate('categoryId');
         const categoryData = await categorySchema.find();
         const offerData = await offerSchema.find();
+        const wishlistData = await wishlistSchema.find()
+        
 
-
-
+    
         const offerProducts = offerData.map(offer => {
         const offerProductId = new mongoose.Types.ObjectId(offer.product);
         return productData.find(product => product._id.equals(offerProductId));
@@ -274,7 +276,7 @@ const loadUserProduct = async (req, res) => {
 
      
 
-        res.render('products', { productData, offerProducts, offerCategories, offerData });
+        res.render('products', { productData, offerProducts, offerCategories, offerData, wishlistData });
 
     } catch (error) {
         console.log(error.message);
@@ -287,9 +289,10 @@ const loadUserProductDetail=async (req,res)=>{
     try {
         const productId=req.params.productId
         const productData= await productSchema.findOne({_id:productId}).populate('categoryId')
-        const relatedProducts= await productSchema.find().populate('categoryId')
         const userId=req.session.user_id
         const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:userId});
+        const alreadyWishlist = await wishlistSchema.findOne({ productId: productId ,userId:userId});
+        
 
         const offerData = await offerSchema.find();
 
@@ -302,12 +305,33 @@ const loadUserProductDetail=async (req,res)=>{
             const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
             return offerCategoryId.equals(productData.categoryId._id);
         });
-        console.log('pr',offerProduct)
-        console.log('ct',offerCategory)
+
+        const categoryId=productData.categoryId._id
+        console.log(categoryId)
+
+        //related Products
+
+        const relatedProductData = await productSchema.find().populate('categoryId');
+        const categoryData = await categorySchema.find();
+        const wishlistData = await wishlistSchema.find()
+
+
+        const relatedOfferProducts = offerData.map(offer => {
+            const offerProductId = new mongoose.Types.ObjectId(offer.product);
+            return relatedProductData.find(product => product._id.equals(offerProductId));
+            }).filter(product => product !== undefined);
     
+    
+            const relatedOfferCategories = offerData.map(offer => {
+                const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
+                return categoryData.find(category => category._id.equals(offerCategoryId));
+            }).filter(category => category !== undefined);
+            
 
+        const relatedProducts=await productSchema.find({categoryId:categoryId}).populate('categoryId')
+        console.log(relatedProducts)
 
-        res.render('productDetail',{productData,alreadyCart,relatedProducts,offerProduct,offerCategory})
+        res.render('productDetail',{productData,alreadyCart,relatedProducts,offerProduct,offerCategory,alreadyWishlist,relatedOfferProducts,relatedOfferCategories,wishlistData,offerData})
     } catch (error) {
         console.log(error.message)
     }
@@ -319,16 +343,34 @@ const loadUserProductDetail=async (req,res)=>{
 
 const sort =async (req,res)=>{
     try {
-       const selectedValue=req.body.selectedValue
+             const productData = await productSchema.find().populate('categoryId');
+             const categoryData = await categorySchema.find();
+             const offerData = await offerSchema.find();
+             const wishlistData = await wishlistSchema.find()
+             
+     
+         
+             const offerProducts = offerData.map(offer => {
+             const offerProductId = new mongoose.Types.ObjectId(offer.product);
+             return productData.find(product => product._id.equals(offerProductId));
+             }).filter(product => product !== undefined);
+     
+     
+             const offerCategories = offerData.map(offer => {
+                 const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
+                 return categoryData.find(category => category._id.equals(offerCategoryId));
+             }).filter(category => category !== undefined);
 
+       const selectedValue=req.body.selectedValue
         console.log(selectedValue)
         let sort
         switch (selectedValue) {
             case "Price low to high":
                 
-             sort = await productSchema.find().sort({ 'price': 1 });
+             sort = await productSchema.find().sort({ 'price': 1 }).populate('categoryId');
+             
 
-            res.send({ status: 'success', message: 'sorted successfully', sort});
+            res.send({ status: 'success', message: 'sorted successfully', sort,offerProducts,offerCategories,wishlistData});
             
                 break;
             case "Price high to low":

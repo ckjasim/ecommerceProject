@@ -257,7 +257,7 @@ const generateReferral = async (req, res) => {
         console.error('Error generating referral link:', error.message);
         res.status(500).json({ error: 'Internal server error' });
     }
-};
+}
 
 function generateReferralCode(userId) {
     return userId + '_' + Math.random().toString(36).substring(2, 8);

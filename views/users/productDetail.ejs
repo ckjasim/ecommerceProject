@@ -31,6 +31,11 @@
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="/user/assets/css/style.css"> -->
     <link rel="stylesheet" href="/user/assets/css/style.min.css" />
+    
+    <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+
+
+
 
 </head>
 
@@ -231,21 +236,6 @@
                                         <div class="swiper-slide single-img zoom">
                                             <img src="/productImage/<%= productData.img[3] %>" width="570" height="604" alt="Product Image" />
                                         </div>
-                                        <!-- <div class="swiper-slide single-img zoom">
-                                            <img src="/user/assets/images/product-details/product-details-2.jpg" width="570" height="604" alt="Product Image" />
-                                        </div>
-                                        <div class="swiper-slide single-img zoom">
-                                            <img src="/user/assets/images/product-details/product-details-3.jpg" width="570" height="604" alt="Product Image" />
-                                        </div>
-                                        <div class="swiper-slide single-img zoom">
-                                            <img src="/user/assets/images/product-details/product-details-3.jpg" width="570" height="604" alt="Product Image" />
-                                        </div>
-                                        <div class="swiper-slide single-img zoom">
-                                            <img src="/user/assets/images/product-details/product-details-4.jpg" width="570" height="604" alt="Product Image" />
-                                        </div>
-                                        <div class="swiper-slide single-img zoom">
-                                            <img src="/user/assets/images/product-details/product-details-5.jpg" width="570" height="604" alt="Product Image" />
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -267,9 +257,6 @@
                                         <div class="swiper-slide">
                                             <img src="/productImage/<%= productData.img[3] %>" width="88" height="93" alt="Product Thumbnail" />
                                         </div>
-                                        <!-- <div class="swiper-slide">
-                                            <img src="/user/assets/images/product-details/product-details-5.jpg" width="88" height="93" alt="Product Thumbnail" />
-                                        </div> -->
                                     </div>
                                 </div>
                                 <!-- Add Arrows -->
@@ -291,8 +278,6 @@
                                 <%=productData.name%>
                             </h4>
 
-                            
-                                                        
                                                         <% if (offerProduct) { %>
                                                                 <div class="price">
                                                                     <% const offerAmount = productData.price * offerProduct.percentage / 100; %>
@@ -368,30 +353,47 @@
                             <% } %>
                             <!-- <form action="/loadCart" method="POST"> -->
                              
-                                    
-                                 
-                            <div class="product-meta" id="productContainer">
+                                <% if(productData.quantity==0){%>
+                                    <div class="">
+                                        
+                                        <h3 class="text-danger">Currently Unavailable</h3>
+                                    </div>
+                                    <% }else{%>
 
-                                        
-                                        <div class="meta-action">
-                                            <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>')">Add To Cart</button>
-                                        </div>
-                                        
-                                        
-                                        <input type="text" id="quantity" value="<%=productData.quantity%>" hidden />
-                                        <input type="text" id="productId" value="<%=productData._id%>" hidden />
-                                
-                                
-                             
-                                
-                                <div class="meta-action">
-                                    <a class="action" id="addWishlist" onclick="addToWishlist('<%=productData._id%>')"><i class="pe-7s-like"></i></a>
-                                </div>
-                                <!-- <div class="meta-action">
-                                    <a class="action" href="#"><i class="pe-7s-shuffle"></i></a>
-                                </div> -->
-                            </div>
+                                <% if(alreadyCart){%>
+                                    <div class="meta-action">
+                                        <a href="/viewCart" id="addToCartButton" class="btn btn-dark btn-hover-primary">Go To Cart</a>
+                                    </div>
+                                 
+                                    <% }else{%>
+                                        <div class="product-meta" id="productContainer">
+            
+                                                    <div class="meta-action">
+                                                        <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=productData._id%>')">Add To Cart</button>
+                                                    </div>
                             
+                                                    <input type="text" id="quantity" value="<%=productData.quantity%>" hidden />
+                                                    <input type="text" id="productId" value="<%=productData._id%>" hidden />
+                                                    
+                                            
+                                            <% if(alreadyWishlist){%>
+                                            
+                                            <div class="meta-action">
+                                                <a class="action" id="addWishlist" style="color: red;" onclick="addToWishlist('<%=productData._id%>')"><i class="pe-7s-like"></i></a>
+                                            </div>
+                                            <% }else{%>
+                                                <div class="meta-action">
+                                                    <a class="action" id="addWishlist" onclick="addToWishlist('<%=productData._id%>')"><i class="pe-7s-like"></i></a>
+                                                </div>
+                                                
+                                                <% } %>
+                                            <!-- <div class="meta-action">
+                                                <a class="action" href="#"><i class="pe-7s-shuffle"></i></a>
+                                            </div> -->
+                                        </div>
+                                
+                                <% } %>
+                                <% } %>
                         <!-- </form> -->
 
                             <div class="product-info">
@@ -683,7 +685,7 @@
                     <div class="product-top-wrapper">
                         <!-- Section Title Start -->
                         <div class="section-title">
-                            <h2 class="title"># Related Products</h2>
+                            <h2 class="title">Related Products</h2>
                         </div>
                         <!-- Section Title End -->
 
@@ -729,138 +731,81 @@
                             <div class="tab-pane fade show active" id="tab7">
                                 <div class="swiper-container">
                                     <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <!-- Single Product Start -->
-                                            <div class="single-product">
-                                                <a href="#"><img src="/user/assets/images/product/product-07.jpg" width="270" height="303" alt="product" /></a>
-                                                <div class="product-content">
-                                                    <h4 class="title">
-                                                        <a href="product-details.html">Wooden decorations</a>
-                                                    </h4>
-                                                    <div class="price">
-                                                        <span class="sale-price"
-                                                        >$240.00</span>
-                                                    </div>
+                                        
+                                        <!-- Single Product Start -->
+                                        <% relatedProducts.forEach(element => { %>
+                                            <% if(element.is_listed === true) { %>
+                                                <div class="swiper-slide">
+                                                        <!-- Single Product Start -->
+                                                        <div class="single-product">
+                                                            <a href="/loadProductDetail/<%= element._id %>">
+                                                                <img src="/productImage/<%= element.img[0] %>" width="270" height="303" alt="product" />
+                                                            </a>
+                                                            <div class="product-content">
+                                                                <h4 class="title">
+                                                                    <a href="product-details.html"><%= element.name %></a>
+                                                                </h4>
+                                                                <p><%= element.description %></p>
+
+                                                                <% const productOffer = relatedOfferProducts.find(offerProduct => offerProduct._id.toString() === element._id.toString()); %>
+                                                                <% const categoryOffer = relatedOfferCategories.find(offerCategory => offerCategory._id.toString() === element.categoryId._id.toString()); %>
+                                                                
+                                                                <% if (productOffer) { %>
+                                                                    <% const offer = offerData.find(offer => offer.product === productOffer._id.toString()); %>
+                                                                    <% if(offer) { %>
+                                                                        <div class="price">
+                                                                            <% const offerAmount = element.price * offer.percentage / 100; %>
+                                                                            <span class="sale-price text-dark">$<%= element.price - offerAmount %></span>
+                                                                            <span class="old-price">$<%= element.price %>.00</span>
+                                                                            <span class="text-success ms-2 mt-2  "><%= offer.percentage %>% off</span>
+                                                                        </div>
+                                                                    <% } %>
+                                                                <% } else if (categoryOffer) { %>
+                                                                    <% const offer = offerData.find(offer => offer.category === categoryOffer._id.toString()); %>
+                                                                    <% if(offer) { %>
+                                                                        <div class="price">
+                                                                            <% const offerAmount = element.price * offer.percentage / 100; %>
+                                                                            <span class="sale-price text-dark">$<%= element.price - offerAmount %></span>
+                                                                            <span class="old-price">$<%= element.price %>.00</span>
+                                                                            <span class="text-success ms-2 mt-2  "><%= offer.percentage %>% off</span>
+                                                                        </div>
+                                                                    <% } %>
+                                                                <% } else { %>
+                                                                    <div class="price">
+                                                                        <span class="sale-price text-dark ">$<%= element.price %></span>
+                                                                    </div>
+                                                                <% } %>
+                                                                
+                                        
+                                                            </div>
+                                                            <ul class="product-meta">
+                                                               
+                                                                <li>
+                                                                    <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
+                                                                </li>
+                                                                <% const wishlist = wishlistData.find(wishlistProduct => wishlistProduct.productId.toString() === element._id.toString())%>
+                                                                
+                                                                <% if(wishlist){%>
+                                                                    <li>
+                                                                        <a class="action" id="addWishlist" style="color: red;" onclick="addToWishlist('<%=element._id%>')"><i class="pe-7s-like"  ></i></a>
+                                                                    </li>
+                                                                    <% }else{%>
+                                                                        <li>
+                                                                            <a class="action" id="addWishlist"  onclick="addToWishlist('<%=element._id%>')"><i class="pe-7s-like"  ></i></a>
+                                                                        </li>
+                                                                    
+                                                                    <% } %>
+                                                            </ul>
+                                                        </div>
+                                                        <!-- Single Product End -->
+                                                    
                                                 </div>
-                                                <ul class="product-meta">
-                                                    <li>
-                                                        <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i
-                                                            class="pe-7s-search"
-                                                        ></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="action" href="#"><i
-                                                            class="pe-7s-shopbag"
-                                                        ></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="action" href="#"><i
-                                                            class="pe-7s-like"
-                                                        ></i></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                                <% } %>
+                                            <% }); %>
                                             <!-- Single Product End -->
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <!-- Single Product Start -->
-                                            <div class="single-product">
-                                                <a href="#"><img src="/user/assets/images/product/product-08.jpg" width="270" height="303" alt="product" /></a>
-                                                <div class="product-content">
-                                                    <h4 class="title">
-                                                        <a href="product-details.html">Herman Seater Sofa</a>
-                                                    </h4>
-                                                    <div class="price">
-                                                        <span class="sale-price"
-                                                        >$240.00</span>
-                                                    </div>
-                                                </div>
-                                                <ul class="product-meta">
-                                                    <li>
-                                                        <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i
-                                                            class="pe-7s-search"
-                                                        ></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="action" href="#"><i
-                                                            class="pe-7s-shopbag"
-                                                        ></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="action" href="#"><i
-                                                            class="pe-7s-like"
-                                                        ></i></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- Single Product End -->
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <!-- Single Product Start -->
-                                            <div class="single-product">
-                                                <a href="#"><img src="/user/assets/images/product/product-09.jpg" width="270" height="303" alt="product" /></a>
-                                                <div class="product-content">
-                                                    <h4 class="title">
-                                                        <a href="product-details.html">Reece Seater Sofa</a>
-                                                    </h4>
-                                                    <div class="price">
-                                                        <span class="sale-price"
-                                                        >$240.00</span>
-                                                    </div>
-                                                </div>
-                                                <ul class="product-meta">
-                                                    <li>
-                                                        <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i
-                                                            class="pe-7s-search"
-                                                        ></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="action" href="#"><i
-                                                            class="pe-7s-shopbag"
-                                                        ></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="action" href="#"><i
-                                                            class="pe-7s-like"
-                                                        ></i></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- Single Product End -->
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <!-- Single Product Start -->
-                                            <div class="single-product">
-                                                <a href="#"><img src="/user/assets/images/product/product-10.jpg" width="270" height="303" alt="product" /></a>
-                                                <div class="product-content">
-                                                    <h4 class="title">
-                                                        <a href="product-details.html">Round Swivel Chair</a>
-                                                    </h4>
-                                                    <div class="price">
-                                                        <span class="sale-price"
-                                                        >$240.00</span>
-                                                    </div>
-                                                </div>
-                                                <ul class="product-meta">
-                                                    <li>
-                                                        <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#"><i
-                                                            class="pe-7s-search"
-                                                        ></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="action" href="#"><i
-                                                            class="pe-7s-shopbag"
-                                                        ></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="action" href="#"><i
-                                                            class="pe-7s-like"
-                                                        ></i></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- Single Product End -->
-                                        </div>
+                                        
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1536,61 +1481,6 @@
 
    
 
-<script>
-    const productId = document.getElementById('productId').value
-   
-    console.log(productId)
-    axios.post('/updateProductDetails',{productId})
-            .then(function(response) {
-                console.log(response.data);
-                const {alreadyCart,inStock,productData} =response.data
-                console.log(inStock)
-                console.log(alreadyCart)
-                const productContainer = document.getElementById('productContainer');
-                let productHTML = '';
-                if(inStock===0){
-                    productHTML += `
-                    <h4 class="text-danger">Currently Unavailable</h4>
-                    `;
-                    productContainer.innerHTML = productHTML;      
-                }else{
-
-                
-                if (alreadyCart) {
-                    productHTML += `
-                    <div class="meta-action">
-                    <a href="/viewCart" id="addToCartButton" class="btn btn-dark btn-hover-primary" >Go To Cart</a>
-                    </div>
-                    `;
-                    productContainer.innerHTML = productHTML;      
-            }
-            else{
-
-                    productHTML += `
-
-                                        <div class="meta-action">
-                                            <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('${productData._id}')">Add To Cart</button>
-                                        </div>
-                                        
-                                        
-                                        <input type="text" id="productId" value="${productData._id}" hidden />
-
-                                        <div class="meta-action">
-                                    <a class="action" id="addWishlist" onclick="addToWishlist('${productData._id}')"><i class="pe-7s-like"></i></a>
-                                </div>
-                    `;
-                    productContainer.innerHTML = productHTML;
-                }
-                }
-                // window.location.reload()
-                
-                
-            })
-            .catch(function(error) {
-                console.error('Error:', error);
-            });
-    
-</script>
     
 <script>
     function addToCart(productId) {
@@ -1639,6 +1529,7 @@
                             `;
         
                             wishlistButton.innerHTML = wishlistHtml;
+                            window.location.reload()
                         }else{
                             wishlistHtml += `
                                 <div class="meta-action">
@@ -1659,6 +1550,7 @@
 
    
 </script>
+    
 
 
 

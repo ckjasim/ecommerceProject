@@ -423,7 +423,7 @@
                                                                     <% const offerAmount = element.price * offer.percentage / 100; %>
                                                                     <span class="sale-price text-dark">$<%= element.price - offerAmount %></span>
                                                                     <span class="old-price">$<%= element.price %>.00</span>
-                                                                    <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
+                                                                    <span class="text-success ms-2 mt-2  "><%= offer.percentage %>% off</span>
                                                                 </div>
                                                             <% } %>
                                                         <% } else if (categoryOffer) { %>
@@ -433,7 +433,7 @@
                                                                     <% const offerAmount = element.price * offer.percentage / 100; %>
                                                                     <span class="sale-price text-dark">$<%= element.price - offerAmount %></span>
                                                                     <span class="old-price">$<%= element.price %>.00</span>
-                                                                    <span class="product-content text-success ms-2 mb-1 "><%= offer.percentage %>% off</span>
+                                                                    <span class="text-success ms-2 mt-2  "><%= offer.percentage %>% off</span>
                                                                 </div>
                                                             <% } %>
                                                         <% } else { %>
@@ -445,17 +445,22 @@
                                 
                                                     </div>
                                                     <ul class="product-meta">
-                                                        <li>
-                                                            <a class="action" data-bs-toggle="modal" data-bs-target="#quickView" href="#">
-                                                                <i class="pe-7s-search"></i>
-                                                            </a>
-                                                        </li>
+                                                       
                                                         <li>
                                                             <a class="action" href="#"><i class="pe-7s-shopbag"></i></a>
                                                         </li>
-                                                        <li>
-                                                            <a class="action" href="#"><i class="pe-7s-like"></i></a>
-                                                        </li>
+                                                        <% const wishlist = wishlistData.find(wishlistProduct => wishlistProduct.productId.toString() === element._id.toString())%>
+                                                        
+                                                        <% if(wishlist){%>
+                                                            <li>
+                                                                <a class="action" id="addWishlist" style="color: red;" onclick="addToWishlist('<%=element._id%>')"><i class="pe-7s-like"  ></i></a>
+                                                            </li>
+                                                            <% }else{%>
+                                                                <li>
+                                                                    <a class="action" id="addWishlist"  onclick="addToWishlist('<%=element._id%>')"><i class="pe-7s-like"  ></i></a>
+                                                                </li>
+                                                            
+                                                            <% } %>
                                                     </ul>
                                                 </div>
                                                 <!-- Single Product End -->
@@ -1210,6 +1215,9 @@
         function handleChange(event) {
             const selectedValue = event.target.value
             console.log(selectedValue)
+            if(selectedValue==='Latest'){
+                window.location.reload()
+            }
     
             axios.post('/sort', { selectedValue })
     .then(function(response) {
@@ -1326,8 +1334,49 @@
     });
         }
 
+</script>
 
+<script>
+    function addToWishlist(productId) {
+   
+            axios.post('/addToWishlist', { productId })
+                .then(function(response) {
+                    console.log(response.data);
+                    const{wishlistDetails,session}= response.data
+                    const wishlistButton = document.getElementById('addWishlist');
+                    if(session==false){
+                        window.location=('/notlogin')
+                    }else{
 
+                        let wishlistHtml = '';
+                        if(wishlistDetails){
+                            wishlistHtml += `
+                                <div class="meta-action">
+                                    <a class="action" onclick="addToWishlist('${productId}')" style="color: red;"><i class="pe-7s-like"></i></a>
+                                </div>
+                            `;
+        
+                            wishlistButton.innerHTML = wishlistHtml;
+                            window.location.reload()
+                        }else{
+                            wishlistHtml += `
+                                <div class="meta-action">
+                                    <a class="action" onclick="addToWishlist('${productId}')"><i class="pe-7s-like"></i></a>
+                                </div>
+                            `;
+        
+                            wishlistButton.innerHTML = wishlistHtml;
+                            window.location.reload()
+                        }
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                });
+        }
+      
+
+   
 </script>
     
 

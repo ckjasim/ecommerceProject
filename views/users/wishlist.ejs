@@ -31,6 +31,8 @@
     <!-- Main Style CSS -->
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/style.min.css" />
+    <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+
 </head>
 
 
@@ -205,6 +207,7 @@
     <!-- Page Banner Section End -->
 
     <!-- Shopping Cart Section Start -->
+    <% if (wishlistData.length>0) {%>
     <div class="section section-padding">
         <div class="container">
             <div class="cart-wrapper">
@@ -218,7 +221,7 @@
                                     product Information
                                 </th>
                                
-                                <th class="product-add-to-cart">
+                                <th class="product-add-to-cart ">
                                     Add to Cart
                                 </th>
                                 <th class="product-action">Action</th>
@@ -254,7 +257,7 @@
                               
                                 
                                 <td class="product-add-to-cart">
-                                    <button id="addToCartButton" class="btn btn-dark btn-hover-primary" onclick="addToCart('<%=element.productId._id%>')">Add To Cart</button>
+                                    <button id="addToCartButton" class="btn btn-light btn-hover-primary" onclick="addToCart('<%=element.productId._id%>')">Add To Cart</button>
                                 </td>
                                 <td class="product-action">
                                     <button class="remove" onclick="deleteWishlistProduct('<%= element.productId._id %>')">
@@ -272,6 +275,27 @@
             </div>
         </div>
     </div>
+    <% }else{%>
+        <div class="section section-padding">
+            <div class="container">
+                <div class="cart-wrapper">
+                    <!-- empty cart Start -->
+                    <div class="empty-cart text-center">
+                        <h2 class="empty-cart-title">
+                            There are no more items in your wishlist
+                        </h2>
+                        <div class="empty-cart-img">
+                            <img src="assets/images/cart.png" alt="Cart" />
+                        </div>
+                        <p>Your wishlist is currently empty!</p>
+                        <a href="/userHome" class="btn btn-primary btn-hover-dark"><i class="fa fa-angle-left"></i> Continue
+                            browsing</a>
+                    </div>
+                    <!-- empty cart End -->
+                </div>
+            </div>
+        </div>  
+        <%} %>
     <!-- Shopping Cart Section End -->
 
     <!-- Footer Section Start -->

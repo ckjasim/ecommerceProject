@@ -1,10 +1,10 @@
 const wishlistSchema = require('../model/wishlistData')
 
 const loadWishlist = async (req,res)=>{
-
     try {
         userId=req.session.user_id
         const wishlistData = await wishlistSchema.find({userId:userId}).populate('productId')
+        console.log(wishlistData)
         
         res.render('wishlist',{wishlistData})
 
@@ -13,8 +13,8 @@ const loadWishlist = async (req,res)=>{
     }
 
 }
-const addToWishlist = async (req,res)=>{
 
+const addToWishlist = async (req,res)=>{
     try {
 
         userId=req.session.user_id
