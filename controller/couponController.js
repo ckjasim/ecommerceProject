@@ -1,5 +1,4 @@
 const couponSchema = require("../model/couponData");
-const { response } = require("../routers/userRouter");
 
 //------------------------------admin--------------------------
 
