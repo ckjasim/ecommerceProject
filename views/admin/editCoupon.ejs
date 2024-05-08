@@ -191,7 +191,12 @@
                                         </div>
                                     </div>
                                     <div class="row gx-3">
-                                        <div class="col-md-12 mb-3">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="couponMaxAmount" class="form-label">Max discount amount</label>
+                                            <input type="text" placeholder="Type here" name="maxAmount" class="form-control" id="couponMaxAmount" value="<%= couponData.maxAmount %>" required/>
+                                            <span class="error-message" style="color: rgb(188, 5, 5);" id="maxAmountError"></span>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
                                             <label for="expiryDate" class="form-label">Expiry date</label>
                                             <input type="date" placeholder="Type here" name="date" class="form-control" value="<%= couponData.expiredAt.toISOString().split('T')[0] %>" required/>
                                             <span style="color: rgb(188, 5, 5);"></span>
@@ -325,6 +330,21 @@
         
                 checkValidity();
             }
+
+            function validateMaxAmount() {
+                var maxAmount = document.getElementById('couponMaxAmount').value.trim();
+                var maxAmountError = document.getElementById('maxAmountError');
+     
+                var maxAmountPattern = /^[0-9]+(\.[0-9]+)?$/;
+        
+                if (!maxAmount || !maxAmountPattern.test(maxAmount)) {
+                    maxAmountError.textContent = 'Enter a valid number';
+                } else {
+                    maxAmountError.textContent = '';
+                }
+        
+                checkValidity();
+            }
         
     
             document.getElementById('couponCode').addEventListener('input', validateCode);
@@ -332,6 +352,8 @@
             document.getElementById('couponDescription').addEventListener('input', validateDescription);
             document.getElementById('couponPercentage').addEventListener('input', validatePercentage);
             document.getElementById('couponMinAmount').addEventListener('input', validateMinAmount);
+            document.getElementById('couponMaxAmount').addEventListener('input', validateMaxAmount);
+
         </script>
         
 

@@ -71,6 +71,9 @@ adminRoute.post('/filterAdminDashboard',adminConfig.isLogin,salesController.filt
 adminRoute.post('/chart',adminConfig.isLogin,salesController.chart)
 
 
+adminRoute.get('/ledger',adminConfig.isLogin,salesController.ledger)
+
+
 
 
 

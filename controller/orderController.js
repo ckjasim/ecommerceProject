@@ -103,31 +103,25 @@ const loadOrder=async (req,res)=>{
             res.send({ status: 'success', message: 'Out of stock',response});
         } else {
     console.log('4444444')
-    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature,cartTotal,couponDiscount } = req.body;
+    const { selectedAddress, selectedPaymentOption, razorpay_payment_id, razorpay_order_id, razorpay_signature,cartTotal,couponDiscount ,couponCode} = req.body;
     console.log('aaaaaalllll');
     console.log(selectedPaymentOption)
 
-    // console.log('88888888888888888888888888888', razorpay_signature);
-    console.log('88888888888888888888888888888', couponDiscount);
-    console.log('6666666666666666666666666666', cartTotal);
-    // const signature = razorpay_signature;
-    
 
     req.flash('selectedAddress', selectedAddress);
     
     req.flash('selectedPaymentOption', selectedPaymentOption);
     req.flash('cartTotal', cartTotal);
     req.flash('couponDiscount', couponDiscount);
+    req.flash('couponCode', couponCode);
 
 
-    // req.flash('razorpay_signature', razorpay_signature);
     
     if (selectedPaymentOption === 'RazorPay') {
         const KEY_ID = process.env.KEY_ID;
         const YOUR_SECRET = process.env.YOUR_SECRET;
 
        { const cartDetails = await cartSchema.findOne({ userId: req.session.user_id }).populate('products.productId').populate('userId');
-        // const cartTotal = cartDetails.products.reduce((Total, amount) => Total + amount.totalAmount, 0);
 
         var instance = new Razorpay({ key_id: KEY_ID, key_secret: YOUR_SECRET });
     
@@ -140,27 +134,11 @@ const loadOrder=async (req,res)=>{
                     key2: "value2"
                 }
             });
-    
-            console.log("Order created:", order);
-            console.log("Order iddd:", order.id);
-    
 
             res.send({ status: 'success', order });
             
         }
-        // res.send({ status: 'success', message: 'Order place'});
-            // console.log("Ordsig:", razorpay_signature);
-    
-            // // Generating signature
-            // const generated_signature = crypto.createHmac('sha256', YOUR_SECRET).update(order.id + "|" + razorpay_payment_id).digest('hex');
-            // console.log(generated_signature, '--------------', razorpay_signature);
-    
-            // // Comparing signatures
-            // if (generated_signature === razorpay_signature) {
-            //     console.log('Payment succeeded');
-            // } else {
-            //     console.error('Payment signature verification failed');
-            // }
+   
        
     }else if(selectedPaymentOption === 'Cash on Delivery'){
         res.send({ status: 'success', message: 'Order place'});
@@ -171,14 +149,12 @@ const loadOrder=async (req,res)=>{
         const walletData = await walletSchema.findOne({userId:req.session.user_id})
         console.log(walletData)
         if(!walletData){
-            console.log('no wallet')
+
             const wallet='null'
             res.send({ status: 'failed', message: 'Order not place',wallet});
 
         }else{
-            console.log('90999999999999999999999999')
-            console.log(cartTotal)
-            console.log(walletData.walletAmount)
+        
             if(walletData.walletAmount<cartTotal){
                 console.log('not enough money in wallet')
                 const wallet='noMoney'
@@ -206,19 +182,8 @@ const loadOrder=async (req,res)=>{
             }
         }
     }
-    
 
-        
-
-      
-        // res.send({ status: 'success', message: 'Order razor place',KEY_ID,});
     }
-    // res.send({ status: 'success', message: 'Order place'});
-
-          
-       
-      
-        
 
     } catch (error) {
         console.log(error.message);
@@ -246,17 +211,12 @@ const viewOrder=async (req,res)=>{
         const selectedPaymentOption=req.flash('selectedPaymentOption').toString()
         const cartTotal=req.flash('cartTotal').toString()
         const couponDiscount=req.flash('couponDiscount').toString()
-        // const payment=req.session.payment
-        console.log('lllllllllllllllll',req.session)
-       
-        console.log('-------')
-        console.log(cartTotal)
-        console.log('-------')
+        const couponCode=req.flash('couponCode').toString()
+
        
         let paymentOption
         const payment=req.session.payment
        if(payment==="failed"){
-        console.log('kkkkk ddddd')
          paymentOption ='failed'
         }else{
          paymentOption =selectedPaymentOption
@@ -290,13 +250,7 @@ const viewOrder=async (req,res)=>{
             }, 0);
             const offerDiscount =actualPrice- cartTotal-couponDiscount
 
-            
-        console.log('-------')
-
-            console.log('offerDiscount',offerDiscount)
-            console.log('-------')
-           
-           console.log(selectedAddress)
+      
 
             const orderData = new orderSchema({
                 products: productDetails,
@@ -313,10 +267,7 @@ const viewOrder=async (req,res)=>{
             
             cartData.products.forEach(async (cartProduct) => {
                 const productItem = cartProduct.productId; 
-                console.log(cartProduct.quantity);
-                console.log('kkkkkkkkkkkkkkkkk');
-                console.log( productItem._id )
-                
+           
                 try {
                     const result = await productSchema.findByIdAndUpdate(
                         { _id: productItem._id },
@@ -332,6 +283,11 @@ const viewOrder=async (req,res)=>{
                   
             await cartSchema.findOneAndDelete({userId:req.session.user_id})
         }
+
+        await couponSchema.findOneAndUpdate({code:couponCode.toUpperCase()},{
+            $push:{users:req.session.user_id}
+          })
+
         const orderDetails = await orderSchema.find({ userId: req.session.user_id })
         .populate('products')
         .populate('products.productId')

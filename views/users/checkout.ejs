@@ -696,16 +696,22 @@
             .then(function(res){
                 console.log(res.data)
                 const {couponDiscount,cartTotal,message}=res.data
-                if(couponDiscount && cartTotal){
-                    const couponDiscountElement = document.querySelector('.couponDiscount p');
-                    couponDiscountElement.innerHTML=`$ ${couponDiscount.toFixed(2)}`
-                    const cartTotalElement = document.querySelector('.cartTotal p');
-                    cartTotalElement.innerHTML=`$ ${cartTotal.toFixed(2)}`
-                }else{
-                    console.log(message)
-                    var couponError = document.getElementById('couponError');
-                    couponError.textContent =message;
-                }
+
+               if (couponDiscount) {
+                
+                  
+                       const couponDiscountElement = document.querySelector('.couponDiscount p');
+                       couponDiscountElement.innerHTML=`$ ${couponDiscount.toFixed(2)}`
+                       const cartTotalElement = document.querySelector('.cartTotal p');
+                       cartTotalElement.innerHTML=`$ ${cartTotal.toFixed(2)}`
+                       var couponError = document.getElementById('couponError');
+                       couponError.textContent =message;
+                 
+               } else {
+                console.log(message)
+                       var couponError = document.getElementById('couponError');
+                       couponError.textContent =message;
+               } 
             })
             .catch(function (error) {
             console.error('Error:', error);
@@ -726,24 +732,23 @@
 
         const totalPriceElement = document.querySelector('.cartTotal p');
         
+        const couponCode=document.getElementById('couponCode').value
+
         const cartTotal = parseFloat(totalPriceElement.textContent.trim().substring(1));
-        console.log('ddddddddddd',cartTotal)
+      
 
-        console.log("Selected shipping address:", selectedAddress);
-        console.log("Selected payment option:", selectedPaymentOption);
-        console.log("Selected coupon:", couponDiscount);
-        console.log("Selected coupon:", cartTotal);
-
+        console.log("Selected shipping address:", couponCode);
+        
         if (selectedPaymentOption === "RazorPay") {
             console.log('suiiii');
 
             event.preventDefault();
 
-            axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount })
+            axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount,couponCode })
             .then(function (response) {
                 console.log(response.data);
                 if (response.data.session==false) {
-                                console.log('1111');  
+                              
                                 window.location='/notLogin'
 
                             } else {
@@ -765,7 +770,7 @@
 
                 if (response.data) {
                     if (response.data.session === false) {
-                        console.log('1111');
+                     
                         window.location = '/notLogin';
                     } else {
                         console.log('else');
@@ -802,14 +807,7 @@
                         };
                         var rzp1 = new Razorpay(options);
                         rzp1.on('payment.failed', function(response){
-                            // alert(response.error.code);
-                            // alert(response.error.description);
-                            // alert(response.error.source);
-                            // alert(response.error.step);
-                            // alert(response.error.reason);
-                            // alert(response.error.metadata.order_id);
-                            // alert(response.error.metadata.payment_id);
-                            
+                         
                                 
                                 axios.post('/paymentFailed')
                                 .then(function (response){
@@ -838,12 +836,12 @@
             event.preventDefault();
 
 
-        axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount})
+        axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount,couponCode})
         .then(function(response) {  
         console.log(response.data);
         if(response.data){
                     if (response.data.session==false) {
-                        console.log('1111');  
+                    
                         window.location='/notLogin'
 
                     } else {
@@ -870,9 +868,9 @@
         })
         } else if (selectedPaymentOption==="Wallet") {
             event.preventDefault();
-console.log('klklklklklkllk')
 
-        axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount})
+
+        axios.post('/checkout', { selectedAddress, selectedPaymentOption,cartTotal,couponDiscount,couponCode})
         .then(function(response) {  
         console.log(response.data);
         if(response.data){

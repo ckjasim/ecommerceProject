@@ -191,13 +191,16 @@
                                 
                                  
                                 <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Code</h6></div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Name</h6></div>
+                                <div class="col-lg-1 col-sm-2 col-4 col-price"> <h6 class="mb-0">Name</h6></div>
                                 <div class="col-lg-2 col-sm-2 col-4 col-price"> <h6 class="mb-0">Description</h6></div>
                                 <div class="col-lg-2 col-sm-2 col-4 col-status">
                                     <h6 class="mb-0">Percentage</h6>
                                 </div>
                                 <div class="col-lg-1 col-sm-2 col-4 col-date">
                                     <h6 class="mb-0">Min Amount</h6>
+                                </div>
+                                <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                    <h6 class="mb-0">Max Discount Amount</h6>
                                 </div>
                                 <div class="col-lg-1 col-sm-2 col-4 col-date">
                                     <h6 class="mb-0">Status</h6>
@@ -224,7 +227,7 @@
                             
                                 <div class="col-lg-2 col-sm-2 col-4 col-price"><span> <%= element.code%></span></div>
 
-                                <div class="col-lg-2 col-sm-2 col-4 col-status">
+                                <div class="col-lg-1 col-sm-2 col-4 col-status">
                                     <span><%= element.name %></span>
                                 </div>
                                 <div class="col-lg-2 col-sm-2 col-4 col-date">
@@ -235,6 +238,9 @@
                                 </div>
                                 <div class="col-lg-1 col-sm-2 col-4 col-date">
                                     <span><%= element.minAmount %></span>
+                                </div>
+                                <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                    <span><%= element.maxAmount %></span>
                                 </div>
                                 <% const currentDate = new Date() %>
                                 <%if(element.expiredAt > currentDate){%>

@@ -280,11 +280,22 @@ const chart = async (req, res) => {
    }
 }
 
+const ledger = async (req, res) => {
+    try {
+       const orderData= await orderSchema.find().populate('userId')
+  
+    res.render('ledger',{orderData})
+  
+    } catch (error) {
+        console.log(error.message);
+    }
+  }
 
 
 module.exports={
   loadSalesReport,
   filterSalesReport,
   filterAdminDashboard,
-  chart
+  chart,
+  ledger
 }

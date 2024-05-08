@@ -24,8 +24,8 @@ const loadNewCoupon = async (req, res) => {
 const addCoupon = async (req, res) => {
   try {
 
-    const { name, description, percentage, minAmount, date } = req.body;
-    console.log("kkk111");
+    const { name, description, percentage, minAmount, date,maxAmount } = req.body;
+
     console.log(name)
     console.log(description)
     let couponExists = true;
@@ -49,6 +49,7 @@ const addCoupon = async (req, res) => {
         description: description,
         percentage: percentage,
         minAmount: minAmount,
+        maxAmount: maxAmount,
         expiredAt: date,
         status:true
     });
@@ -78,9 +79,7 @@ const loadEditCoupon=async (req,res)=>{
 
 const editCoupon =async (req,res)=>{
   try {
-      console.log('dffsd');
-      console.log(req.body.id)
-      const { code, name, description, percentage, minAmount, date } = req.body;
+      const { code, name, description, percentage, minAmount, date,maxAmount } = req.body;
 
       let couponExists = true;
       let updatedCode = code.toUpperCase();
@@ -98,11 +97,12 @@ const editCoupon =async (req,res)=>{
       }
       
       const updateCoupon = {
-          code: updatedCode,
+          code: updatedCode.toUpperCase(),
           name: name,
           description: description,
           percentage: percentage,
           minAmount: minAmount,
+          maxAmount: maxAmount,
           expiredAt: date,
           status:true
       };
@@ -120,9 +120,6 @@ const deleteCoupon=async (req,res)=>{
   try {
       
       const {couponId} =req.body
-   console.log('fdfdfddd')
-   console.log(couponId)
-
     const couponData= await couponSchema.findOneAndDelete({_id:couponId})
 
     res.send({message:"deleted"})
@@ -138,30 +135,30 @@ const deleteCoupon=async (req,res)=>{
 const couponValidate = async (req, res) => {
   try {
     const {couponCode,subTotal}=req.body
-    console.log(couponCode)
-    console.log(subTotal)
-
     const couponData= await couponSchema.findOne({code:couponCode.toUpperCase()})
-
-    console.log(couponData)
     if(couponData){
-      console.log('jjj')
       const currentTime = new Date()
-      console.log(currentTime)
-      console.log(couponData.expiredAt)
-      if(currentTime>couponData.expiredAt){
-        console.log("coupon expire")
+      
+      const alreadyUsed= await couponSchema.findOne({code:couponCode.toUpperCase(),users:req.session.user_id})
+      
+      if(alreadyUsed){
+ 
+        res.send({status:'failed',message:"coupon already used"})
+       
+      }else if(currentTime>couponData.expiredAt){
         res.send({status:'failed',message:"Coupon Expired"})
-      }else{
+      }
+      else{
          if(subTotal>couponData.minAmount){
-  
-           console.log('coupon valid')
-          const couponDiscount= (subTotal*couponData.percentage)/100
-          console.log(couponDiscount)
+
+          let couponDiscount= (subTotal*couponData.percentage)/100
+          let message='Coupon applied successfully'
+          if (couponDiscount > couponData.maxAmount) {
+            couponDiscount = couponData.maxAmount; 
+            message=`maximum coupon amount limit is ${couponData.minAmount}`
+          }
           const cartTotal=subTotal-couponDiscount
-          console.log(cartTotal)
-          
-          res.send({status:'success',message:'Coupon applied successfully',couponDiscount,cartTotal})
+          res.send({status:'success',message:message,couponDiscount,cartTotal})
 
          }else{
            console.log('amount not sufficient')

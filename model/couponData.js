@@ -5,9 +5,11 @@ const couponSchema =new mongoose.Schema({
     name:{type:String,trim:true},
     description:{type:String,required:true},
     percentage:{type:Number,required:true},
-    minAmount:{type:String,required:true},
+    minAmount:{type:Number,required:true},
+    maxAmount:{type:Number,required:true},
     expiredAt:{type:Date,required:true},
-    status:{type:Boolean,required:true}
+    status:{type:Boolean,required:true},
+    users:{type:Array}
 })
 
 module.exports=mongoose.model('coupon',couponSchema)

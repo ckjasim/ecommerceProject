@@ -12,7 +12,7 @@ const adminLogin=(req,res)=>{
 }
 
 const adminHome= async (req,res)=>{
-    const orderData= await orderSchema.find().populate('userId')
+    const orderData= await orderSchema.find().populate('userId').limit(10)
     res.render('index',{orderData})
 }
 
