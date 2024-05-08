@@ -232,7 +232,7 @@ const generateReferral = async (req, res) => {
         const userData = await userSchema.findOne({_id:req.session.user_id})
         if(userData.referralCode){
             const referralCode = userData.referralCode 
-            const baseUrl = 'http://localhost:3000/register';
+            const baseUrl = 'https://prindecor.shop/register';
             const referralLink = baseUrl + '?ref=' + referralCode;
 
             res.json({referralLink});
@@ -241,7 +241,7 @@ const generateReferral = async (req, res) => {
             console.log('22222222222222222222222222');
             const userId = req.session.user_id;
     
-            const baseUrl = 'http://localhost:3000/register';
+            const baseUrl = 'https://prindecor.shop/register';
             const referralCode = generateReferralCode(userId);
             const referralLink = baseUrl + '?ref=' + referralCode;
     
