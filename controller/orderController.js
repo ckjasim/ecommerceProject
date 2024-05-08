@@ -3,6 +3,8 @@ const addressSchema = require('../model/addressData')
 const cartSchema = require('../model/cartData')  
 const productSchema = require('../model/productData')  
 const walletSchema = require('../model/walletData')  
+const couponSchema = require("../model/couponData");
+
 const Razorpay = require('razorpay')  
 const crypto = require('crypto')  
 const fs=require('fs')
