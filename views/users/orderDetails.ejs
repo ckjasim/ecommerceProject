@@ -734,6 +734,8 @@
                 console.error('Error:', error);
             });
     }
+
+    
     function payAgain(orderId) {
         axios.post('/payAgain', { orderId })
             .then(response => {
@@ -758,9 +760,6 @@
                                     console.log(response.razorpay_payment_id);
 
                                     window.location.reload()
-                                
-                                
-                       
                             },
                             "prefill": {
                                 "name": "Gaurav Kumar",

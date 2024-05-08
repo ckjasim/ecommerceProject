@@ -405,16 +405,14 @@ const downloadInvoice = async (req, res) => {
         const { orderId } = req.body;
         const orderData = await orderSchema.findOne({ _id: orderId }).populate('userId').populate('addressId').populate('products.productId');
 
-        const products = [];
-
-        orderData.products.forEach((product) => {
-            products.push({
-                quantity:product.quantity ,
-                description: product.productId.name,
-                taxRate: 6, 
-                price: product.orderedPrice
-            });
-        });
+        const products = orderData.products.map((product) => ({
+            quantity: product.quantity,
+            description: product.productId.name,
+            couponDiscount: orderData.couponDiscount, 
+            offerDiscount: orderData.offerDiscount,  
+            taxRate: 6,
+            price: product.orderedPrice
+        }));
 
         const formatDate = (date) => {
             const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -423,10 +421,9 @@ const downloadInvoice = async (req, res) => {
 
         var data = {
             apiKey: "free",
-            mode: "development", 
+            mode: "development",
             images: {
                 logo: "https://public.budgetinvoice.com/img/logo_en_original.png",
-
             },
             sender: {
                 company: "prinDecor",
@@ -446,18 +443,12 @@ const downloadInvoice = async (req, res) => {
                 number: "2021.0001",
                 date: formatDate(new Date()),
             },
-
             products: products,
-
             // bottomNotice: "Kindly pay your invoice within 15 days.",
-
             settings: {
-                currency: "INR", 
+                currency: "INR",
             },
-        
-
         };
-        
 
         const result = await easyinvoice.createInvoice(data);
         const pdfBuffer = Buffer.from(result.pdf, 'base64');
@@ -470,6 +461,7 @@ const downloadInvoice = async (req, res) => {
         res.status(500).send({ error: 'Internal Server Error' });
     }
 }
+
 
 const payAgain=async (req,res)=>{
     try {
