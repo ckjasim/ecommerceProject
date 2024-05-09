@@ -21,10 +21,9 @@ const loadProfile = async (req,res)=>{
         .populate('addressId');
         res.render('profile',{userData,addressData,orderDetails,couponData,walletData})
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
 }
-
 
 const editProfile=async (req,res)=>{
     try {
@@ -39,25 +38,20 @@ const editProfile=async (req,res)=>{
         res.redirect('/loadProfile')
 
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
 }
 const loadAddress=async (req,res)=>{
     try {
         const message=req.flash('message').toString()
-    if(message){
-        console.log(message);
-    }
-       res.render('address',{message})
+        res.render('address',{message})
 
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
 }
 const addAddress=async (req,res)=>{
     try {
-
-
         const name = req.body.name.trim();
         
         if(!name||!/^[a-zA-Z][a-zA-Z\s]*$/.test(name)){
@@ -111,7 +105,6 @@ const addAddress=async (req,res)=>{
             return res.redirect('/loadAddress')
         }
 
-
         const addressData=new addressSchema({
             name:req.body.name,
             mobile:req.body.mobile,
@@ -129,20 +122,14 @@ const addAddress=async (req,res)=>{
         res.redirect('/checkout')
 
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
 }
 const loadEditAddress=async (req,res)=>{
     try {
         const message=req.flash('message').toString()
-    if(message){
-        console.log(message);
-    }
         const addressId=req.query._id
-
         const addressData= await addressSchema.findOne({_id:addressId})
-        console.log(addressData);
-        console.log(addressData._id)
        res.render('editAddress',{addressData,message})
 
     } catch (error) {
@@ -151,9 +138,7 @@ const loadEditAddress=async (req,res)=>{
 }
 const editAddress=async (req,res)=>{
     try {
-    
         const addressId=req.body._id
-
         const updateAddress={
             name:req.body.name,
             mobile:req.body.mobile,
@@ -166,11 +151,10 @@ const editAddress=async (req,res)=>{
             landmark:req.body.landmark,
             userId:req.session.user_id
         }
-        
         await addressSchema.findByIdAndUpdate({_id:addressId},{$set:updateAddress})
         res.redirect('/checkout')
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
 }
 const deleteAddress=async (req,res)=>{
@@ -179,7 +163,7 @@ const deleteAddress=async (req,res)=>{
         await addressSchema.findByIdAndDelete({_id:addressId})
         res.redirect('/loadProfile')
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
 }
 const deleteCheckoutAddress=async (req,res)=>{
@@ -188,7 +172,7 @@ const deleteCheckoutAddress=async (req,res)=>{
         await addressSchema.findByIdAndDelete({_id:addressId})
         res.redirect('/checkout')
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
 }
 //hashPassword
@@ -197,17 +181,14 @@ const securePassword= async(password) =>{
         const passwordHash = await bcrypt.hash(password,10)
         return passwordHash;
     }catch (error){
-        console.log(error.message);
+        res.render('error')
     }
 }
 
 const changePassword=async (req,res)=>{
     try {
-
         const userData=await userSchema.findOne({_id:req.session.user_id})
-
         const currentPassword=req.body.currentPassword
-        console.log(userData.password)
         const correctPassword = await bcrypt.compare(currentPassword,userData.password)
 
         if(correctPassword){
@@ -215,47 +196,37 @@ const changePassword=async (req,res)=>{
             await userSchema.findOneAndUpdate({_id:req.session.user_id},{$set:{password:sPassword}})
             return res.redirect('/loadProfile')
         }else{
-
             req.flash('message','Incorrect password')
             return res.redirect('/loadProfile')
         }
 
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
 }
 
-
 const generateReferral = async (req, res) => {
     try {
-
         const userData = await userSchema.findOne({_id:req.session.user_id})
         if(userData.referralCode){
             const referralCode = userData.referralCode 
             const baseUrl = 'https://prindecor.shop/register';
             const referralLink = baseUrl + '?ref=' + referralCode;
-
             res.json({referralLink});
         }else{
-
-            console.log('22222222222222222222222222');
             const userId = req.session.user_id;
-    
             const baseUrl = 'https://prindecor.shop/register';
             const referralCode = generateReferralCode(userId);
             const referralLink = baseUrl + '?ref=' + referralCode;
-    
             const userData = await userSchema.updateOne(
                 { _id: req.session.user_id }, 
                 { $set: { referralCode: referralCode } }, 
                 { upsert: true } 
             );
-            console.log(referralLink);
             res.json({ referralLink });
         }
     } catch (error) {
-        console.error('Error generating referral link:', error.message);
-        res.status(500).json({ error: 'Internal server error' });
+        res.render('error')
     }
 }
 

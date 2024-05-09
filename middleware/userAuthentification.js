@@ -7,7 +7,7 @@ const isLogin =async (req,res,next)=>{
             next();
     }
  } catch (error) {
-    console.log(error.message);
+    res.render('error')
  }
 }
 
@@ -19,7 +19,7 @@ const isLogout=async (req,res,next)=>{
             next()
         }
     } catch (error) {
-        console.log(error.message)
+        res.render('error')
     }
 }
 

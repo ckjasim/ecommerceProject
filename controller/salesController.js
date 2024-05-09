@@ -7,21 +7,15 @@ const loadSalesReport = async (req, res) => {
     const orderData = await orderSchema.find({
         'products.orderStatus': 'Delivered'
     }).populate('userId');
-
-    console.log(orderData)
-    
-  res.render('salesReport',{orderData})
+     res.render('salesReport',{orderData})
 
   } catch (error) {
-      console.log(error.message);
+    res.render('error')
   }
 }
 const filterSalesReport = async (req, res) => {
   try {
     const {selectedValue,startDateValue,endDateValue}=req.body
-
-     console.log(selectedValue)
-     
     let query
     let filter
      
@@ -39,8 +33,6 @@ const filterSalesReport = async (req, res) => {
          };
          
           filter = await orderSchema.find(query).populate('userId');
-         
-
          res.send({ status: 'success', message: 'sorted successfully', filter});
          
              break;
@@ -93,9 +85,6 @@ const filterSalesReport = async (req, res) => {
              res.send({ status: 'success', message: 'sorted successfully', filter});
              break;
          case "Custom":
-            // const currentDate4 = new Date();
-            // const startDateValue = new Date(currentDate2.getFullYear(), currentDate2.getMonth(), 1);
-            // const endDateValue = new Date(currentDate2.getFullYear(), currentDate2.getMonth() + 1, 0);
             
              query = {
                 orderedAt: {
@@ -111,17 +100,13 @@ const filterSalesReport = async (req, res) => {
 
      }
      
-
  } catch (error) {
-     console.log(error.message)
+    res.render('error')
  }
 }
 const filterAdminDashboard = async (req, res) => {
   try {
     const {selectedValue}=req.body
-
-     console.log(selectedValue)
-     
     let query
     let filter
      
@@ -188,11 +173,6 @@ const filterAdminDashboard = async (req, res) => {
                     }
                 },
             ]);
-            
-            
-            
-            console.log('jhjhjhjhjjjjjjjjjjjjjjjjjjjjj',{orderDataByCategory})
-
             res.send({ status: 'success', message: 'sorted successfully', orderDataByCategory});
              break;
          default:
@@ -200,19 +180,16 @@ const filterAdminDashboard = async (req, res) => {
              break;
      }
      
-
  } catch (error) {
-     console.log(error.message)
+    res.render('error')
  }
 }
-
 
 const chart = async (req, res) => {
     try {
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear();
         const currentMonth = currentDate.getMonth() + 1; 
-        
         const monthlyPipeline = [
             {
                 $match: {
@@ -264,11 +241,6 @@ const chart = async (req, res) => {
             yearlyCount[yearIndex] = result.count;
         });
 
-        console.log(monthlyCount)
-
-        console.log(yearlyCount)
-   
-
         res.send({ 
             status: 'success', 
             message: 'charted', 
@@ -279,8 +251,7 @@ const chart = async (req, res) => {
         });
               
    } catch (error) {
-       console.log(error.message);
-       res.status(500).send({ status: 'error', message: error.message });
+    res.render('error')
    }
 }
 
@@ -291,7 +262,7 @@ const ledger = async (req, res) => {
     res.render('ledger',{orderData})
   
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
   }
 

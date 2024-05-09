@@ -11,9 +11,8 @@ try {
             next()
         }
     }
-    
  catch (error) {
-    console.log(error.message);
+    res.render('error')
 }
 }
 

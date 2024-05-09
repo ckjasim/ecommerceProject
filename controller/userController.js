@@ -3,7 +3,6 @@ const productSchema =require('../model/productData')
 const categorySchema = require('../model/categoryData')
 const cartSchema = require('../model/cartData')
 const offerSchema = require('../model/offerData')
-// const otpSchema = require('../model/otpData')
 
 const mongoose = require('mongoose');
 
@@ -18,41 +17,27 @@ const loadHome=async (req,res)=>{
     const productData = await productSchema.find().populate('categoryId').limit(3);
         const categoryData = await categorySchema.find();
         const offerData = await offerSchema.find();
-
-
-
         const offerProducts = offerData.map(offer => {
         const offerProductId = new mongoose.Types.ObjectId(offer.product);
         return productData.find(product => product._id.equals(offerProductId));
         }).filter(product => product !== undefined);
 
-
         const offerCategories = offerData.map(offer => {
             const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
             return categoryData.find(category => category._id.equals(offerCategoryId));
         }).filter(category => category !== undefined);
-        
-
-     
 
         res.render('index', { productData, offerProducts, offerCategories, offerData });
 
-  
 }
 
 const loadLogin=(req,res)=>{
     const message=req.flash('message').toString()
-    if(message){
-        console.log(message);
-    }
     res.render('login',{message})
 }
 
 const loadRegister =(req,res)=>{
     const message = req.flash('message').toString()
-    if(message){
-        console.log( message)
-    }
     res.render('register',{message})
 }
 
@@ -60,23 +45,16 @@ const userHome=async(req,res)=>{
     const productData = await productSchema.find().populate('categoryId').limit(3);
     const categoryData = await categorySchema.find();
     const offerData = await offerSchema.find();
-
-
-
     const offerProducts = offerData.map(offer => {
     const offerProductId = new mongoose.Types.ObjectId(offer.product);
     return productData.find(product => product._id.equals(offerProductId));
     }).filter(product => product !== undefined);
-
 
     const offerCategories = offerData.map(offer => {
         const offerCategoryId = new mongoose.Types.ObjectId(offer.category);
         return categoryData.find(category => category._id.equals(offerCategoryId));
     }).filter(category => category !== undefined);
     
-
- 
-
     res.render('index', { productData, offerProducts, offerCategories, offerData });
 }
 
@@ -113,7 +91,7 @@ const loginSubmit = async (req,res)=>{
             return res.redirect('/login')
         }
     } catch (error) {
-        console.log(error.message)
+        res.render('error')
     }
 }
 
@@ -121,17 +99,12 @@ const loginSubmit = async (req,res)=>{
 
 const loadForgotPassword=(req,res)=>{
     const message=req.flash('message').toString()
-    if(message){
-        console.log(message);
-    }
     res.render('forgotPassword',{message})
 }
 
 const forgotPassword = async (req,res)=>{
-    try {
-       
-    const checkEmail=  await userSchema.findOne({email:req.body.email})
-    
+    try { 
+    const checkEmail=  await userSchema.findOne({email:req.body.email}) 
     const email=req.body.email
     const emailRegex=/^[A-Za-z0-9.%+-]+@gmail\.com$/;
 
@@ -142,43 +115,31 @@ const forgotPassword = async (req,res)=>{
     if (checkEmail) {
         req.session.email=email
         otpController.sendVerifyMail(email)
-
         res.render('forgotOtp',{messsage:'Please check your email and Verify your OTP',email})
-        
     }else{
         console.log('123');
         req.flash('message','Email doesnt exists, please register')
             return res.redirect('/loadForgotPassword') 
     }
-
     } catch (error) {
-        console.log(error.message)  
+        res.render('error')
     }
 }
 
 const newPassword=(req,res)=>{
     const message=req.flash('message').toString()
-    if(message){
-        console.log(message);
-    }
     res.render('newPassword',{message})
 }
 
 const newPasswordSubmit = async (req,res)=>{
     try {
-       
-        const sPassword = await securePassword(req.body.password)
-        
+        const sPassword = await securePassword(req.body.password) 
         await userSchema.findOneAndUpdate({email:req.session.email},{$set:{password:sPassword}})
-
         res.redirect('/login')
-
     } catch (error) {
-        console.log(error.message)  
+        res.render('error')
     }
 }
-
-
 
 //register save
 
@@ -188,29 +149,22 @@ const securePassword= async(password) =>{
         const passwordHash = await bcrypt.hash(password,10)
         return passwordHash;
     }catch (error){
-        console.log(error.message);
+        res.render('error')
     }
 }
 
-
 const submit = async (req,res)=>{
-    try {
-       
+    try {    
     const checkEmail=  await userSchema.findOne({email:req.body.email})
-    console.log(req.body)
     if (checkEmail) {
-        console.log('123');
-        // res.render('register', { message: "Email already exists" });
         req.flash('message','Email already exists')
             return res.redirect('/register')
         
     }else{
         const sPassword = await securePassword(req.body.password)
-        console.log(req.body.fName)
         const name = req.body.fName.trim();
         
         if(!name||!/^[a-zA-Z][a-zA-Z\s]*$/.test(name)){
-            // return res.render('register',{message:"invalid name provided"})
             req.flash('message','Invalid name provided')
             return res.redirect('/register')
         }
@@ -227,13 +181,11 @@ const submit = async (req,res)=>{
         const mobileRegex=/^\d{10}$/;
 
         if(!mobileRegex.test(mobile)){
-            // return res.render('register',{message:'Invalid mobile number'})
             req.flash('message','Invalid mobile number')
             return res.redirect('/register')
         }
 
         if (req.body.password !== req.body.confirmPassword) {
-            // return res.render('register', { message: 'Please check your password' });
             req.flash('message','Please check your password')
             return res.redirect('/register')
         }
@@ -248,7 +200,6 @@ const submit = async (req,res)=>{
             is_block:false,
             isAdmin:0
         })
-        console.log('jjjjjjjjjjjjjjjjj ref jjjjjjjjjjjjjjjjjjjjjjjjj',req.query.ref)
         req.session.userData=newUser
         req.session.email=newUser.email
         req.session.referral=req.query.ref
@@ -258,20 +209,14 @@ const submit = async (req,res)=>{
         if(newUser){
             console.log("2");
             otpController.sendVerifyMail(req.session.email)
-
             res.render('otpVerification',{messsage:'Please check your email and Verify your OTP'})
-            
         }
         else{
-            // res.render('register',{message:"Login has failed"})
             req.flash('message','Login has failed')
             return res.redirect('/register')
             
         }
     }
-
-    
-
     } catch (error) {
         console.log(error.message)  
     }
@@ -279,30 +224,23 @@ const submit = async (req,res)=>{
 
 //shop
 
-
-
-
 const loadShop=async (req,res)=>{
     try {
         const productData= await productSchema.find().populate('categoryId')
         res.render('shop',{productData})
     } catch (error) {
-        console.log(error.message)
+        res.render('error')
     }
  
 }
-
-
 
 const notLogin = (req,res)=>{
     try {
         res.render('notLogin')
         
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
-    
-
 }
 const logout = (req,res)=>{
     try {
@@ -310,12 +248,9 @@ const logout = (req,res)=>{
         res.redirect("/")
         
     } catch (error) {
-        console.log(error.message);
+        res.render('error')
     }
-    
-
 }
-
 
 module.exports={
     

@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema({
     mobile:{type:String,required:true},
     password:{type:String,required:true},
     createDate:{type:Date,required:true},
-    // updated:{type:date,required:true},
     is_block:{type:Boolean,required:true},
     referralCode:{type:String},
 })

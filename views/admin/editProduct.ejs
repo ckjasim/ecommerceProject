@@ -285,42 +285,6 @@
                                     <textarea   name="description" class="form-control" rows="4" id="productDescription" required><%= productData.description %></textarea>
                                     <span id="descriptionError" style="color: rgb(188, 5, 5);"></span>
 
-                                    
-                                        <!-- <label class="form-label">Images</label>
-                                        <div class="left photo">
-                                            <img src="/productImage/<%= productData.img[0]%>" class="img-sm img-thumbnail" alt="Item" />
-                                            <button href=""  class="btn btn-sm font-sm rounded btn-brand delete-link" onclick="imageData('<% productData.img[0] %>')"> Delete </button>
-                                        </div>
-                                        <div class="left photo">
-                                            <img src="/productImage/<%= productData.img[1]%>" class="img-sm img-thumbnail" alt="Item" />
-                                            <a href="deleteImage?_id=<% productData.img[1] %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
-                                            
-                                        </div>
-                                        <div class="left photo">
-                                            <img src="/productImage/<%= productData.img[2]%>" class="img-sm img-thumbnail" alt="Item" />
-                                            <a href="deleteImage?_id=<% productData.img[2] %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
-                                        </div>
-                                        <div class="left photo">
-                                            <img src="/productImage/<%= productData.img[3]%>" class="img-sm img-thumbnail" alt="Item" />
-                                            <a href="deleteImage?_id=<% productData.img[3] %>" class="btn btn-sm font-sm rounded btn-brand delete-link"> Delete </a>
-                                        </div>
-                                        <input multiple class="form-control" type="file" name="image" /> -->
-
-
-
-
-
-
-
-
-
-
-                                        
-
-
-
-
-
                                     </div>
                                 </div>
                             </div>
@@ -347,43 +311,6 @@
             </footer>
         </main>
 
-        <!-- <script >
-            const deleteLinks = document.querySelectorAll('.delete-link');
-            
-        deleteLinks.forEach(link => {
-            link.addEventListener('click', function(event) {
-            event.preventDefault();
-            const photoContainer = link.parentElement;
-            photoContainer.remove();
-            });
-        }); 
-        </script> -->
-        <!-- <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Get all delete links
-                const deleteLinks = document.querySelectorAll('.delete-link');
-        
-                // Add event listener to each delete link
-                deleteLinks.forEach(link => {
-                    link.addEventListener('click', function(event) {
-                        event.preventDefault();  
-                        const photoContainer = link.closest('.photo');
-                        photoContainer.remove();
-                    });
-                });
-                function imageData(img){
-                axios.post('/deleteProductImage', { img })
-            .then(function(response) {  
-                
-                console.log(response.data);
-            })
-            .catch(function(error) {
-                console.error('Error:', error);
-            })
-            }
-            });
-            
-        </script> -->
         <script>
      function checkValidity() {
         var nameError = document.getElementById('nameError').textContent;
