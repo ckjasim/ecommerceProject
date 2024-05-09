@@ -4,8 +4,12 @@ const orderSchema = require('../model/orderData')
 
 const loadSalesReport = async (req, res) => {
   try {
-     const orderData= await orderSchema.find().populate('userId')
+    const orderData = await orderSchema.find({
+        'products.orderStatus': 'Delivered'
+    }).populate('userId');
 
+    console.log(orderData)
+    
   res.render('salesReport',{orderData})
 
   } catch (error) {

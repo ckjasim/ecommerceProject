@@ -53,7 +53,10 @@ userRoute.get("/auth/google/callback", googleLogin.googleCallback, googleLogin.s
 
 //product
 
-
+userRoute.get('/loadProduct',productController.loadUserProduct)
+userRoute.get('/loadProductDetail/:productId',productController.loadUserProductDetail)
+userRoute.post('/sort',productController.sort)
+userRoute.post('/searchProduct',productController.searchProduct)
 
 
 //shop
@@ -95,10 +98,7 @@ userRoute.post('/changePassword',userConfig.isLogin,accessUser,profileController
 userRoute.get('/generateReferral',userConfig.isLogin,accessUser,profileController.generateReferral)
 
 
-userRoute.get('/loadProduct',productController.loadUserProduct)
-userRoute.get('/loadProductDetail/:productId',productController.loadUserProductDetail)
-userRoute.post('/sort',productController.sort)
-userRoute.post('/searchProduct',productController.searchProduct)
+
 
 
 userRoute.get('/loadWishlist',userConfig.isLogin,accessUser,wishlistController.loadWishlist)
