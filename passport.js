@@ -11,10 +11,8 @@ passport.use(
             clientSecret: process.env.CLIENT_SECRET,
             callbackURL: "https://prindecor.shop/auth/google/callback",
         },
-        async (accessToken, refreshToken, profile, done) => {
-            
+        async (accessToken, refreshToken, profile, done) => {           
             console.log(profile);
-
             try {
          
                 const { id: googleId, email, displayName: fName } = profile;

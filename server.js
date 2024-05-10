@@ -26,12 +26,8 @@ app.use(session({
 }));
 
 
-//MONGO CONNECT
+// MONGO CONNECT
 dbUrl=process.env.DB_URL
-
-
-
-
 mongoose
     .connect(dbUrl)
     .then(()=>{
@@ -40,6 +36,7 @@ mongoose
     .catch((err)=>{
         console.log(err)
     })
+
 // mongoose
 //     .connect("mongodb://127.0.0.1:27017/ecommerceDb")
 //     .then(()=>{
