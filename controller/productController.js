@@ -81,16 +81,27 @@ const addProducts=async (req,res)=>{
     }
 }
 
-const unlistProduct =async (req,res)=>{
+const unlistProduct = async (req, res) => {
     try {
-        const {productId}=req.query
-        const productData=await productSchema.findOne({_id:productId})
-        productData.is_listed=!productData.is_listed
-        await productData.save()
+        console.log('1111');
+        const productId = req.params.id; 
+        console.log(productId);
+        const productData = await productSchema.findOne({ _id: productId });
+
+        if (productData) {
+            productData.is_listed = !productData.is_listed;
+            await productData.save();
+            res.send({ success: true });
+        } else {
+            res.send({ success: false });
+        }
     } catch (error) {
-        res.render('error')
+        console.error('Error in unlisting product:', error);
+        res.render('error');
     }
-}
+};
+
+
 
 const loadEditProduct=async (req,res)=>{
     try {

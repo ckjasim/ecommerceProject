@@ -16,7 +16,7 @@
         <link href="assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
     </head>
 
-    <body>
+    <body class="dark">
         <div class="screen-overlay"></div>
         <aside class="navbar-aside" id="offcanvas_aside">
             <div class="aside-top">
@@ -147,19 +147,13 @@
                         <p>Lorem ipsum dolor sit amet.</p>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-light rounded font-md">Export</a>
-                        <a href="#" class="btn btn-light rounded font-md">Import</a>
                         <a href="/newProduct" class="btn btn-primary btn-sm rounded">Create new</a>
                     </div>
                 </div>
                 <div class="card mb-4">
                     <header class="card-header">
                         <div class="row align-items-center">
-                            <div class="col col-check flex-grow-0">
-                                <div class="form-check ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" />
-                                </div>
-                            </div>
+                           
                             <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
                                 <select class="form-select">
                                     <option selected>All category</option>
@@ -187,13 +181,7 @@
                        
                             <div class="row align-items-center">
                                 
-                                <div class="col col-check flex-grow-0">
-                                    <div class="form-check">
-                                        <h6 class="mb-0"> </h6>
-                                        <!-- <input class="form-check-input" type="checkbox" /> -->
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+                                <div class="col-lg-3 col-sm-4 col-8 flex-grow-1 col-name">
                                     <a class="itemside" href="#">
                                         <div class="left">
                                             <!-- <img src="" class="img-sm img-thumbnail" alt="Item" /> -->
@@ -208,10 +196,10 @@
                                 <div class="col-lg-2 col-sm-2 col-4 col-status">
                                     <h6 class="mb-0">Category</h6>
                                 </div>
-                                <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                <div class="col-lg-2 col-sm-2 col-4 col-date">
                                     <h6 class="mb-0">Quantity</h6>
                                 </div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                                <div class="col-lg-3 col-sm-2 col-4 col-action ">
                                     <h6 class="mb-0">Action</h6>
                                   
                                 </div>
@@ -230,13 +218,8 @@
                     <div class="card-body">
                         <article class="itemlist">
                             <div class="row align-items-center">
-                                
-                                <div class="col col-check flex-grow-0">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+                            
+                                <div class="col-lg-3 col-sm-4 col-8 flex-grow-1 col-name">
                                     <a class="itemside" href="#">
                                         <div class="left">
                                             <img src="/productImage/<%= element.img[0] %>" class="img-sm img-thumbnail" alt="Item" />
@@ -252,19 +235,24 @@
                                 <div class="col-lg-2 col-sm-2 col-4 col-status">
                                     <span><%= element.categoryId.name %></span>
                                 </div>
-                                <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                <div class="col-lg-2 col-sm-2 col-4 col-date">
                                     <span><%= element.quantity %></span>
                                 </div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                                <div class="col-lg-3 col-sm-2 col-4 col-action ">
                                     <a href="editProduct?_id=<%= element._id %>" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
+                                    <span><col></span>
+                                    <% if (!element.is_listed) { %>
 
-                                    <%if(element.is_listed===true){%>
-                                        
-                                        <button class="btn btn-sm font-sm rounded text-white btn-danger " onclick="listProduct(this,'<%= element._id%>') "> Unlist </button>                    
-                                        <%}else{%>
-                                            
-                                            <button class="btn btn-sm font-sm rounded text-white btn-success" onclick="listProduct(this,'<%= element._id%>') "> List </button>                    
-                                    <%} %>
+                                        <button id="block-btn-<%= element.id %>"
+                                            class="btn btn-sm font-sm rounded text-white btn-success block-btn"
+                                            data-id="<%= element.id %>"
+                                            onclick="listProduct('<%= element.id %>')">List</button> 
+                                        <% } else { %>
+                                            <button id="block-btn-<%= element.id %>"
+                                                class="btn btn-sm font-sm rounded text-white btn-danger unblock-btn"
+                                                data-id="<%= element.id %>"
+                                                onclick="listProduct('<%= element.id %>')">Unlist</button>
+                                            <% } %>
 
                                 </div>
                             </div>
@@ -309,32 +297,31 @@
                 </div>
             </footer>
         </main>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
         <script>
-            async function listProduct(tag, productId) {
-                try {
-                    const response = await fetch(`/unList?productId=${productId}`);
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch: ${response.statusText}`);
-                    }
-                    const data = await response.json();
-                    if (tag.innerText === 'List') {
-                        tag.innerText = 'Unlist';
-                        tag.style.background = 'green';
-                        tag.style.color = 'white';
-
-                    } else if (tag.innerText === 'Unlist') {
-                        tag.innerText = 'List';
-                        tag.style.background = 'red';
-                        tag.style.color = 'white';
-
-                       
-                    }
-                    console.log(data);
-                    
-                } catch (error) {
-                    console.error('Error fetching:', error);
-                }
+            function listProduct(productId) {
+                axios.post(`/unList/${productId}`)
+                    .then(response => {
+                        if (response.data.success) {
+                            console.log(response.data.success);
+                            let button = document.getElementById(`block-btn-${productId}`);
+                            if (button.classList.contains('btn-danger')) {
+                                button.classList.remove('btn-danger');
+                                button.classList.add('btn-success');
+                                button.innerText = 'list';
+                            } else {
+                                button.classList.remove('btn-success');
+                                button.classList.add('btn-danger');
+                                button.innerText = 'Unlist';
+                            }
+                        } else {
+                            alert("An error occurred");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error in block and unblocking:", error);
+                    });
             }
         </script>
         

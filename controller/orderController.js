@@ -141,6 +141,7 @@ const loadOrder=async (req,res)=>{
 
     }
 }
+
 const paymentFailed=async (req,res)=>{
     try {
         req.session.payment='failed'

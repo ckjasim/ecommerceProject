@@ -43,7 +43,7 @@ const loadCart = async (req, res) => {
                         products:productToAdd
                     }
                 }
-                );
+                );t
             }
             const alreadyCart = await cartSchema.findOne({ "products.productId": productId ,userId:req.session.user_id});         
             res.send({ status: 'success', message: 'Added to cart successfully', session:true,alreadyCart});           
@@ -144,7 +144,6 @@ const limitQuantity= async (req, res) => {
     try {       
         const { productId } = req.body;
         const productData = await productSchema.findOne({ _id: productId })
-        console.log(productData)
         const inStock = productData.quantity
         res.status(200).json({ status: 'success', message: 'product deleted successfully',inStock});
     } catch (error) {
